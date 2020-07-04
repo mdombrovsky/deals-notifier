@@ -47,7 +47,7 @@ class RedditScraper(private val subReddit: String) : Scraper() {
     }
 
     public override suspend fun getPosts(): List<Post> {
-        val url: URL = URL("https://www.reddit.com/r/$subReddit/new.json?sort=new?t=day?limit=500")
+        val url: URL = URL("https://www.reddit.com/r/${subReddit}/new.json?limit=100")
 
         return redditJSONToPosts(getRedditData(url))
 
@@ -58,7 +58,7 @@ class RedditScraper(private val subReddit: String) : Scraper() {
             return getPosts()
         }
         val url: URL =
-            URL("https://www.reddit.com/r/$subReddit/new.json?sort=new?t=day?limit=500&before=t3_$mostRecentPostId")
+            URL("https://www.reddit.com/r/${subReddit}/new.json?limit=100&before=t3_${mostRecentPostId}")
 
         return redditJSONToPosts(getRedditData(url))
     }

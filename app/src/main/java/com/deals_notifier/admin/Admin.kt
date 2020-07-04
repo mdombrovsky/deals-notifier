@@ -11,33 +11,20 @@ import kotlinx.coroutines.launch
 
 
 class Admin() {
+    val scraper: Scraper = RedditScraper("bapcsalescanada")
 
-    object static {
-        fun refresh() {
-            val scraper: Scraper = RedditScraper("askreddit")
+    fun refresh() {
 
-            CoroutineScope(IO).launch {
 
-//                Log.d("Posts","1Loading")
-                var posts: List<Post> = scraper.getNewPosts()
-//                Log.d("Posts","1Size: "+posts.size.toString())
-//                for(i in posts.indices){
-//                    Log.d("Posts", (i+1).toString()+": "+ posts[i].title)
-//                }
-//                delay(10000)
-//                Log.d("Posts","2Loading")
-//                posts=scraper.getNewPosts()
-//                Log.d("Posts","2Size: "+posts.size.toString())
-//                for(i in posts.indices){
-//                    Log.d("Posts", (i+1).toString()+": "+ posts[i].title)
-//                }
-//                Log.d("Posts","3Loading")
-//                posts=scraper.getPosts()
-//                Log.d("Posts","3Size: "+posts.size.toString())
-//                for(i in posts.indices){
-//                    Log.d("Posts", (i+1).toString()+": "+posts[i].title)
-//                }
+        CoroutineScope(IO).launch {
+
+            var posts: List<Post> = scraper.getNewPosts()
+            Log.d("Posts", "1Size: " + posts.size.toString())
+            for (i in posts.indices) {
+                Log.d("Posts", (i + 1).toString() + ": " + posts[i].title)
             }
+
+
         }
     }
 

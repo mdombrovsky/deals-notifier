@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         tabs.setupWithViewPager(viewPager)
         val fab: FloatingActionButton = findViewById(R.id.fab)
 
-        Admin.static.refresh()
+        Admin().refresh()
 
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
