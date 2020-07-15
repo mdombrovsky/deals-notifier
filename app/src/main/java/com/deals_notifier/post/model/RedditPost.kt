@@ -1,5 +1,6 @@
 package com.deals_notifier.post.model
 
+import android.util.Log
 import org.json.JSONException
 import org.json.JSONObject
 import java.net.URL
@@ -24,6 +25,8 @@ class RedditPost(jsonPost: JSONObject) : Post() {
 
             stringToSearchNoSpaces =
                 title.replace("\\s".toRegex(), "") + description.replace("\\s".toRegex(), "")
+
+            Log.d("RedditScraper","Post loaded: ${this.toString()}")
 
         } else {
             throw JSONException("Incorrect Format for Reddit Post")

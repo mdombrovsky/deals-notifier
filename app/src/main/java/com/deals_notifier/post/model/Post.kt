@@ -27,7 +27,7 @@ abstract class Post() {
     }
 
     override fun toString(): String {
-        return "Title: $title\nDescription: $description\n"
+        return "Title: {$title}, Description: {$description}\n"
     }
 
 }
