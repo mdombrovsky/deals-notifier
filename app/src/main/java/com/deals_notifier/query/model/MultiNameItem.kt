@@ -1,4 +1,4 @@
-package com.deals_notifier.querry.model
+package com.deals_notifier.query.model
 
 class MultiNameItem {
     val singleQuerries: ArrayList<Item> = ArrayList<Item>()

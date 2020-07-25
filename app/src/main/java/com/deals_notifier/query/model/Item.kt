@@ -1,15 +1,14 @@
-package com.deals_notifier.querry.model
+package com.deals_notifier.query.model
 
 class Item(textr: String) {
 
-    var text: String =""
-        public set(value) {
+    var text: String = ""
+        set(value) {
             field = value
             textNoSpaces = value.replace("\\s".toRegex(), "")
         }
-        public get
 
-    var textNoSpaces: String=""
+    var textNoSpaces: String = ""
 
     init {
         this.text = textr

@@ -1,6 +1,6 @@
 package com.deals_notifier.post.model
 
-import com.deals_notifier.querry.model.Query
+import com.deals_notifier.query.model.Query
 import java.net.URL
 
 abstract class Post() {

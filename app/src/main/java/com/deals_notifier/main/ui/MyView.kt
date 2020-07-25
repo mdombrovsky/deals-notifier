@@ -1,4 +1,4 @@
-package com.deals_notifier
+package com.deals_notifier.main.ui
 
 import android.content.Context
 import android.graphics.Canvas
@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable
 import android.text.TextPaint
 import android.util.AttributeSet
 import android.view.View
+import com.deals_notifier.R
 
 /**
  * TODO: document your custom view class.
