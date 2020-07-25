@@ -19,6 +19,7 @@ class DealAdapter(private val context: Context) :
         val inflater: LayoutInflater = LayoutInflater.from(context)
         val view: View = inflater.inflate(R.layout.deal_row, parent, false)
         return DealHolder(view)
+
     }
 
     override fun onBindViewHolder(holder: DealHolder, position: Int) {

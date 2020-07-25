@@ -20,15 +20,10 @@ class DealController(private val dealAdapter: DealAdapter) {
     init {
 
         dealAdapter.controller = this
-
         CoroutineScope(IO).launch {
-            posts = scraper.getPosts()
-
-            withContext(Main) {
-                dealAdapter.notifyDataSetChanged()
-            }
-
+            refresh()
         }
+
     }
 
     fun getSize(): Int {
@@ -37,5 +32,12 @@ class DealController(private val dealAdapter: DealAdapter) {
 
     fun getTitle(index: Int): String {
         return posts[index].title
+    }
+
+    suspend fun refresh() {
+        posts = scraper.getPosts()
+        withContext(Main) {
+            dealAdapter.notifyDataSetChanged()
+        }
     }
 }
