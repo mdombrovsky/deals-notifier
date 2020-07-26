@@ -1,6 +1,6 @@
 package com.deals_notifier.query.model
 
-class Item(textr: String) {
+class Keyword(text: String) {
 
     var text: String = ""
         set(value) {
@@ -11,6 +11,6 @@ class Item(textr: String) {
     var textNoSpaces: String = ""
 
     init {
-        this.text = textr
+        this.text = text
     }
 }

@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.deals_notifier.deal.ui.DealFragment
-import com.deals_notifier.query.ui.QuerryFragment
+import com.deals_notifier.query.ui.QueryFragment
 
 class TabAdapter(private val activity: AppCompatActivity) : FragmentStateAdapter(activity) {
     override fun getItemCount(): Int {
@@ -17,7 +17,7 @@ class TabAdapter(private val activity: AppCompatActivity) : FragmentStateAdapter
                 DealFragment(activity)
 
             }
-            else -> QuerryFragment()
+            else -> QueryFragment()
         }
     }
 }

@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 
 
 class DealFragment(activity: AppCompatActivity) : Fragment() {
-    private val dealAdapter: DealAdapter = DealAdapter(activity)
+    private val dealAdapter: DealAdapter = DealAdapter()
     private val dealController: DealController = DealController(dealAdapter)
 
 
@@ -27,12 +27,12 @@ class DealFragment(activity: AppCompatActivity) : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val dealFragmentView = inflater.inflate(R.layout.fragment_deal, container, false)
+        val view = inflater.inflate(R.layout.fragment_deal, container, false)
 
-        implementSwipeRefresh(dealFragmentView)
-        implementRecyclerView(dealFragmentView)
+        implementSwipeRefresh(view)
+        implementRecyclerView(view)
 
-        return dealFragmentView
+        return view
     }
 
     private fun implementSwipeRefresh(view: View) {

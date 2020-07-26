@@ -16,14 +16,11 @@ class DealController(private val dealAdapter: DealAdapter) {
 
     private lateinit var posts: List<Post>
 
-
     init {
-
         dealAdapter.controller = this
         CoroutineScope(IO).launch {
             refresh()
         }
-
     }
 
     fun getSize(): Int {
