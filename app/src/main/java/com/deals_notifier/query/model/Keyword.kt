@@ -8,7 +8,8 @@ class Keyword(text: String) {
     var text: String = ""
         set(value) {
             field = value
-            textNoSpacesLowerCase = value.replace("\\s".toRegex(), "").toLowerCase(Locale.ENGLISH)
+            textNoSpacesLowerCase = value.replace("\\s+".toRegex(), "")
+                .toLowerCase(Locale.ENGLISH)
         }
 
     private var textNoSpacesLowerCase: String = ""

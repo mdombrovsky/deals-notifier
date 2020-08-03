@@ -2,7 +2,7 @@ package com.deals_notifier.scraper.model
 
 import android.util.Log
 import com.deals_notifier.post.model.Post
-import com.deals_notifier.post.model.RedditPost
+import com.deals_notifier.post.model.createRedditPost
 import org.json.JSONArray
 import org.json.JSONObject
 import java.net.URL
@@ -24,7 +24,7 @@ class RedditScraper(private val subReddit: String) : Scraper() {
 
         for (i in 0 until jsonPostArray.length()) {
             val jsonPost: JSONObject = jsonPostArray.getJSONObject(i)
-            posts.add(RedditPost(jsonPost))
+            posts.add(createRedditPost(jsonPost))
         }
 
         //Remember most recent post

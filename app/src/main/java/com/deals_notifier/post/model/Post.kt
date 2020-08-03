@@ -1,22 +1,23 @@
 package com.deals_notifier.post.model
 
+import android.util.Log
 import java.net.URL
+import java.util.*
 
-abstract class Post() {
+class Post(val title: String, private val description: String, val id: String, val url: URL) {
 
 
-    abstract val title: String
-    abstract val description: String
-    abstract val id: String
-    abstract val url: URL
+    private val stringToSearchNoSpacesLowercase: String = (
+            title.replace("\\s+".toRegex(), "") +
+                    description.replace("\\s+".toRegex(), "")
+            ).toLowerCase(Locale.ENGLISH)
 
-    protected abstract val stringToSearchNoSpacesLowercase: String
+
+    init{
+        Log.d(this.javaClass.simpleName, "Post loaded: ${this.toString()}")
+    }
 
     fun contains(searchString: String): Boolean {
-
-        if (searchString.contains("\\s".toRegex())) {
-            throw Exception("Search string must have no spaces")
-        }
         return stringToSearchNoSpacesLowercase.contains(searchString)
     }
 
