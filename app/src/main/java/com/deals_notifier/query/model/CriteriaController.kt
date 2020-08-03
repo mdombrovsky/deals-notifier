@@ -6,7 +6,7 @@ import com.deals_notifier.query.ui.KeywordAdapter
 
 class CriteriaController(
     private val criteriaAdapter: CriteriaAdapter,
-    private val criteria: ArrayList<Criteria>
+    private val criteriaHolder: Query
 ) {
 
 
@@ -15,17 +15,17 @@ class CriteriaController(
     }
 
     fun getSize(): Int {
-        return criteria.size
+        return  criteriaHolder.criteria.size
     }
 
     fun add() {
-        criteria.add(Criteria())
-        criteriaAdapter.notifyItemInserted(criteria.size - 1)
+        criteriaHolder.criteria.add(Criteria())
+        criteriaAdapter.notifyItemInserted( criteriaHolder.criteria.size - 1)
     }
 
     fun createKeyWordAdapter(position: Int): KeywordAdapter {
         val adapter = KeywordAdapter()
-        val controller = KeywordController(adapter, criteria[position].keywords)
+        val controller = KeywordController(adapter,  criteriaHolder.criteria[position])
 
         return adapter
     }
@@ -33,7 +33,7 @@ class CriteriaController(
     fun remove(position: Int) {
         //Trying to preemptively avoid issues with getLayoutPosition vs getAdapterPosition
         if (position != -1) {
-            criteria.removeAt(position)
+            criteriaHolder.criteria.removeAt(position)
             criteriaAdapter.notifyItemRemoved(position)
         } else {
             Log.e(

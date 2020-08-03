@@ -11,13 +11,14 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.deals_notifier.R
 import com.deals_notifier.deal.model.DealController
+import com.deals_notifier.query.model.QueryHolder
 import kotlinx.android.synthetic.main.fragment_deal.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 
 
-class DealFragment(activity: AppCompatActivity) : Fragment() {
+class DealFragment(private val queryHolder: QueryHolder) : Fragment() {
     private val dealAdapter: DealAdapter = DealAdapter()
     private val dealController: DealController = DealController(dealAdapter)
 
