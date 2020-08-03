@@ -33,8 +33,12 @@ class KeywordAdapter : RecyclerView.Adapter<KeywordAdapter.KeywordHolder>() {
         }
 
         holder.editKeywordButton.setOnClickListener(
-            textInputModal(holder.editKeywordButton.context, "Edit Keyword")
-            { text: String -> controller.edit(holder.adapterPosition, text) }
+            textInputModal(
+                context = holder.editKeywordButton.context,
+                title = "Edit Keyword",
+                defaultValue = holder.keyWord.text.toString(),
+                onSuccess = { text: String -> controller.edit(holder.adapterPosition, text) }
+            )
         )
     }
 

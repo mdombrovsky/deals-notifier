@@ -5,7 +5,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -19,9 +18,9 @@ import kotlinx.coroutines.launch
 
 
 class DealFragment(private val queryHolder: QueryHolder) : Fragment() {
-    private val dealAdapter: DealAdapter = DealAdapter()
-    private val dealController: DealController = DealController(dealAdapter)
 
+    private val dealAdapter: DealAdapter = DealAdapter()
+    private val dealController: DealController = DealController(dealAdapter, queryHolder)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,6 +47,8 @@ class DealFragment(private val queryHolder: QueryHolder) : Fragment() {
     }
 
     private fun implementRecyclerView(view: View) {
+
+
         val recyclerView: RecyclerView = view.dealRecyclerView
         recyclerView.apply {
             adapter = dealAdapter

@@ -44,8 +44,11 @@ class CriteriaAdapter() : RecyclerView.Adapter<CriteriaAdapter.CriteriaHolder>()
 
 
         holder.addKeywordButton.setOnClickListener(
-            textInputModal(holder.addKeywordButton.context, "Add Keyword")
-            { text: String -> newAdapter.controller.add(text) }
+            textInputModal(
+                context = holder.addKeywordButton.context,
+                title = "Add Keyword",
+                onSuccess = { text: String -> newAdapter.controller.add(text) }
+            )
         )
 
         holder.deleteCriteriaButton.setOnClickListener {

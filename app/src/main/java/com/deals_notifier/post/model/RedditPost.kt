@@ -4,6 +4,7 @@ import android.util.Log
 import org.json.JSONException
 import org.json.JSONObject
 import java.net.URL
+import java.util.*
 
 class RedditPost(jsonPost: JSONObject) : Post() {
 
@@ -12,7 +13,7 @@ class RedditPost(jsonPost: JSONObject) : Post() {
     override val id: String
     override val url: URL
 
-    override val stringToSearchNoSpaces: String
+    override val stringToSearchNoSpacesLowercase: String
 
     init {
         if (jsonPost.getString("kind") == "t3") {
@@ -23,10 +24,15 @@ class RedditPost(jsonPost: JSONObject) : Post() {
             id = jsonPostData.getString("id")
             url = URL("https://www.reddit.com/$id")
 
-            stringToSearchNoSpaces =
-                title.replace("\\s".toRegex(), "") + description.replace("\\s".toRegex(), "")
+            stringToSearchNoSpacesLowercase =
+                (title.replace("\\s".toRegex(), "") + description.replace(
+                    "\\s".toRegex(),
+                    ""
+                )).toLowerCase(
+                    Locale.ENGLISH
+                )
 
-            Log.d(this.javaClass.simpleName,"Post loaded: ${this.toString()}")
+            Log.d(this.javaClass.simpleName, "Post loaded: ${this.toString()}")
 
         } else {
             throw JSONException("Incorrect Format for Reddit Post")

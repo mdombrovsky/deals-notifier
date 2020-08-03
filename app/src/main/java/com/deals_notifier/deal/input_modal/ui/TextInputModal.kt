@@ -8,7 +8,7 @@ import android.widget.EditText
 
 
 fun textInputModal(
-    context: Context, title: String, onSuccess: (String) -> Unit
+    context: Context, title: String, defaultValue:String = "", onSuccess: (String) -> Unit
 ): View.OnClickListener {
     return View.OnClickListener {
 
@@ -17,6 +17,7 @@ fun textInputModal(
 
         val input = EditText(context)
         input.inputType = InputType.TYPE_CLASS_TEXT
+        input.setText(defaultValue)
 
         builder.setView(input)
 

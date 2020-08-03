@@ -15,8 +15,6 @@ import kotlinx.android.synthetic.main.fragment_query.view.*
 
 class QueryFragment(private val queryHolder: QueryHolder) : Fragment() {
 
-    private lateinit var addButton: Button
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -25,7 +23,6 @@ class QueryFragment(private val queryHolder: QueryHolder) : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_query, container, false)
 
-        addButton = view.addQueryButton
 
         implementRecyclerView(view)
 
@@ -42,9 +39,12 @@ class QueryFragment(private val queryHolder: QueryHolder) : Fragment() {
 
         val queryController = QueryController(queryAdapter, queryHolder)
 
-        addButton.setOnClickListener(
-            textInputModal(view.context, "Create Query")
-            { text: String -> queryController.add(text) }
+        view.addQueryButton.setOnClickListener(
+            textInputModal(
+                context = view.context,
+                title = "Create Query",
+                onSuccess = { text: String -> queryController.add(text) }
+            )
         )
 
         val recyclerView: RecyclerView = view.queryRecyclerView
@@ -59,9 +59,10 @@ class QueryFragment(private val queryHolder: QueryHolder) : Fragment() {
         val keyword2 = Keyword("test 2")
         val keyword3 = Keyword("test 3")
         val criteria = Criteria()
-        criteria.keywords = arrayListOf(keyword, keyword2)
+        criteria.keywords.add(keyword)
+        criteria.keywords.add(keyword2)
         val criteria2 = Criteria()
-        criteria2.keywords = arrayListOf(keyword3)
+        criteria2.keywords.add(keyword3)
         val query = Query()
         query.title = "query1"
         query.criteria.add(criteria)

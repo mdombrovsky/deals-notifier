@@ -46,11 +46,15 @@ class QueryAdapter() :
         }
 
         holder.editQueryTitle.setOnClickListener(
-            textInputModal(holder.editQueryTitle.context, "Edit Query Title")
-            { text: String -> controller.setQueryTitle(holder.adapterPosition, text) }
+            textInputModal(
+                context = holder.editQueryTitle.context,
+                title = "Edit Query Title",
+                onSuccess =
+                { text: String -> controller.setQueryTitle(holder.adapterPosition, text) }
+            )
         )
 
-        holder.deleteQueryButton.setOnClickListener{
+        holder.deleteQueryButton.setOnClickListener {
             controller.remove(holder.adapterPosition)
         }
     }
@@ -60,6 +64,6 @@ class QueryAdapter() :
         val recyclerView: RecyclerView = itemView.searchColumnRecyclerView
         val editQueryTitle: ImageButton = itemView.editQueryTitleButton
         val addCriteriaButton: Button = itemView.addColumnButton
-        val deleteQueryButton: ImageButton= itemView.deleteQueryButton
+        val deleteQueryButton: ImageButton = itemView.deleteQueryButton
     }
 }
