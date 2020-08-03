@@ -26,7 +26,7 @@ class RedditPost(jsonPost: JSONObject) : Post() {
             stringToSearchNoSpaces =
                 title.replace("\\s".toRegex(), "") + description.replace("\\s".toRegex(), "")
 
-            Log.d("RedditScraper","Post loaded: ${this.toString()}")
+            Log.d(this.javaClass.simpleName,"Post loaded: ${this.toString()}")
 
         } else {
             throw JSONException("Incorrect Format for Reddit Post")

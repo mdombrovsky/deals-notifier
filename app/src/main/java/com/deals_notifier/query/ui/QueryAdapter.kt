@@ -3,10 +3,13 @@ package com.deals_notifier.query.ui
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.deals_notifier.R
+import com.deals_notifier.deal.input_modal.ui.textInputModal
 import com.deals_notifier.query.model.QueryController
 import kotlinx.android.synthetic.main.query_card.view.*
 
@@ -28,18 +31,35 @@ class QueryAdapter() :
     }
 
     override fun onBindViewHolder(holder: QueryHolder, position: Int) {
-        holder.title.text = controller.getQueryTitle(position)
+        val newAdapter = controller.createCriteriaAdapter(position)
+        holder.queryTitle.text = controller.getQueryTitle(position)
         holder.recyclerView.apply {
             layoutManager =
                 LinearLayoutManager(holder.recyclerView.context, RecyclerView.HORIZONTAL, false)
-            adapter = controller.createCriteriaAdapter(position)
+            adapter = newAdapter
         }
 
         holder.recyclerView.setRecycledViewPool(viewPool)
+
+        holder.addCriteriaButton.setOnClickListener {
+            newAdapter.controller.add()
+        }
+
+        holder.editQueryTitle.setOnClickListener(
+            textInputModal(holder.editQueryTitle.context, "Edit Query Title")
+            { text: String -> controller.setQueryTitle(holder.adapterPosition, text) }
+        )
+
+        holder.deleteQueryButton.setOnClickListener{
+            controller.remove(holder.adapterPosition)
+        }
     }
 
     inner class QueryHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val title: TextView = itemView.queryTitle
+        val queryTitle: TextView = itemView.queryTitle
         val recyclerView: RecyclerView = itemView.searchColumnRecyclerView
+        val editQueryTitle: ImageButton = itemView.editQueryTitleButton
+        val addCriteriaButton: Button = itemView.addColumnButton
+        val deleteQueryButton: ImageButton= itemView.deleteQueryButton
     }
 }

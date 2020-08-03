@@ -40,7 +40,7 @@ class RedditScraper(private val subReddit: String) : Scraper() {
         response = try {
             url.readText()
         } catch (e: Exception) {
-            Log.e("RedditScraper", "Error getting response: $e")
+            Log.e(this.javaClass.simpleName, "Error getting response: $e")
             ""
         }
         return response
