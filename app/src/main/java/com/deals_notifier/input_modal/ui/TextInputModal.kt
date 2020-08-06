@@ -1,4 +1,4 @@
-package com.deals_notifier.deal.input_modal.ui
+package com.deals_notifier.input_modal.ui
 
 import android.app.AlertDialog
 import android.content.Context

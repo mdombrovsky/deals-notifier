@@ -1,6 +1,8 @@
-package com.deals_notifier.query.model
+package com.deals_notifier.query.controller
 
 import android.util.Log
+import com.deals_notifier.query.model.Criteria
+import com.deals_notifier.query.model.Query
 import com.deals_notifier.query.ui.CriteriaAdapter
 import com.deals_notifier.query.ui.KeywordAdapter
 
@@ -25,7 +27,10 @@ class CriteriaController(
 
     fun createKeyWordAdapter(position: Int): KeywordAdapter {
         val adapter = KeywordAdapter()
-        val controller = KeywordController(adapter,  criteriaHolder.criteria[position])
+        val controller = KeywordController(
+            adapter,
+            criteriaHolder.criteria[position]
+        )
 
         return adapter
     }

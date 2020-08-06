@@ -1,4 +1,4 @@
-package com.deals_notifier.deal.model
+package com.deals_notifier.deal.controller
 
 import com.deals_notifier.deal.ui.DealAdapter
 import com.deals_notifier.post.model.Post

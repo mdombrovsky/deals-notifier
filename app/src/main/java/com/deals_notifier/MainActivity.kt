@@ -3,6 +3,7 @@ package com.deals_notifier
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
+import com.deals_notifier.main.controller.TabController
 import com.deals_notifier.main.ui.TabAdapter
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -16,7 +17,9 @@ class MainActivity : AppCompatActivity() {
 
 
         val viewPager2: ViewPager2 = findViewById(R.id.view_pager)
-        viewPager2.adapter = TabAdapter(this)
+        viewPager2.adapter = TabAdapter(this).apply {
+            controller = TabController()
+        }
 
         val tabs: TabLayout = findViewById(R.id.tabs)
 

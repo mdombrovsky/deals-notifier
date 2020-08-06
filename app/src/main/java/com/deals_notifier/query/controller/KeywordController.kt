@@ -1,6 +1,8 @@
-package com.deals_notifier.query.model
+package com.deals_notifier.query.controller
 
 import android.util.Log
+import com.deals_notifier.query.model.Criteria
+import com.deals_notifier.query.model.Keyword
 import com.deals_notifier.query.ui.KeywordAdapter
 
 class KeywordController(

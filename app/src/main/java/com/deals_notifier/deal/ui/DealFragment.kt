@@ -9,18 +9,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.deals_notifier.R
-import com.deals_notifier.deal.model.DealController
-import com.deals_notifier.query.model.QueryHolder
+import com.deals_notifier.deal.controller.DealFragmentController
 import kotlinx.android.synthetic.main.fragment_deal.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 
 
-class DealFragment(private val queryHolder: QueryHolder) : Fragment() {
+class DealFragment() : Fragment() {
 
-    private val dealAdapter: DealAdapter = DealAdapter()
-    private val dealController: DealController = DealController(dealAdapter, queryHolder)
+    lateinit var controller: DealFragmentController
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,29 +27,38 @@ class DealFragment(private val queryHolder: QueryHolder) : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_deal, container, false)
 
-        implementSwipeRefresh(view)
-        implementRecyclerView(view)
+
+        val newAdapter = controller.createDealAdapter()
+        implementSwipeRefresh(view, newAdapter)
+        implementRecyclerView(view, newAdapter)
+
 
         return view
     }
 
-    private fun implementSwipeRefresh(view: View) {
+    private fun implementSwipeRefresh(
+        view: View,
+        newAdapter: DealAdapter
+    ) {
         val swipeRefreshLayout: SwipeRefreshLayout = view.refreshDeal
         swipeRefreshLayout.setOnRefreshListener {
             CoroutineScope(IO).launch {
-                dealController.refresh()
+                newAdapter.controller.refresh()
             }.invokeOnCompletion {
                 swipeRefreshLayout.isRefreshing = false
             }
         }
+
     }
 
-    private fun implementRecyclerView(view: View) {
-
+    private fun implementRecyclerView(
+        view: View,
+        newAdapter: DealAdapter
+    ) {
 
         val recyclerView: RecyclerView = view.dealRecyclerView
         recyclerView.apply {
-            adapter = dealAdapter
+            adapter = newAdapter
             layoutManager = LinearLayoutManager(this.context)
         }
     }

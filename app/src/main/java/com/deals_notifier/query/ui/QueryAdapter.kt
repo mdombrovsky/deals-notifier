@@ -9,8 +9,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.deals_notifier.R
-import com.deals_notifier.deal.input_modal.ui.textInputModal
-import com.deals_notifier.query.model.QueryController
+import com.deals_notifier.input_modal.ui.textInputModal
+import com.deals_notifier.query.controller.QueryController
 import kotlinx.android.synthetic.main.query_card.view.*
 
 class QueryAdapter() :

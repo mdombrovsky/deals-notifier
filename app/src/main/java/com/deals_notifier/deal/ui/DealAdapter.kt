@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.deals_notifier.R
-import com.deals_notifier.deal.model.DealController
+import com.deals_notifier.deal.controller.DealController
 import kotlinx.android.synthetic.main.deal_card.view.*
 
 class DealAdapter() :

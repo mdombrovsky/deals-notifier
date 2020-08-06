@@ -8,8 +8,8 @@ import android.widget.ImageButton
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.deals_notifier.R
-import com.deals_notifier.deal.input_modal.ui.textInputModal
-import com.deals_notifier.query.model.CriteriaController
+import com.deals_notifier.input_modal.ui.textInputModal
+import com.deals_notifier.query.controller.CriteriaController
 import kotlinx.android.synthetic.main.criteria_column.view.*
 
 class CriteriaAdapter() : RecyclerView.Adapter<CriteriaAdapter.CriteriaHolder>() {

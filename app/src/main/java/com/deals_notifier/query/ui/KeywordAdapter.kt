@@ -7,8 +7,8 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.deals_notifier.R
-import com.deals_notifier.deal.input_modal.ui.textInputModal
-import com.deals_notifier.query.model.KeywordController
+import com.deals_notifier.input_modal.ui.textInputModal
+import com.deals_notifier.query.controller.KeywordController
 import kotlinx.android.synthetic.main.individual_keyword.view.*
 
 
