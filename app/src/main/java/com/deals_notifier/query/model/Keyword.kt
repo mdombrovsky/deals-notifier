@@ -4,13 +4,13 @@ import com.deals_notifier.post.model.Post
 import org.json.JSONObject
 import java.util.*
 
-class Keyword(text: String = "") {
+class Keyword(text: String = "") : SearchComponent {
     constructor(json: JSONObject) : this(getKeywordFromJSON(json))
 
-    private companion object{
+    private companion object {
         const val keywordJSONName = "keyword"
 
-        fun getKeywordFromJSON(json:JSONObject):String{
+        fun getKeywordFromJSON(json: JSONObject): String {
             return json.getString(keywordJSONName)
         }
     }
@@ -29,11 +29,11 @@ class Keyword(text: String = "") {
         this.text = text
     }
 
-    fun matches(post: Post): Boolean {
+    override fun matches(post: Post): Boolean {
         return post.contains(textNoSpacesLowerCase)
     }
 
-    fun toJSON(): JSONObject {
+    override fun toJSON(): JSONObject {
         val jsonKeyword = JSONObject()
 
         jsonKeyword.put(keywordJSONName, text)

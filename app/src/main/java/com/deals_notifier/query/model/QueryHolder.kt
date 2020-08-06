@@ -4,12 +4,12 @@ import com.deals_notifier.post.model.Post
 import org.json.JSONArray
 import org.json.JSONObject
 
-class QueryHolder(val queries: ArrayList<Query> = ArrayList<Query>()) {
+class QueryHolder(val queries: ArrayList<Query> = ArrayList<Query>()) : SearchComponent {
     constructor(json: JSONObject) : this(getQueriesFromJSON(json))
 
 
     private companion object {
-         const val queriesJSONName = "queries"
+        const val queriesJSONName = "queries"
 
         fun getQueriesFromJSON(json: JSONObject): ArrayList<Query> {
             val jsonQueryArray = json.getJSONArray(queriesJSONName)
@@ -22,7 +22,7 @@ class QueryHolder(val queries: ArrayList<Query> = ArrayList<Query>()) {
         }
     }
 
-    fun matches(post: Post): Boolean {
+    override fun matches(post: Post): Boolean {
         for (query: Query in queries) {
             if (query.matches(post)) {
                 return true
@@ -31,7 +31,7 @@ class QueryHolder(val queries: ArrayList<Query> = ArrayList<Query>()) {
         return false
     }
 
-    fun toJSON(): JSONObject {
+    override fun toJSON(): JSONObject {
         val jsonQueryHolder = JSONObject()
 
         val jsonQueryArray = JSONArray()

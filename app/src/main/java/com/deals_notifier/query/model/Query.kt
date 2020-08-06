@@ -5,7 +5,8 @@ import org.json.JSONArray
 import org.json.JSONObject
 
 
-class Query(var title: String = "", val criteria: ArrayList<Criteria> = ArrayList()) {
+class Query(var title: String = "", val criteria: ArrayList<Criteria> = ArrayList()) :
+    SearchComponent {
     constructor(json: JSONObject) : this(getTitleFromJSON(json), getCriteriaFromJSON(json))
 
     private companion object {
@@ -28,7 +29,7 @@ class Query(var title: String = "", val criteria: ArrayList<Criteria> = ArrayLis
         }
     }
 
-    fun matches(post: Post): Boolean {
+    override fun matches(post: Post): Boolean {
         for (criteria: Criteria in this.criteria) {
             if (!criteria.matches(post)) {
                 return false
@@ -38,7 +39,7 @@ class Query(var title: String = "", val criteria: ArrayList<Criteria> = ArrayLis
 
     }
 
-    fun toJSON(): JSONObject {
+    override fun toJSON(): JSONObject {
         val jsonQuery = JSONObject()
 
         jsonQuery.put(titleJSONName, title)

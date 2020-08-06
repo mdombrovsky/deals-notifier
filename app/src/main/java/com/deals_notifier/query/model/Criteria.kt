@@ -4,7 +4,7 @@ import com.deals_notifier.post.model.Post
 import org.json.JSONArray
 import org.json.JSONObject
 
-class Criteria(val keywords: ArrayList<Keyword> = ArrayList<Keyword>()) {
+class Criteria(val keywords: ArrayList<Keyword> = ArrayList<Keyword>()):SearchComponent {
     constructor(json: JSONObject) : this(getKeywordsFromJSON(json))
 
     private companion object {
@@ -23,7 +23,7 @@ class Criteria(val keywords: ArrayList<Keyword> = ArrayList<Keyword>()) {
         }
     }
 
-    fun matches(post: Post): Boolean {
+    override fun matches(post: Post): Boolean {
         for (keyword: Keyword in keywords) {
             if (keyword.matches(post)) {
                 return true
@@ -32,7 +32,7 @@ class Criteria(val keywords: ArrayList<Keyword> = ArrayList<Keyword>()) {
         return false
     }
 
-    fun toJSON(): JSONObject {
+    override fun toJSON(): JSONObject {
         val jsonCriteria = JSONObject()
 
         val jsonKeywordArray = JSONArray()
