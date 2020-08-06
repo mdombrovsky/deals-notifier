@@ -12,18 +12,18 @@ import com.deals_notifier.input_modal.ui.textInputModal
 import com.deals_notifier.query.controller.CriteriaController
 import kotlinx.android.synthetic.main.criteria_column.view.*
 
-class CriteriaAdapter() : RecyclerView.Adapter<CriteriaAdapter.CriteriaHolder>() {
+class CriteriaAdapter() : RecyclerView.Adapter<CriteriaAdapter.ViewHolder>() {
 
     lateinit var controller: CriteriaController
 
     private val viewPool = RecyclerView.RecycledViewPool()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CriteriaHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
 
         val inflater: LayoutInflater = LayoutInflater.from(parent.context)
         val view: View = inflater.inflate(R.layout.criteria_column, parent, false)
-        return CriteriaHolder(view)
+        return ViewHolder(view)
 
     }
 
@@ -31,7 +31,7 @@ class CriteriaAdapter() : RecyclerView.Adapter<CriteriaAdapter.CriteriaHolder>()
         return if (this::controller.isInitialized) this.controller.getSize() else 0
     }
 
-    override fun onBindViewHolder(holder: CriteriaHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         val newAdapter = controller.createKeyWordAdapter(position)
         holder.recyclerView.apply {
@@ -57,7 +57,7 @@ class CriteriaAdapter() : RecyclerView.Adapter<CriteriaAdapter.CriteriaHolder>()
     }
 
 
-    inner class CriteriaHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val recyclerView: RecyclerView = itemView.recyclerView
         val addKeywordButton: Button = itemView.addKeywordButton
         val deleteCriteriaButton: ImageButton = itemView.deleteColumnButton

@@ -10,24 +10,24 @@ import com.deals_notifier.deal.controller.DealController
 import kotlinx.android.synthetic.main.deal_card.view.*
 
 class DealAdapter() :
-    RecyclerView.Adapter<DealAdapter.DealHolder>() {
+    RecyclerView.Adapter<DealAdapter.ViewHolder>() {
 
     lateinit var controller: DealController
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DealHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater: LayoutInflater = LayoutInflater.from(parent.context)
         val view: View = inflater.inflate(R.layout.deal_card, parent, false)
-        return DealHolder(view)
+        return ViewHolder(view)
     }
 
     override fun getItemCount(): Int =
         if (this::controller.isInitialized) this.controller.getSize() else 0
 
-    override fun onBindViewHolder(holder: DealHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.title.text = controller.getTitle(position)
     }
 
-    inner class DealHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val title: TextView = itemView.dealTitle
     }
 }

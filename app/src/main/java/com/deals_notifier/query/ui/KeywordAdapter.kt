@@ -12,21 +12,21 @@ import com.deals_notifier.query.controller.KeywordController
 import kotlinx.android.synthetic.main.individual_keyword.view.*
 
 
-class KeywordAdapter : RecyclerView.Adapter<KeywordAdapter.KeywordHolder>() {
+class KeywordAdapter : RecyclerView.Adapter<KeywordAdapter.ViewHolder>() {
 
     lateinit var controller: KeywordController
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): KeywordHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater: LayoutInflater = LayoutInflater.from(parent.context)
         val view: View = inflater.inflate(R.layout.individual_keyword, parent, false)
-        return KeywordHolder(view)
+        return ViewHolder(view)
     }
 
     override fun getItemCount(): Int {
         return if (this::controller.isInitialized) this.controller.getSize() else 0
     }
 
-    override fun onBindViewHolder(holder: KeywordHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.keyWord.text = controller.getKeyWord(position)
         holder.deleteKeywordButton.setOnClickListener {
             controller.remove(holder.adapterPosition)
@@ -42,7 +42,7 @@ class KeywordAdapter : RecyclerView.Adapter<KeywordAdapter.KeywordHolder>() {
         )
     }
 
-    inner class KeywordHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val keyWord: TextView = itemView.keyWord
         val editKeywordButton: ImageButton = itemView.editKeywordButton
         val deleteKeywordButton: ImageButton = itemView.deleteKeywordButton
