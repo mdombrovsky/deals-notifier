@@ -6,15 +6,12 @@ import com.deals_notifier.query.model.Keyword
 import com.deals_notifier.query.ui.KeywordAdapter
 
 class KeywordController(
-    private val keywordAdapter: KeywordAdapter,
+
     private val keywordHolder: Criteria,
-    private val onModified: () ->Unit
+    private val onModified: () -> Unit
 ) {
 
-
-    init {
-        keywordAdapter.controller = this
-    }
+     val keywordAdapter: KeywordAdapter = KeywordAdapter(this)
 
     fun getSize(): Int {
         return keywordHolder.keywords.size

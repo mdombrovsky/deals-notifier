@@ -16,9 +16,8 @@ import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 
 
-class DealFragment() : Fragment() {
+class DealFragment(val controller: DealFragmentController) : Fragment() {
 
-    lateinit var controller: DealFragmentController
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

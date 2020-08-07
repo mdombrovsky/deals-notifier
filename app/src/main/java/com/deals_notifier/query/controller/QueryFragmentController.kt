@@ -12,22 +12,16 @@ import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 
 class QueryFragmentController(
-    private val queryFragment: QueryFragment,
     private val queryHolder: QueryHolder,
     private val context: Context
 ) {
 
-    init {
-        queryFragment.controller = this
-    }
+    val queryFragment: QueryFragment = QueryFragment(this)
 
     fun createQueryAdapter(): QueryAdapter {
-        val adapter = QueryAdapter()
-        val controller = QueryController(
+        return QueryController(
             queryHolder = queryHolder,
-            queryAdapter = adapter,
-            onModified = { onModified() })
-        return adapter
+            onModified = { onModified() }).queryAdapter
     }
 
     fun createTestData() {

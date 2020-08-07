@@ -5,17 +5,13 @@ import com.deals_notifier.deal.ui.DealFragment
 import com.deals_notifier.query.model.QueryHolder
 
 class DealFragmentController(
-    private val dealFragment: DealFragment,
     private val queryHolder: QueryHolder
 ) {
 
-    init {
-        dealFragment.controller = this
-    }
+    val dealFragment: DealFragment = DealFragment(this)
+
 
     fun createDealAdapter(): DealAdapter {
-        val dealAdapter = DealAdapter()
-        DealController(dealAdapter = dealAdapter, queryHolder = queryHolder)
-        return dealAdapter
+        return DealController(queryHolder = queryHolder).dealAdapter
     }
 }

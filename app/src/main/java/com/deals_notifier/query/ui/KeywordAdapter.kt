@@ -12,9 +12,9 @@ import com.deals_notifier.query.controller.KeywordController
 import kotlinx.android.synthetic.main.individual_keyword.view.*
 
 
-class KeywordAdapter : RecyclerView.Adapter<KeywordAdapter.ViewHolder>() {
+class KeywordAdapter(val controller: KeywordController) :
+    RecyclerView.Adapter<KeywordAdapter.ViewHolder>() {
 
-    lateinit var controller: KeywordController
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater: LayoutInflater = LayoutInflater.from(parent.context)
@@ -23,7 +23,7 @@ class KeywordAdapter : RecyclerView.Adapter<KeywordAdapter.ViewHolder>() {
     }
 
     override fun getItemCount(): Int {
-        return if (this::controller.isInitialized) this.controller.getSize() else 0
+        return this.controller.getSize()
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

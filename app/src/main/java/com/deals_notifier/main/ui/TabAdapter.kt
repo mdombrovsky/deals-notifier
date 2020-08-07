@@ -6,11 +6,11 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.deals_notifier.main.controller.TabController
 import com.deals_notifier.query.model.QueryHolder
 
-class TabAdapter(private val activity: AppCompatActivity) : FragmentStateAdapter(activity) {
+class TabAdapter(private val controller: TabController) : FragmentStateAdapter(controller.activity) {
 
 //    private val queryHolder = QueryHolder()
 
-    lateinit var controller: TabController
+//    lateinit var controller: TabController
 
     override fun getItemCount(): Int {
         return 2

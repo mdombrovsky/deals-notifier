@@ -12,9 +12,7 @@ import com.deals_notifier.input_modal.ui.textInputModal
 import com.deals_notifier.query.controller.QueryFragmentController
 import kotlinx.android.synthetic.main.fragment_query.view.*
 
-class QueryFragment() : Fragment() {
-
-    lateinit var controller: QueryFragmentController
+class QueryFragment(val controller: QueryFragmentController) : Fragment() {
 
 
     override fun onCreateView(

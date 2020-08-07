@@ -13,12 +13,10 @@ import com.deals_notifier.input_modal.ui.textInputModal
 import com.deals_notifier.query.controller.QueryController
 import kotlinx.android.synthetic.main.query_card.view.*
 
-class QueryAdapter() :
+class QueryAdapter(val controller: QueryController) :
     RecyclerView.Adapter<QueryAdapter.ViewHolder>() {
 
     private val viewPool = RecyclerView.RecycledViewPool()
-
-    lateinit var controller: QueryController
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater: LayoutInflater = LayoutInflater.from(parent.context)
@@ -27,7 +25,7 @@ class QueryAdapter() :
     }
 
     override fun getItemCount(): Int {
-        return if (this::controller.isInitialized) this.controller.getSize() else 0
+        return this.controller.getSize()
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

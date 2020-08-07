@@ -7,14 +7,11 @@ import com.deals_notifier.query.ui.CriteriaAdapter
 import com.deals_notifier.query.ui.QueryAdapter
 
 class QueryController(
-    private val queryAdapter: QueryAdapter,
     private val queryHolder: QueryHolder,
-    private val onModified: ()->Unit
+    private val onModified: () -> Unit
 ) {
+    val queryAdapter: QueryAdapter = QueryAdapter(this)
 
-    init {
-        queryAdapter.controller = this
-    }
 
     fun getSize(): Int {
         return queryHolder.queries.size
@@ -25,14 +22,8 @@ class QueryController(
     }
 
     fun createCriteriaAdapter(position: Int): CriteriaAdapter {
-        val adapter = CriteriaAdapter()
-        val controller = CriteriaController(
-            adapter,
-            queryHolder.queries[position],
-            onModified
-        )
+        return CriteriaController(queryHolder.queries[position], onModified).criteriaAdapter
 
-        return adapter
     }
 
     fun setQueryTitle(position: Int, title: String) {
@@ -62,7 +53,6 @@ class QueryController(
             )
         }
     }
-
 
 
 }

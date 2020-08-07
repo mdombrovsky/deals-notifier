@@ -12,9 +12,8 @@ import com.deals_notifier.input_modal.ui.textInputModal
 import com.deals_notifier.query.controller.CriteriaController
 import kotlinx.android.synthetic.main.criteria_column.view.*
 
-class CriteriaAdapter() : RecyclerView.Adapter<CriteriaAdapter.ViewHolder>() {
-
-    lateinit var controller: CriteriaController
+class CriteriaAdapter(val controller: CriteriaController) :
+    RecyclerView.Adapter<CriteriaAdapter.ViewHolder>() {
 
     private val viewPool = RecyclerView.RecycledViewPool()
 
@@ -28,7 +27,7 @@ class CriteriaAdapter() : RecyclerView.Adapter<CriteriaAdapter.ViewHolder>() {
     }
 
     override fun getItemCount(): Int {
-        return if (this::controller.isInitialized) this.controller.getSize() else 0
+        return this.controller.getSize()
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

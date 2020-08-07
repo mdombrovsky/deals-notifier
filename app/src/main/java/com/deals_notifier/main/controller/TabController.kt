@@ -1,6 +1,7 @@
 package com.deals_notifier.main.controller
 
 import android.content.Context
+import androidx.appcompat.app.AppCompatActivity
 import com.deals_notifier.deal.controller.DealFragmentController
 import com.deals_notifier.deal.ui.DealFragment
 import com.deals_notifier.main.ui.TabAdapter
@@ -9,29 +10,17 @@ import com.deals_notifier.query.model.QueryHolder
 import com.deals_notifier.query.ui.QueryFragment
 
 class TabController(
-    private val tabAdapter: TabAdapter,
-    private val context: Context,
+    val activity: AppCompatActivity,
     private val queryHolder: QueryHolder
 ) {
-
-    init {
-        tabAdapter.controller = this
-    }
+    val tabAdapter: TabAdapter = TabAdapter(this)
+    private val context: Context = activity.applicationContext
 
     fun createDealFragment(): DealFragment {
-        val fragment = DealFragment()
-        DealFragmentController(dealFragment = fragment, queryHolder = queryHolder)
-        return fragment
+        return DealFragmentController(queryHolder = queryHolder).dealFragment
     }
 
     fun createQueryFragment(): QueryFragment {
-        val fragment = QueryFragment()
-        QueryFragmentController(
-            queryFragment = fragment,
-            queryHolder = queryHolder,
-            context = context
-        )
-        return fragment
-
+        return QueryFragmentController(queryHolder = queryHolder, context = context).queryFragment
     }
 }

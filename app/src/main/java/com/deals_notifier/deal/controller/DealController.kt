@@ -4,21 +4,23 @@ import com.deals_notifier.deal.ui.DealAdapter
 import com.deals_notifier.post.model.Post
 import com.deals_notifier.query.model.QueryHolder
 import com.deals_notifier.scraper.model.RedditScraper
-import com.deals_notifier.scraper.model.Scraper
+import com.deals_notifier.scraper.model.ScraperHolder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class DealController(private val dealAdapter: DealAdapter, private val queryHolder: QueryHolder) {
+class DealController(private val queryHolder: QueryHolder) {
 
-    private val scraper: Scraper = RedditScraper("bapcsalescanada")
+    val dealAdapter: DealAdapter = DealAdapter(this)
+    private val scraperHolder: ScraperHolder = ScraperHolder()
 
     private lateinit var posts: List<Post>
 
     init {
-        dealAdapter.controller = this
+        scraperHolder.scrapers.add(RedditScraper("bapcsalescanada"))
+
         CoroutineScope(IO).launch {
             refresh()
         }
@@ -40,7 +42,7 @@ class DealController(private val dealAdapter: DealAdapter, private val queryHold
     }
 
     private suspend fun updatePosts() {
-        val newPosts = scraper.getPosts()
+        val newPosts = scraperHolder.getPosts()
         val validPosts = ArrayList<Post>()
         for (post: Post in newPosts) {
             if (queryHolder.matches(post)) {

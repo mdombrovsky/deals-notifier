@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
 import com.deals_notifier.main.controller.TabController
-import com.deals_notifier.main.ui.TabAdapter
 import com.deals_notifier.query.model.QueryHolder
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -18,14 +17,12 @@ class MainActivity : AppCompatActivity() {
 
 
         val viewPager2: ViewPager2 = findViewById(R.id.view_pager)
-        val adapter = TabAdapter(this)
 
-        TabController(
-            adapter,
-            this.applicationContext,
+
+        viewPager2.adapter = TabController(
+            this,
             this.intent.getSerializableExtra(QueryHolder::class.java.simpleName) as QueryHolder
-            )
-        viewPager2.adapter = adapter
+        ).tabAdapter
 
 
         val tabs: TabLayout = findViewById(R.id.tabs)

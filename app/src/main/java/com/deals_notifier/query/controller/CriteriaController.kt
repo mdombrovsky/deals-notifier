@@ -7,36 +7,27 @@ import com.deals_notifier.query.ui.CriteriaAdapter
 import com.deals_notifier.query.ui.KeywordAdapter
 
 class CriteriaController(
-    private val criteriaAdapter: CriteriaAdapter,
     private val criteriaHolder: Query,
     private val onModified: () -> Unit
 ) {
 
+    val criteriaAdapter: CriteriaAdapter = CriteriaAdapter(this)
 
-    init {
-        criteriaAdapter.controller = this
-    }
 
     fun getSize(): Int {
-        return  criteriaHolder.criteria.size
+        return criteriaHolder.criteria.size
     }
 
     fun add() {
         criteriaHolder.criteria.add(Criteria())
-        criteriaAdapter.notifyItemInserted( criteriaHolder.criteria.size - 1)
+        criteriaAdapter.notifyItemInserted(criteriaHolder.criteria.size - 1)
         onModified()
 
     }
 
     fun createKeyWordAdapter(position: Int): KeywordAdapter {
-        val adapter = KeywordAdapter()
-        val controller = KeywordController(
-            adapter,
-            criteriaHolder.criteria[position],
-            onModified
-        )
+        return KeywordController(criteriaHolder.criteria[position], onModified).keywordAdapter
 
-        return adapter
     }
 
     fun remove(position: Int) {
