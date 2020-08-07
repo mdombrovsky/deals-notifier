@@ -1,15 +1,20 @@
 package com.deals_notifier.query.controller
 
+import android.content.Context
 import com.deals_notifier.query.model.Criteria
 import com.deals_notifier.query.model.Keyword
 import com.deals_notifier.query.model.Query
 import com.deals_notifier.query.model.QueryHolder
 import com.deals_notifier.query.ui.QueryAdapter
 import com.deals_notifier.query.ui.QueryFragment
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.launch
 
 class QueryFragmentController(
     private val queryFragment: QueryFragment,
-    private val queryHolder: QueryHolder
+    private val queryHolder: QueryHolder,
+    private val context: Context
 ) {
 
     init {
@@ -18,7 +23,10 @@ class QueryFragmentController(
 
     fun createQueryAdapter(): QueryAdapter {
         val adapter = QueryAdapter()
-        val controller = QueryController(queryHolder = queryHolder, queryAdapter = adapter)
+        val controller = QueryController(
+            queryHolder = queryHolder,
+            queryAdapter = adapter,
+            onModified = { onModified() })
         return adapter
     }
 
@@ -43,6 +51,12 @@ class QueryFragmentController(
         queryHolder.queries.add(query)
         queryHolder.queries.add(query2)
 
+    }
+
+    private fun onModified() {
+        CoroutineScope(IO).launch {
+            queryHolder.save(context)
+        }
     }
 
 }

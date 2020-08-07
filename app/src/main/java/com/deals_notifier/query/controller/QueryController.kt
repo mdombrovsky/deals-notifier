@@ -8,7 +8,8 @@ import com.deals_notifier.query.ui.QueryAdapter
 
 class QueryController(
     private val queryAdapter: QueryAdapter,
-    private val queryHolder: QueryHolder
+    private val queryHolder: QueryHolder,
+    private val onModified: ()->Unit
 ) {
 
     init {
@@ -27,7 +28,8 @@ class QueryController(
         val adapter = CriteriaAdapter()
         val controller = CriteriaController(
             adapter,
-            queryHolder.queries[position]
+            queryHolder.queries[position],
+            onModified
         )
 
         return adapter
@@ -36,11 +38,14 @@ class QueryController(
     fun setQueryTitle(position: Int, title: String) {
         queryHolder.queries[position].title = title
         queryAdapter.notifyItemChanged(position)
+        onModified()
     }
 
     fun add(title: String) {
         queryHolder.queries.add(Query(title = title))
         queryAdapter.notifyItemInserted(queryHolder.queries.size - 1)
+        onModified()
+
     }
 
     fun remove(position: Int) {
@@ -48,6 +53,8 @@ class QueryController(
         if (position != -1) {
             queryHolder.queries.removeAt(position)
             queryAdapter.notifyItemRemoved(position)
+            onModified()
+
         } else {
             Log.e(
                 this.javaClass.simpleName,

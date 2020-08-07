@@ -8,7 +8,8 @@ import com.deals_notifier.query.ui.KeywordAdapter
 
 class CriteriaController(
     private val criteriaAdapter: CriteriaAdapter,
-    private val criteriaHolder: Query
+    private val criteriaHolder: Query,
+    private val onModified: () -> Unit
 ) {
 
 
@@ -23,13 +24,16 @@ class CriteriaController(
     fun add() {
         criteriaHolder.criteria.add(Criteria())
         criteriaAdapter.notifyItemInserted( criteriaHolder.criteria.size - 1)
+        onModified()
+
     }
 
     fun createKeyWordAdapter(position: Int): KeywordAdapter {
         val adapter = KeywordAdapter()
         val controller = KeywordController(
             adapter,
-            criteriaHolder.criteria[position]
+            criteriaHolder.criteria[position],
+            onModified
         )
 
         return adapter
@@ -40,6 +44,8 @@ class CriteriaController(
         if (position != -1) {
             criteriaHolder.criteria.removeAt(position)
             criteriaAdapter.notifyItemRemoved(position)
+            onModified()
+
         } else {
             Log.e(
                 this.javaClass.simpleName,

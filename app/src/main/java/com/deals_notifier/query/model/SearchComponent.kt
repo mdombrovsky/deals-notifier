@@ -2,8 +2,9 @@ package com.deals_notifier.query.model
 
 import com.deals_notifier.post.model.Post
 import org.json.JSONObject
+import java.io.Serializable
 
-interface SearchComponent {
+interface SearchComponent : Serializable {
 
     /**
      * To convert the object to JSON

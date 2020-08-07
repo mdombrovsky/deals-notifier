@@ -8,7 +8,7 @@ import com.deals_notifier.query.model.QueryHolder
 
 class TabAdapter(private val activity: AppCompatActivity) : FragmentStateAdapter(activity) {
 
-    private val queryHolder = QueryHolder()
+//    private val queryHolder = QueryHolder()
 
     lateinit var controller: TabController
 

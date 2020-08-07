@@ -32,8 +32,6 @@ class QueryFragment() : Fragment() {
 
         val queryAdapter = controller.createQueryAdapter()
 
-        controller.createTestData()
-
         view.addQueryButton.setOnClickListener(
             textInputModal(
                 context = view.context,
