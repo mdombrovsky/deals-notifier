@@ -3,6 +3,7 @@ package com.deals_notifier
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
+import com.deals_notifier.deal.model.ValidDealHolder
 import com.deals_notifier.main.controller.TabController
 import com.deals_notifier.query.model.QueryHolder
 import com.google.android.material.tabs.TabLayout
@@ -21,7 +22,7 @@ class MainActivity : AppCompatActivity() {
 
         viewPager2.adapter = TabController(
             this,
-            this.intent.getSerializableExtra(QueryHolder::class.java.simpleName) as QueryHolder
+            this.intent.getSerializableExtra(ValidDealHolder::class.java.simpleName) as ValidDealHolder
         ).tabAdapter
 
 
