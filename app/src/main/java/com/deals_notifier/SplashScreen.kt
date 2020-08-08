@@ -15,7 +15,6 @@ import kotlinx.coroutines.withContext
 class SplashScreen : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.splash_screen)
 
         CoroutineScope(IO).launch {
             val intent = Intent(this@SplashScreen, MainActivity::class.java)
