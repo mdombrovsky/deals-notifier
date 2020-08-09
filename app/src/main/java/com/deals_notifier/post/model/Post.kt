@@ -5,7 +5,13 @@ import java.io.Serializable
 import java.net.URL
 import java.util.*
 
-class Post(val title: String, private val description: String, val id: String, val url: URL) :Serializable{
+class Post(
+    val title: String,
+    private val description: String,
+    val id: String,
+    val url: URL,
+    val date: Date
+) : Serializable {
 
 
     private val stringToSearchNoSpacesLowercase: String = (
@@ -14,7 +20,7 @@ class Post(val title: String, private val description: String, val id: String, v
             ).toLowerCase(Locale.ENGLISH)
 
 
-    init{
+    init {
         Log.d(this.javaClass.simpleName, "Post loaded: ${this.toString()}")
     }
 
@@ -23,7 +29,7 @@ class Post(val title: String, private val description: String, val id: String, v
     }
 
     override fun toString(): String {
-        return "Title: {$title}, Description: {$description}\n"
+        return "Title: {$title}, Date: {${date}}\n"
     }
 
 }
