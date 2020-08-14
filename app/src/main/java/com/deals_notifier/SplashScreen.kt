@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.deals_notifier.deal.model.ValidDealHolder
 import com.deals_notifier.query.model.QueryHolder
+import com.deals_notifier.scraper.model.RFDScraper
 import com.deals_notifier.scraper.model.RedditScraper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
@@ -22,7 +23,7 @@ class SplashScreen : AppCompatActivity() {
                 ValidDealHolder::class.java.simpleName,
                 ValidDealHolder(
                     QueryHolder.load(this@SplashScreen.applicationContext),
-                    arrayListOf(RedditScraper("bapcsalescanada"))
+                    arrayListOf(RedditScraper("bapcsalescanada"), RFDScraper())
                 ).updatePosts()
             )
 
