@@ -29,7 +29,7 @@ class RedditScraper(private val subReddit: String) : Scraper() {
         }
 
         //Remember most recent post
-        if (posts.size > 1) {
+        if (posts.size > 0) {
             mostRecentPostId = posts[0].id
         }
 
