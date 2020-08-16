@@ -11,7 +11,7 @@ class Post(
     val id: String,
     val url: URL? = null,
     val date: Date
-) : Serializable, Comparable<Post> {
+) : Serializable {
 
 
     private val stringToSearchNoSpacesLowercase: String = (
@@ -30,15 +30,6 @@ class Post(
 
     override fun toString(): String {
         return "Title: {$title}, Date: {${date}}\n"
-    }
-
-    override fun compareTo(other: Post): Int {
-        val result = other.date.compareTo(this.date)
-        if (result == 0) {
-            return this.id.compareTo(other.id)
-
-        }
-        return result
     }
 
     override fun equals(other: Any?): Boolean {
