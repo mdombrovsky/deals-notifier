@@ -6,12 +6,12 @@ import java.net.URL
 import java.util.*
 
 class Post(
-    val title: String,
-    private val description: String,
+    val title: String = "",
+    private val description: String = "",
     val id: String,
-    val url: URL,
+    val url: URL? = null,
     val date: Date
-) : Serializable {
+) : Serializable, Comparable<Post> {
 
 
     private val stringToSearchNoSpacesLowercase: String = (
@@ -30,6 +30,29 @@ class Post(
 
     override fun toString(): String {
         return "Title: {$title}, Date: {${date}}\n"
+    }
+
+    override fun compareTo(other: Post): Int {
+        val result = this.date.compareTo(other.date)
+        if (result == 0) {
+            return other.id.compareTo(this.id)
+        }
+        return result
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as Post
+
+        if (id != other.id) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        return id.hashCode()
     }
 
 }
