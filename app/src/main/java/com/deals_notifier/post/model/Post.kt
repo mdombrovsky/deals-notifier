@@ -33,9 +33,10 @@ class Post(
     }
 
     override fun compareTo(other: Post): Int {
-        val result = this.date.compareTo(other.date)
+        val result = other.date.compareTo(this.date)
         if (result == 0) {
-            return other.id.compareTo(this.id)
+            return this.id.compareTo(other.id)
+
         }
         return result
     }

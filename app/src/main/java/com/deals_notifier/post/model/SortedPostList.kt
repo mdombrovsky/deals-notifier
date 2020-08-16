@@ -7,20 +7,21 @@ class SortedPostList : ArrayList<Post>() {
 
     fun removeAllOlderThan(date: Date) {
         val index = Collections.binarySearch(this, Post(id = "", date = date))
-        val lastIndexToRemove =
+        val firstIndexToRemove =
             if (index < 0) {
-                //Not found, convert to last index to be left
+                //Not found
                 (index + 1) * (-1)
             } else {
-                //Found, delete up to it
-                index + 1
+                //Found
+                index
             }
 
-        if (lastIndexToRemove > -1) {
+        if (firstIndexToRemove > -1) {
             //If there are indexes to remove, get rid of them
             removeRange(
-                0,
-                lastIndexToRemove
+                firstIndexToRemove,
+                this.size
+
             )
         }
     }
@@ -80,11 +81,5 @@ class SortedPostList : ArrayList<Post>() {
         return indexOf(element) > -1
     }
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-        if (!super.equals(other)) return false
-        return true
-    }
 
 }
