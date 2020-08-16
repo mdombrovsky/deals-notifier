@@ -6,21 +6,60 @@ import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 import java.net.URL
 import java.text.SimpleDateFormat
-import kotlin.collections.ArrayList
 
-class RFDScraper : Scraper() {
+class RFDScraper(private val category: Int) : Scraper() {
+    //Category: 0 -> All, 9 -> Computers & Electronics
+
     private var mostRecentPostId: String? = null
 
+    private companion object {
+        const val baseURL: String = "https://forums.redflagdeals.com"
+        const val dealListURL: String = "/hot-deals-f9"
+        const val searchFilterURL: String = "/?st=1&rfd_sk=tt&sd=d"
+        const val categoryPrefixURL: String = "&c="
+    }
 
     override suspend fun getPosts(): List<Post> {
 
-        val url: URL = URL("https://forums.redflagdeals.com/hot-deals-f9/?st=1&rfd_sk=tt&sd=d&c=9")
-        return rfdHtmlToPosts(getData(url))
+        val url: URL =
+            URL(baseURL + dealListURL + searchFilterURL + categoryPrefixURL + category.toString())
+
+        return getAtLeastNPosts(url, 100)
 
     }
 
+
     override suspend fun getNewPosts(): List<Post> {
         TODO("Not yet implemented")
+    }
+
+    /**
+     * Gets at least a certain amount of posts if available
+     */
+    private suspend fun getAtLeastNPosts(url: URL, number: Int): ArrayList<Post> {
+        val posts = ArrayList<Post>()
+
+        if (number > 0) {
+
+            val doc: Document = Jsoup.parse(getData(url))
+            val htmlPosts = doc.getElementsByClass("thread_info_title")
+
+            for (htmlPost: Element in htmlPosts) {
+                posts.add(createRfdPost(htmlPost))
+            }
+
+            val nextTag = doc.getElementsByClass("pagination_next").firstOrNull()
+            if (nextTag != null) {
+                posts.addAll(
+                    getAtLeastNPosts(
+                        URL(baseURL + nextTag.attr("href")),
+                        number - posts.size
+                    )
+                )
+            }
+        }
+
+        return posts
     }
 
     private fun rfdHtmlToPosts(html: String): ArrayList<Post> {
