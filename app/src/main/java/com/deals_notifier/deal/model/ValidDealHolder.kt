@@ -1,21 +1,30 @@
 package com.deals_notifier.deal.model
 
 import com.deals_notifier.post.model.Post
+import com.deals_notifier.post.model.SortedPostList
 import com.deals_notifier.query.model.QueryHolder
 import com.deals_notifier.scraper.model.Scraper
 import java.io.Serializable
+import java.util.*
+import kotlin.collections.ArrayList
 
-class ValidDealHolder(val queryHolder: QueryHolder, val scrapers: ArrayList<Scraper>) :
+class ValidDealHolder(
+    val queryHolder: QueryHolder,
+    private val scrapers: ArrayList<Scraper>,
+    private val removeAfterMilliseconds: Long = 24 * 60 * 60 * 1000
+) :
     Serializable {
 
-    var posts: ArrayList<Post> = ArrayList()
+    val posts: SortedPostList = SortedPostList()
+
 
     suspend fun updatePosts(): ValidDealHolder {
-        posts = getValidPosts(getPosts())
+        posts.addAll(getValidPosts(getNewPosts()))
+        posts.removeAllOlderThan(Date(System.currentTimeMillis() - removeAfterMilliseconds))
         return this
     }
 
-    private suspend fun getPosts(): ArrayList<Post> {
+    private suspend fun getPosts(): List<Post> {
         val posts = ArrayList<Post>()
         for (scraper: Scraper in scrapers) {
             posts.addAll(scraper.getPosts())
@@ -23,8 +32,17 @@ class ValidDealHolder(val queryHolder: QueryHolder, val scrapers: ArrayList<Scra
         return posts
     }
 
-    private fun getValidPosts(posts: ArrayList<Post>): ArrayList<Post> {
-        val validPosts = ArrayList<Post>()
+
+    private suspend fun getNewPosts(): List<Post> {
+        val posts = ArrayList<Post>()
+        for (scraper: Scraper in scrapers) {
+            posts.addAll(scraper.getNewPosts())
+        }
+        return posts
+    }
+
+    private fun getValidPosts(posts: List<Post>): SortedPostList {
+        val validPosts = SortedPostList()
         for (post: Post in posts) {
             if (queryHolder.matches(post)) {
                 validPosts.add(post)
