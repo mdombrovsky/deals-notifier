@@ -24,19 +24,35 @@ class RFDScraper(private val category: Int) : Scraper() {
         val url: URL =
             URL(baseURL + dealListURL + searchFilterURL + categoryPrefixURL + category.toString())
 
-        return getAtLeastNPosts(url, 100)
+        val posts = getPosts(url, 100)
+        mostRecentPostId = posts.firstOrNull()?.id
+
+        return posts
+
 
     }
 
 
     override suspend fun getNewPosts(): List<Post> {
-        TODO("Not yet implemented")
+        val url: URL =
+            URL(baseURL + dealListURL + searchFilterURL + categoryPrefixURL + category.toString())
+
+        val posts = getPosts(url, 100, mostRecentPostId)
+
+        mostRecentPostId = posts.firstOrNull()?.id
+
+        return posts
     }
+
 
     /**
      * Gets at least a certain amount of posts if available
+     *
+     * @param url The url from which to get posts
+     * @param number The number of posts to get at least
+     * @param id If set, this will stop searching after a post with matching id has been found
      */
-    private suspend fun getAtLeastNPosts(url: URL, number: Int): ArrayList<Post> {
+    private suspend fun getPosts(url: URL, number: Int, id: String? = null): ArrayList<Post> {
         val posts = ArrayList<Post>()
 
         if (number > 0) {
@@ -44,14 +60,27 @@ class RFDScraper(private val category: Int) : Scraper() {
             val doc: Document = Jsoup.parse(getData(url))
             val htmlPosts = doc.getElementsByClass("thread_info_title")
 
+
             for (htmlPost: Element in htmlPosts) {
-                posts.add(createRfdPost(htmlPost))
+                val post = createRfdPost(htmlPost)
+
+                //Hopefully this will be optimized out at compile time
+                //Better to write code that is much more readable than a tiny bit faster
+                if (post.id == id) {
+                    //If reached the id, we are done
+                    return posts
+                }
+
+                posts.add(post)
+
             }
 
+            //Gets the url of the next page
             val nextTag = doc.getElementsByClass("pagination_next").firstOrNull()
             if (nextTag != null) {
+                //Does recursive calls to go through all the pages
                 posts.addAll(
-                    getAtLeastNPosts(
+                    getPosts(
                         URL(baseURL + nextTag.attr("href")),
                         number - posts.size
                     )
