@@ -24,7 +24,7 @@ class SplashScreen : AppCompatActivity() {
                 ValidDealHolder(
                     QueryHolder.load(this@SplashScreen.applicationContext),
                     arrayListOf(RedditScraper("bapcsalescanada"), RFDScraper(9))
-                ).updatePosts()
+                )
             )
 
             withContext(Main) {

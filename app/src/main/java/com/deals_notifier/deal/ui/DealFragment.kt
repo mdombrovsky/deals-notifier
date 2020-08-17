@@ -40,13 +40,20 @@ class DealFragment(val controller: DealFragmentController) : Fragment() {
         newAdapter: DealAdapter
     ) {
         val swipeRefreshLayout: SwipeRefreshLayout = view.refreshDeal
-        swipeRefreshLayout.setOnRefreshListener {
-            CoroutineScope(IO).launch {
-                newAdapter.controller.refresh()
-            }.invokeOnCompletion {
-                swipeRefreshLayout.isRefreshing = false
+        
+        val refreshListener: SwipeRefreshLayout.OnRefreshListener =
+            SwipeRefreshLayout.OnRefreshListener {
+                CoroutineScope(IO).launch {
+                    newAdapter.controller.refresh()
+                }.invokeOnCompletion {
+                    swipeRefreshLayout.isRefreshing = false
+                }
             }
-        }
+
+        swipeRefreshLayout.setOnRefreshListener(refreshListener)
+
+        swipeRefreshLayout.isRefreshing = true
+        refreshListener.onRefresh()
 
     }
 
