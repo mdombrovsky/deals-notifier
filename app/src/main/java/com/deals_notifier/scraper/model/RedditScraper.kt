@@ -28,10 +28,6 @@ class RedditScraper(private val subReddit: String) : Scraper() {
             posts.add(createRedditPost(jsonPost))
         }
 
-        //Remember most recent post
-        if (posts.size > 0) {
-            mostRecentPostId = posts[0].id
-        }
 
         return posts
     }
@@ -60,7 +56,11 @@ class RedditScraper(private val subReddit: String) : Scraper() {
     override suspend fun getPosts(): List<Post> {
         val url: URL = URL("https://www.reddit.com/r/${subReddit}/new.json?limit=100")
 
-        return redditJSONToPosts(getData(url))
+        val posts = redditJSONToPosts(getData(url))
+        
+        //Remember most recent post
+        mostRecentPostId = posts.firstOrNull()?.id
+        return posts
 
     }
 
@@ -71,6 +71,11 @@ class RedditScraper(private val subReddit: String) : Scraper() {
         val url: URL =
             URL("https://www.reddit.com/r/${subReddit}/new.json?limit=100&before=t3_${mostRecentPostId}")
 
-        return redditJSONToPosts(getData(url))
+        val posts = redditJSONToPosts(getData(url))
+
+        //Remember most recent post
+        mostRecentPostId = posts.firstOrNull()?.id
+        return posts
+
     }
 }
