@@ -11,13 +11,11 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.deals_notifier.R
 import com.deals_notifier.deal.controller.DealFragmentController
 import kotlinx.android.synthetic.main.fragment_deal.view.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.launch
 
 
 class DealFragment(val controller: DealFragmentController) : Fragment() {
 
+    lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,34 +25,18 @@ class DealFragment(val controller: DealFragmentController) : Fragment() {
         val view = inflater.inflate(R.layout.fragment_deal, container, false)
 
 
-        val newAdapter = controller.createDealAdapter()
-        implementSwipeRefresh(view, newAdapter)
+        val newAdapter = controller.getDealAdapter()
+        implementSwipeRefresh(view)
         implementRecyclerView(view, newAdapter)
 
+        controller.notifyViewCreated()
 
         return view
     }
 
-    private fun implementSwipeRefresh(
-        view: View,
-        newAdapter: DealAdapter
-    ) {
-        val swipeRefreshLayout: SwipeRefreshLayout = view.refreshDeal
-        
-        val refreshListener: SwipeRefreshLayout.OnRefreshListener =
-            SwipeRefreshLayout.OnRefreshListener {
-                CoroutineScope(IO).launch {
-                    newAdapter.controller.refresh()
-                }.invokeOnCompletion {
-                    swipeRefreshLayout.isRefreshing = false
-                }
-            }
-
-        swipeRefreshLayout.setOnRefreshListener(refreshListener)
-
-        swipeRefreshLayout.isRefreshing = true
-        refreshListener.onRefresh()
-
+    private fun implementSwipeRefresh(view: View) {
+        swipeRefreshLayout = view.refreshDeal
+        swipeRefreshLayout.setOnRefreshListener { controller.refresh(false) }
     }
 
     private fun implementRecyclerView(
