@@ -18,10 +18,11 @@ class ValidDealHolder(
     val posts: SortedPostList = SortedPostList()
 
 
-    suspend fun updatePosts(): ValidDealHolder {
-        posts.addAll(getValidPosts(getNewPosts()))
+    suspend fun updatePosts(): List<Post> {
+        val newPosts = getValidPosts(getNewPosts())
+        posts.addAll(newPosts)
         posts.removeAllOlderThan(Date(System.currentTimeMillis() - removeAfterMilliseconds))
-        return this
+        return newPosts
     }
 
     private suspend fun getPosts(): List<Post> {
