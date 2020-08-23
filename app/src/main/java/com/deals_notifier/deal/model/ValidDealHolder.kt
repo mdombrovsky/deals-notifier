@@ -17,6 +17,12 @@ class ValidDealHolder(
 
     val posts: SortedPostList = SortedPostList()
 
+    fun reset() {
+        posts.reset()
+        for (scraper: Scraper in scrapers) {
+            scraper.reset()
+        }
+    }
 
     suspend fun updatePosts(): List<Post> {
         val newPosts = getValidPosts(getNewPosts())

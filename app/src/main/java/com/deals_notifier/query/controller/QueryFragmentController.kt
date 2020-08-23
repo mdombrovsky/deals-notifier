@@ -13,7 +13,8 @@ import kotlinx.coroutines.launch
 
 class QueryFragmentController(
     private val queryHolder: QueryHolder,
-    private val context: Context
+    private val context: Context,
+    private val onModified: () -> Unit
 ) {
 
     val queryFragment: QueryFragment = QueryFragment(this)
@@ -21,7 +22,7 @@ class QueryFragmentController(
     fun createQueryAdapter(): QueryAdapter {
         return QueryController(
             queryHolder = queryHolder,
-            onModified = { onModified() }).queryAdapter
+            onModified = { queryModified() }).queryAdapter
     }
 
     fun createTestData() {
@@ -47,10 +48,11 @@ class QueryFragmentController(
 
     }
 
-    private fun onModified() {
+    private fun queryModified() {
         CoroutineScope(IO).launch {
             queryHolder.save(context)
         }
+        onModified()
     }
 
 }

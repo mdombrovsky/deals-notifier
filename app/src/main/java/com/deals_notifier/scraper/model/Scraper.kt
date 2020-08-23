@@ -7,6 +7,8 @@ import java.net.URL
 
 abstract class Scraper : Serializable {
 
+    protected var mostRecentPostId: String? = null
+
     /**
      * Gets all the posts
      */
@@ -16,6 +18,13 @@ abstract class Scraper : Serializable {
      * Gets all the new posts that have appeared after this function was last called
      */
     abstract suspend fun getNewPosts(): List<Post>
+
+    /**
+     * Resets the state of the scraper
+     */
+    fun reset() {
+        mostRecentPostId = null
+    }
 
     protected suspend fun getData(url: URL): String {
         val response: String

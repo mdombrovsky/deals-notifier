@@ -159,4 +159,35 @@ class SortedPostListTest {
         assertEquals(sortedPostList.indexOf(post3), 5)
     }
 
+    @Test
+    fun testReset1() {
+        val sortedPostList = SortedPostList()
+
+        sortedPostList.addAll(
+            arrayListOf(
+                post1,
+                post2,
+                post9,
+                post3,
+                post4,
+                post5,
+                post6,
+                post7,
+                post8
+            )
+        )
+
+        sortedPostList.reset()
+
+        assertArrayEquals(sortedPostList.toArray(), arrayOf())
+    }
+
+    @Test
+    fun testReset2() {
+        val sortedPostList = SortedPostList()
+
+        sortedPostList.reset()
+
+        assertArrayEquals(sortedPostList.toArray(), arrayOf())
+    }
 }

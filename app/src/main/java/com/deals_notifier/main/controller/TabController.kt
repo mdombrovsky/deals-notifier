@@ -16,11 +16,25 @@ class TabController(
     val tabAdapter: TabAdapter = TabAdapter(this)
     private val context: Context = activity.applicationContext
 
-    fun createDealFragment(): DealFragment {
-        return DealFragmentController(validDealHolder, context).dealFragment
+    private val dealFragmentController = DealFragmentController(validDealHolder, context)
+
+    private val queryFragmentController =
+        QueryFragmentController(
+            queryHolder = validDealHolder.queryHolder,
+            context = context,
+            onModified = { onModified() }
+        )
+
+    fun getDealFragment(): DealFragment {
+        return dealFragmentController.dealFragment
     }
 
-    fun createQueryFragment(): QueryFragment {
-        return QueryFragmentController(queryHolder = validDealHolder.queryHolder, context = context).queryFragment
+    fun getQueryFragment(): QueryFragment {
+        return queryFragmentController.queryFragment
+    }
+
+    private fun onModified() {
+        validDealHolder.reset()
+        dealFragmentController.refresh()
     }
 }

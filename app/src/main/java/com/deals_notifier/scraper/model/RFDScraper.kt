@@ -10,15 +10,12 @@ import java.text.SimpleDateFormat
 class RFDScraper(private val category: Int) : Scraper() {
     //Category: 0 -> All, 9 -> Computers & Electronics
 
-
     private companion object {
         const val baseURL: String = "https://forums.redflagdeals.com"
         const val dealListURL: String = "/hot-deals-f9"
         const val searchFilterURL: String = "/?st=1&rfd_sk=tt&sd=d"
         const val categoryPrefixURL: String = "&c="
     }
-
-    private var mostRecentPostId: String? = null
 
     private val defaultURL =
         baseURL + dealListURL + searchFilterURL + categoryPrefixURL + category.toString()

@@ -10,9 +10,6 @@ import kotlin.collections.ArrayList
 
 class RedditScraper(private val subReddit: String) : Scraper() {
 
-    private var mostRecentPostId: String? = null
-
-
     override suspend fun getAllPosts(): List<Post> {
         return redditJSONToPosts(
             getData(

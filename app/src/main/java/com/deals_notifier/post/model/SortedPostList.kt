@@ -97,5 +97,10 @@ class SortedPostList : ArrayList<Post>(), Comparator<Post> {
         }
     }
 
+    fun reset() {
+        if (this.isNotEmpty()) {
+            this.removeRange(0, this.size)
+        }
+    }
 
 }
