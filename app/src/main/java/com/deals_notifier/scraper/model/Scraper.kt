@@ -6,7 +6,15 @@ import java.io.Serializable
 import java.net.URL
 
 abstract class Scraper : Serializable {
-    abstract suspend fun getPosts(): List<Post>
+
+    /**
+     * Gets all the posts
+     */
+    abstract suspend fun getAllPosts(): List<Post>
+
+    /**
+     * Gets all the new posts that have appeared after this function was last called
+     */
     abstract suspend fun getNewPosts(): List<Post>
 
     protected suspend fun getData(url: URL): String {

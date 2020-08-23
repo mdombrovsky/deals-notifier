@@ -10,7 +10,6 @@ import java.text.SimpleDateFormat
 class RFDScraper(private val category: Int) : Scraper() {
     //Category: 0 -> All, 9 -> Computers & Electronics
 
-    private var mostRecentPostId: String? = null
 
     private companion object {
         const val baseURL: String = "https://forums.redflagdeals.com"
@@ -19,31 +18,22 @@ class RFDScraper(private val category: Int) : Scraper() {
         const val categoryPrefixURL: String = "&c="
     }
 
-    override suspend fun getPosts(): List<Post> {
+    private var mostRecentPostId: String? = null
 
-        val url: URL =
-            URL(baseURL + dealListURL + searchFilterURL + categoryPrefixURL + category.toString())
+    private val defaultURL =
+        baseURL + dealListURL + searchFilterURL + categoryPrefixURL + category.toString()
 
-        val posts = getPosts(url, 100)
-        mostRecentPostId = posts.firstOrNull()?.id
-
-        return posts
-
-
+    override suspend fun getAllPosts(): List<Post> {
+        return getPosts(URL(defaultURL), 100)
     }
-
 
     override suspend fun getNewPosts(): List<Post> {
-        val url: URL =
-            URL(baseURL + dealListURL + searchFilterURL + categoryPrefixURL + category.toString())
-
-        val posts = getPosts(url, 100, mostRecentPostId)
-
-        mostRecentPostId = posts.firstOrNull()?.id
-
+        val posts = getPosts(URL(defaultURL), 100, mostRecentPostId)
+        if (posts.isNotEmpty()) {
+            mostRecentPostId = posts[0].id
+        }
         return posts
     }
-
 
     /**
      * Gets at least a certain amount of posts if available
@@ -70,9 +60,7 @@ class RFDScraper(private val category: Int) : Scraper() {
                     //If reached the id, we are done
                     return posts
                 }
-
                 posts.add(post)
-
             }
 
             //Gets the url of the next page

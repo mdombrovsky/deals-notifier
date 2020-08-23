@@ -20,15 +20,26 @@ class ValidDealHolder(
 
     suspend fun updatePosts(): List<Post> {
         val newPosts = getValidPosts(getNewPosts())
+
+        val oldestAllowedDate = Date(System.currentTimeMillis() - removeAfterMilliseconds)
+
+        //Some scrapers don't listen to my request for only posts over the past date
+        //Cough*** Cough*** RFDScraper
+        newPosts.removeAllOlderThan(oldestAllowedDate)
+
+        //Eliminate all old posts that are currently stored
+        posts.removeAllOlderThan(oldestAllowedDate)
+
+        //Merge the two lists
         posts.addAll(newPosts)
-        posts.removeAllOlderThan(Date(System.currentTimeMillis() - removeAfterMilliseconds))
+
         return newPosts
     }
 
     private suspend fun getPosts(): List<Post> {
         val posts = ArrayList<Post>()
         for (scraper: Scraper in scrapers) {
-            posts.addAll(scraper.getPosts())
+            posts.addAll(scraper.getAllPosts())
         }
         return posts
     }

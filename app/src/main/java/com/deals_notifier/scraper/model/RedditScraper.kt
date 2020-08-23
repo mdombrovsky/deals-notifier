@@ -12,6 +12,35 @@ class RedditScraper(private val subReddit: String) : Scraper() {
 
     private var mostRecentPostId: String? = null
 
+
+    override suspend fun getAllPosts(): List<Post> {
+        return redditJSONToPosts(
+            getData(
+                URL("https://www.reddit.com/r/${subReddit}/new.json?limit=100")
+            )
+        )
+    }
+
+    override suspend fun getNewPosts(): List<Post> {
+        val posts =
+            if (mostRecentPostId == null || mostRecentPostId!!.isEmpty()) {
+                getAllPosts()
+            } else {
+                redditJSONToPosts(
+                    getData(
+                        URL("https://www.reddit.com/r/${subReddit}/new.json?limit=100&before=t3_${mostRecentPostId}")
+                    )
+                )
+            }
+
+        //Remember most recent post
+        if (posts.isNotEmpty()) {
+            mostRecentPostId = posts[0].id
+        }
+
+        return posts
+    }
+
     private fun redditJSONToPosts(jsonString: String): List<Post> {
         val posts: ArrayList<Post> = ArrayList<Post>()
 
@@ -27,7 +56,6 @@ class RedditScraper(private val subReddit: String) : Scraper() {
             val jsonPost: JSONObject = jsonPostArray.getJSONObject(i)
             posts.add(createRedditPost(jsonPost))
         }
-
 
         return posts
     }
@@ -46,36 +74,10 @@ class RedditScraper(private val subReddit: String) : Scraper() {
                 date = Date(jsonPostData.getLong("created_utc") * 1000)
             ))
 
-
         } else {
             throw JSONException("Incorrect Format for Reddit Post")
         }
     }
 
 
-    override suspend fun getPosts(): List<Post> {
-        val url: URL = URL("https://www.reddit.com/r/${subReddit}/new.json?limit=100")
-
-        val posts = redditJSONToPosts(getData(url))
-        
-        //Remember most recent post
-        mostRecentPostId = posts.firstOrNull()?.id
-        return posts
-
-    }
-
-    override suspend fun getNewPosts(): List<Post> {
-        if (mostRecentPostId == null || mostRecentPostId!!.isEmpty()) {
-            return getPosts()
-        }
-        val url: URL =
-            URL("https://www.reddit.com/r/${subReddit}/new.json?limit=100&before=t3_${mostRecentPostId}")
-
-        val posts = redditJSONToPosts(getData(url))
-
-        //Remember most recent post
-        mostRecentPostId = posts.firstOrNull()?.id
-        return posts
-
-    }
 }
