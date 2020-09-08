@@ -1,8 +1,7 @@
 package com.deals_notifier.deal.controller
 
 import android.content.Context
-import com.deals_notifier.deal.model.DealNotificationManager
-import com.deals_notifier.deal.model.ValidDealHolder
+import com.deals_notifier.notification_service.model.DealNotificationManager
 import com.deals_notifier.deal.ui.DealAdapter
 import com.deals_notifier.deal.ui.DealFragment
 import com.deals_notifier.post.model.Post
@@ -11,33 +10,22 @@ import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 
 class DealFragmentController(
-    private val validDealHolder: ValidDealHolder,
     private val context: Context
 ) {
 
     val dealFragment: DealFragment = DealFragment(this)
 
-    private val dealController: DealController = DealController(validDealHolder)
+    private val dealController: DealController = DealController()
 
-    private val dealNotificationManager = DealNotificationManager(context)
 
     fun refresh(startRefresh: Boolean = true) {
         if (startRefresh) {
             dealFragment.swipeRefreshLayout.isRefreshing = true
         }
-        var newPosts: List<Post> = ArrayList<Post>()
-
-        val firstRefresh: Boolean = dealController.getSize() == 0
-
         CoroutineScope(IO).launch {
-            newPosts = dealController.refresh()
+            dealController.refresh()
         }.invokeOnCompletion {
             dealFragment.swipeRefreshLayout.isRefreshing = false
-
-            //Don't spam the notifications if it is the first refresh
-            if (!firstRefresh) {
-                dealNotificationManager.sendDealNotifications(newPosts)
-            }
         }
     }
 

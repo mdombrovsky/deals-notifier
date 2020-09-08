@@ -1,17 +1,13 @@
-package com.deals_notifier.deal.model
+package com.deals_notifier.notification_service.model
 
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.app.Service
 import android.content.Context
-import android.content.Intent
 import android.os.Build
-import android.os.IBinder
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.core.content.ContextCompat
 import com.deals_notifier.R
 import com.deals_notifier.post.model.Post
 
@@ -31,9 +27,7 @@ class DealNotificationManager(val context: Context) {
             notificationManagerCompat.createNotificationChannel(createDealNotificationChannel())
             notificationManagerCompat.createNotificationChannel(createDealFinderChannel())
         }
-
-
-        ContextCompat.startForegroundService(context, Intent(context, DealService::class.java))
+        
     }
 
 
@@ -61,7 +55,10 @@ class DealNotificationManager(val context: Context) {
 
     fun sendDealNotification(post: Post) {
         val notification: Notification =
-            NotificationCompat.Builder(context, dealNotificationChannelId)
+            NotificationCompat.Builder(
+                context,
+                dealNotificationChannelId
+            )
                 .setSmallIcon(R.mipmap.ic_launcher_round)
                 .setContentText(post.title)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)

@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.deals_notifier.deal.model.ValidDealHolder
+import com.deals_notifier.deal.model.DealService
 import com.deals_notifier.query.model.QueryHolder
 import com.deals_notifier.scraper.model.RFDScraper
 import com.deals_notifier.scraper.model.RedditScraper
@@ -19,11 +20,12 @@ class SplashScreen : AppCompatActivity() {
 
         CoroutineScope(IO).launch {
             val intent = Intent(this@SplashScreen, MainActivity::class.java)
-            intent.putExtra(
-                ValidDealHolder::class.java.simpleName,
+
+            DealService.start(
+                this@SplashScreen.applicationContext,
                 ValidDealHolder(
                     QueryHolder.load(this@SplashScreen.applicationContext),
-                    arrayListOf(RedditScraper("bapcsalescanada"), RFDScraper(9))
+                    arrayListOf(RedditScraper("bapcsalescanada"), RFDScraper(0))
                 )
             )
 
