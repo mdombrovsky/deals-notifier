@@ -2,28 +2,30 @@ package com.deals_notifier.scraper.model
 
 import android.util.Log
 import com.deals_notifier.post.model.Post
+import com.deals_notifier.post.model.SortedPostList
 import java.io.Serializable
 import java.net.URL
+import java.util.*
 
 abstract class Scraper : Serializable {
 
-    protected var mostRecentPostId: String? = null
+    protected open var mostRecentPostDate: Date? = null
 
     /**
      * Gets all the posts
      */
-    abstract suspend fun getAllPosts(): List<Post>
+    abstract suspend fun getAllPosts(): SortedPostList
 
     /**
      * Gets all the new posts that have appeared after this function was last called
      */
-    abstract suspend fun getNewPosts(): List<Post>
+    abstract suspend fun getNewPosts(): SortedPostList
 
     /**
      * Resets the state of the scraper
      */
     fun reset() {
-        mostRecentPostId = null
+        mostRecentPostDate = null
     }
 
     protected suspend fun getData(url: URL): String {

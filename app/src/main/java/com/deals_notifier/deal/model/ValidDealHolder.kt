@@ -42,8 +42,8 @@ class ValidDealHolder(
         return newPosts
     }
 
-    private suspend fun getPosts(): List<Post> {
-        val posts = ArrayList<Post>()
+    private suspend fun getPosts(): SortedPostList{
+        val posts = SortedPostList()
         for (scraper: Scraper in scrapers) {
             posts.addAll(scraper.getAllPosts())
         }
@@ -51,8 +51,8 @@ class ValidDealHolder(
     }
 
 
-    private suspend fun getNewPosts(): List<Post> {
-        val posts = ArrayList<Post>()
+    private suspend fun getNewPosts(): SortedPostList {
+        val posts = SortedPostList()
         for (scraper: Scraper in scrapers) {
             posts.addAll(scraper.getNewPosts())
         }

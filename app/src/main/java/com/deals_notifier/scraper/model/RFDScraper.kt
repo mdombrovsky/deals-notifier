@@ -1,11 +1,14 @@
 package com.deals_notifier.scraper.model
 
 import com.deals_notifier.post.model.Post
+import com.deals_notifier.post.model.SortedPostList
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 import java.net.URL
 import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class RFDScraper(private val category: Int) : Scraper() {
     //Category: 0 -> All, 9 -> Computers & Electronics
@@ -20,14 +23,16 @@ class RFDScraper(private val category: Int) : Scraper() {
     private val defaultURL =
         baseURL + dealListURL + searchFilterURL + categoryPrefixURL + category.toString()
 
-    override suspend fun getAllPosts(): List<Post> {
+    override suspend fun getAllPosts(): SortedPostList{
         return getPosts(URL(defaultURL), 100)
     }
 
-    override suspend fun getNewPosts(): List<Post> {
-        val posts = getPosts(URL(defaultURL), 100, mostRecentPostId)
+    override suspend fun getNewPosts(): SortedPostList{
+        val posts = getPosts(URL(defaultURL), 100).also {
+            it.removeAllOlderThan(mostRecentPostDate)
+        }
         if (posts.isNotEmpty()) {
-            mostRecentPostId = posts[0].id
+            mostRecentPostDate = posts[0].date
         }
         return posts
     }
@@ -37,10 +42,9 @@ class RFDScraper(private val category: Int) : Scraper() {
      *
      * @param url The url from which to get posts
      * @param number The number of posts to get at least
-     * @param id If set, this will stop searching after a post with matching id has been found
      */
-    private suspend fun getPosts(url: URL, number: Int, id: String? = null): ArrayList<Post> {
-        val posts = ArrayList<Post>()
+    private suspend fun getPosts(url: URL, number: Int): SortedPostList{
+        val posts = SortedPostList()
 
         if (number > 0) {
 
@@ -50,13 +54,6 @@ class RFDScraper(private val category: Int) : Scraper() {
 
             for (htmlPost: Element in htmlPosts) {
                 val post = createRfdPost(htmlPost)
-
-                //Hopefully this will be optimized out at compile time
-                //Better to write code that is much more readable than a tiny bit faster
-                if (post.id == id) {
-                    //If reached the id, we are done
-                    return posts
-                }
                 posts.add(post)
             }
 

@@ -1,16 +1,16 @@
 package com.deals_notifier.scraper.model
 
 import com.deals_notifier.post.model.Post
+import com.deals_notifier.post.model.SortedPostList
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 import java.net.URL
 import java.util.*
-import kotlin.collections.ArrayList
 
 class RedditScraper(private val subReddit: String) : Scraper() {
 
-    override suspend fun getAllPosts(): List<Post> {
+    override suspend fun getAllPosts(): SortedPostList {
         return redditJSONToPosts(
             getData(
                 URL("https://www.reddit.com/r/${subReddit}/new.json?limit=100")
@@ -18,28 +18,32 @@ class RedditScraper(private val subReddit: String) : Scraper() {
         )
     }
 
-    override suspend fun getNewPosts(): List<Post> {
+    override suspend fun getNewPosts(): SortedPostList {
         val posts =
-            if (mostRecentPostId == null || mostRecentPostId!!.isEmpty()) {
-                getAllPosts()
-            } else {
-                redditJSONToPosts(
-                    getData(
-                        URL("https://www.reddit.com/r/${subReddit}/new.json?limit=100&before=t3_${mostRecentPostId}")
-                    )
+            redditJSONToPosts(
+                getData(
+                    URL("https://www.reddit.com/r/${subReddit}/new.json?limit=100")
                 )
+            ).also {
+                it.removeAllOlderThan(date = mostRecentPostDate)
             }
 
         //Remember most recent post
         if (posts.isNotEmpty()) {
-            mostRecentPostId = posts[0].id
+            mostRecentPostDate = posts[0].date
         }
 
         return posts
     }
 
-    private fun redditJSONToPosts(jsonString: String): List<Post> {
-        val posts: ArrayList<Post> = ArrayList<Post>()
+    /**
+     * Converts reddit json into posts
+     *
+     * @param jsonString The reddit json
+     * @param date The date that all valid posts must be newer than
+     */
+    private fun redditJSONToPosts(jsonString: String): SortedPostList {
+        val posts = SortedPostList()
 
         val json = JSONObject(jsonString)
 
@@ -51,7 +55,10 @@ class RedditScraper(private val subReddit: String) : Scraper() {
 
         for (i in 0 until jsonPostArray.length()) {
             val jsonPost: JSONObject = jsonPostArray.getJSONObject(i)
-            posts.add(createRedditPost(jsonPost))
+            val post: Post = createRedditPost(jsonPost)
+
+
+            posts.add(post)
         }
 
         return posts

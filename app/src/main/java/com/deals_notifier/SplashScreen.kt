@@ -30,7 +30,7 @@ class SplashScreen : AppCompatActivity() {
                     )
                 )
             }
-            
+
             withContext(Main) {
                 this@SplashScreen.startActivity(intent)
                 this@SplashScreen.finish()

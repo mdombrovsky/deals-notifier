@@ -5,7 +5,11 @@ import java.util.*
 class SortedPostList : ArrayList<Post>(), Comparator<Post> {
 
 
-    fun removeAllOlderThan(date: Date) {
+    fun removeAllOlderThan(date: Date?) {
+        if (date == null) {
+            return
+        }
+
         val index = Collections.binarySearch(this, Post(id = "", date = date), this)
         val firstIndexToRemove =
             if (index < 0) {
