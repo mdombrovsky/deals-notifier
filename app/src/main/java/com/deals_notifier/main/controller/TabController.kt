@@ -3,6 +3,7 @@ package com.deals_notifier.main.controller
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import com.deals_notifier.deal.controller.DealFragmentController
+import com.deals_notifier.deal.model.DealManager
 import com.deals_notifier.deal.model.DealService
 import com.deals_notifier.deal.ui.DealFragment
 import com.deals_notifier.main.ui.TabAdapter
@@ -41,7 +42,7 @@ class TabController(
 
 
     private fun onModified() {
-        DealService.dealManager!!.reset()
+        DealManager.instance!!.reset()
         dealFragmentController.refresh()
     }
 }

@@ -1,6 +1,7 @@
 package com.deals_notifier.query.controller
 
 import android.util.Log
+import com.deals_notifier.deal.model.DealManager
 import com.deals_notifier.deal.model.DealService
 import com.deals_notifier.query.model.Query
 import com.deals_notifier.query.ui.CriteriaAdapter
@@ -13,27 +14,27 @@ class QueryController(
 
 
     fun getSize(): Int {
-        return DealService.dealManager!!.queryHolder.queries.size
+        return DealManager.instance!!.queryHolder.queries.size
     }
 
     fun getQueryTitle(position: Int): String {
-        return DealService.dealManager!!.queryHolder.queries[position].title
+        return DealManager.instance!!.queryHolder.queries[position].title
     }
 
     fun createCriteriaAdapter(position: Int): CriteriaAdapter {
-        return CriteriaController(DealService.dealManager!!.queryHolder.queries[position], onModified).criteriaAdapter
+        return CriteriaController(DealManager.instance!!.queryHolder.queries[position], onModified).criteriaAdapter
 
     }
 
     fun setQueryTitle(position: Int, title: String) {
-        DealService.dealManager!!.queryHolder.queries[position].title = title
+        DealManager.instance!!.queryHolder.queries[position].title = title
         queryAdapter.notifyItemChanged(position)
         onModified()
     }
 
     fun add(title: String) {
-        DealService.dealManager!!.queryHolder.queries.add(Query(title = title))
-        queryAdapter.notifyItemInserted(DealService.dealManager!!.queryHolder.queries.size - 1)
+        DealManager.instance!!.queryHolder.queries.add(Query(title = title))
+        queryAdapter.notifyItemInserted(DealManager.instance!!.queryHolder.queries.size - 1)
         onModified()
 
     }
@@ -41,7 +42,7 @@ class QueryController(
     fun remove(position: Int) {
         //Trying to preemptively avoid issues with getLayoutPosition vs getAdapterPosition
         if (position != -1) {
-            DealService.dealManager!!.queryHolder.queries.removeAt(position)
+            DealManager.instance!!.queryHolder.queries.removeAt(position)
             queryAdapter.notifyItemRemoved(position)
             onModified()
 

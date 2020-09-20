@@ -1,6 +1,5 @@
 package com.deals_notifier.deal.model
 
-import DealManager
 import android.app.Notification
 import android.app.Service
 import android.content.Context
@@ -13,9 +12,6 @@ import androidx.core.content.ContextCompat
 import com.deals_notifier.R
 import com.deals_notifier.notification_service.model.DealNotificationManager
 import com.deals_notifier.notification_service.model.DealNotificationManager.Companion.dealServiceChannelId
-import com.deals_notifier.post.model.Post
-import com.deals_notifier.post.model.SortedPostList
-import com.deals_notifier.query.model.QueryHolder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
@@ -23,11 +19,10 @@ import java.util.*
 import kotlin.concurrent.fixedRateTimer
 
 
-class DealService : Service(), DealManager {
+class DealService : Service() ,DealServiceInterface{
 
     companion object {
-        fun start(context: Context, dealHolder: ValidDealHolder) {
-            Companion.dealHolder = dealHolder
+        fun start(context: Context) {
             ContextCompat.startForegroundService(
                 context,
                 Intent(context, DealService::class.java)
@@ -35,36 +30,25 @@ class DealService : Service(), DealManager {
         }
 
         fun isRunning(): Boolean {
-            return dealManager != null
+            return instance != null
         }
-        
+
         const val notificationId = 1
 
-        var dealManager: DealManager? = null
+        var instance: DealServiceInterface? = null
             private set
 
-        private var dealHolder: ValidDealHolder? = null
     }
 
 
     private var wakeLock: PowerManager.WakeLock? = null
 
+    private var fixedRateTimer: Timer? = null
+
+    private var notificationRunning: Boolean = false
+
     private lateinit var notificationManager: DealNotificationManager
 
-    private lateinit var fixedRateTimer: Timer
-
-    override val posts: SortedPostList
-        get() = dealHolder!!.posts
-
-    override val queryHolder: QueryHolder
-        get() = dealHolder!!.queryHolder
-
-    override fun reset() = dealHolder!!.reset()
-
-    override suspend fun updatePosts(): List<Post> {
-        //Keep track that it is called externally
-        return dealHolder!!.updatePosts()
-    }
 
     override fun onBind(p0: Intent?): IBinder? {
         return null
@@ -76,13 +60,12 @@ class DealService : Service(), DealManager {
             DealNotificationManager(
                 this
             )
-        startForeground(notificationId, generateNotification())
     }
 
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         if (intent != null) {
-            startDealService()
+            startThisService()
         }
 
         return START_STICKY
@@ -90,7 +73,7 @@ class DealService : Service(), DealManager {
 
 
     override fun stopService(name: Intent?): Boolean {
-        stopDealService()
+        stopThisService()
         return super.stopService(name)
     }
 
@@ -101,11 +84,42 @@ class DealService : Service(), DealManager {
             .build()
     }
 
-    private fun startDealService() {
+    private fun startThisService() {
         if (isRunning()) {
             throw UnsupportedOperationException("Service already running")
         }
-        dealManager = this
+        instance = this
+
+        startNotificationService()
+
+    }
+
+    private fun stopThisService() {
+        try {
+            cancelNotificationService()
+            stopSelf()
+        } catch (e: Exception) {
+            Log.e(this.javaClass.simpleName, e.toString())
+        } finally {
+            instance = null
+        }
+    }
+
+    private fun cancelNotificationService() {
+        fixedRateTimer?.cancel()
+
+        wakeLock?.let {
+            if (it.isHeld) {
+                it.release()
+            }
+        }
+        stopForeground(true)
+
+    }
+
+    private fun startNotificationService() {
+
+        startForeground(notificationId, generateNotification())
 
         wakeLock = (getSystemService(Context.POWER_SERVICE) as PowerManager).run {
             newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, this.javaClass.simpleName).apply {
@@ -116,31 +130,20 @@ class DealService : Service(), DealManager {
 
         fixedRateTimer = fixedRateTimer("Get New Deals", false, 0, 10 * 1000) {
             CoroutineScope(IO).launch {
-                if (dealHolder != null && this@DealService::notificationManager.isInitialized) {
-                    if (!dealHolder!!.posts.isEmpty()) {
-                        notificationManager.sendDealNotifications(dealHolder!!.updatePosts())
+                if (DealManager.instance != null && this@DealService::notificationManager.isInitialized) {
+                    if (!DealManager.instance?.posts?.isEmpty()!!) {
+                        notificationManager.sendDealNotifications(DealManager.instance!!.updatePosts())
                     }
 
                 }
             }
         }
+
     }
 
-    private fun stopDealService() {
-        try {
-            wakeLock?.let {
-                if (it.isHeld) {
-                    it.release()
-                }
-            }
-            fixedRateTimer.cancel()
-            stopForeground(true)
-            stopSelf()
-        } catch (e: Exception) {
-            Log.e(this.javaClass.simpleName, e.toString())
-        } finally {
-            dealHolder = null
-            dealManager = null
-        }
+    override fun stopDealService() {
+        stopThisService()
     }
+
+
 }

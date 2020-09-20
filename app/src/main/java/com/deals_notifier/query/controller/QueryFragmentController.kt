@@ -1,7 +1,7 @@
 package com.deals_notifier.query.controller
 
 import android.content.Context
-import com.deals_notifier.deal.model.DealService
+import com.deals_notifier.deal.model.DealManager
 import com.deals_notifier.query.ui.QueryAdapter
 import com.deals_notifier.query.ui.QueryFragment
 import kotlinx.coroutines.CoroutineScope
@@ -22,7 +22,7 @@ class QueryFragmentController(
 
     private fun queryModified() {
         CoroutineScope(IO).launch {
-            DealService.dealManager!!.queryHolder.save(context)
+            DealManager.instance!!.queryHolder.save(context)
         }
         onModified()
     }

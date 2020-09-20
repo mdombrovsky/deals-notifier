@@ -3,6 +3,7 @@ package com.deals_notifier.notification_service.model
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import com.deals_notifier.deal.model.DealManager
 import com.deals_notifier.deal.model.DealService
 import com.deals_notifier.deal.model.ValidDealHolder
 import com.deals_notifier.query.model.QueryHolder
@@ -21,12 +22,16 @@ class StartReceiver : BroadcastReceiver() {
 
                     CoroutineScope(Dispatchers.IO).launch {
 
-                        val dealHolder = ValidDealHolder(
-                            QueryHolder.load(context),
-                            arrayListOf(RedditScraper("bapcsalescanada"), RFDScraper(9))
-                        )
+                        if (DealManager.instance == null) {
+                            DealManager.initialize(
+                                ValidDealHolder(
+                                    QueryHolder.load(context),
+                                    arrayListOf(RedditScraper("bapcsalescanada"), RFDScraper(9))
+                                )
+                            )
+                        }
 
-                        DealService.start(context, dealHolder)
+                        DealService.start(context)
                     }
                 }
             }
