@@ -11,5 +11,6 @@ class SettingsSingleton private constructor() {
     }
 
     var notificationsEnabled: Boolean = false
+    var notificationFrequencySeconds: Int = 0
 
 }

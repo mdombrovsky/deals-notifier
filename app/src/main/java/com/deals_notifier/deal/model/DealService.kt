@@ -12,14 +12,15 @@ import androidx.core.content.ContextCompat
 import com.deals_notifier.R
 import com.deals_notifier.notification_service.model.DealNotificationManager
 import com.deals_notifier.notification_service.model.DealNotificationManager.Companion.dealServiceChannelId
-import kotlinx.coroutines.CoroutineScope
+import com.deals_notifier.settings.model.SettingsSingleton
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.concurrent.fixedRateTimer
+import kotlinx.coroutines.CoroutineScope as CoroutineScope1
 
 
-class DealService : Service() ,DealServiceInterface{
+class DealService : Service(), DealServiceInterface {
 
     companion object {
         fun start(context: Context) {
@@ -88,10 +89,9 @@ class DealService : Service() ,DealServiceInterface{
         if (isRunning()) {
             throw UnsupportedOperationException("Service already running")
         }
-        instance = this
-
         startNotificationService()
 
+        instance = this
     }
 
     private fun stopThisService() {
@@ -128,21 +128,44 @@ class DealService : Service() ,DealServiceInterface{
         }
 
 
-        fixedRateTimer = fixedRateTimer("Get New Deals", false, 0, 10 * 1000) {
-            CoroutineScope(IO).launch {
-                if (DealManager.instance != null && this@DealService::notificationManager.isInitialized) {
-                    if (!DealManager.instance?.posts?.isEmpty()!!) {
-                        notificationManager.sendDealNotifications(DealManager.instance!!.updatePosts())
-                    }
+        if (fixedRateTimer == null) {
+            fixedRateTimer =
+                createFixedRateTimer(SettingsSingleton.instance.notificationFrequencySeconds)
+        }
+    }
 
+    private fun createFixedRateTimer(secondsInterval: Int): Timer {
+        return (
+                fixedRateTimer(
+                    "Get New Deals",
+                    false,
+                    0,
+                    secondsInterval * 1000.toLong()
+                ) {
+                    generateNotificationTask()
+                }
+                )
+    }
+
+    private fun generateNotificationTask() {
+        CoroutineScope1(context = IO).launch {
+            Log.d(this.javaClass.simpleName, "Notification task executing")
+
+            if (DealManager.instance != null && this@DealService::notificationManager.isInitialized) {
+                if (!DealManager.instance?.posts?.isEmpty()!!) {
+                    notificationManager.sendDealNotifications(DealManager.instance!!.updatePosts())
                 }
             }
         }
-
     }
 
     override fun stopDealService() {
         stopThisService()
+    }
+
+    override fun setNotificationFrequency(seconds: Int) {
+        fixedRateTimer?.cancel()
+        fixedRateTimer = createFixedRateTimer(seconds)
     }
 
 

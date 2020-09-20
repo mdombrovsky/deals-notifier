@@ -4,4 +4,5 @@ interface DealServiceInterface {
 
     fun stopDealService()
 
+    fun setNotificationFrequency(seconds:Int)
 }
