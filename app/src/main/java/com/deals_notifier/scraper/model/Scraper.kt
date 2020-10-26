@@ -1,7 +1,6 @@
 package com.deals_notifier.scraper.model
 
 import android.util.Log
-import com.deals_notifier.post.model.Post
 import com.deals_notifier.post.model.SortedPostList
 import java.io.Serializable
 import java.net.URL
@@ -20,6 +19,13 @@ abstract class Scraper : Serializable {
      * Gets all the new posts that have appeared after this function was last called
      */
     abstract suspend fun getNewPosts(): SortedPostList
+
+    /**
+     * The displayable name of this scraper
+     */
+    abstract fun getName(): String
+
+    abstract override fun equals(other: Any?): Boolean
 
     /**
      * Resets the state of the scraper

@@ -4,6 +4,7 @@ import DealManagerInterface
 import com.deals_notifier.post.model.Post
 import com.deals_notifier.post.model.SortedPostList
 import com.deals_notifier.query.model.QueryHolder
+import com.deals_notifier.scraper.model.Scraper
 
 class DealManager private constructor(private val validDealHolder: ValidDealHolder) :
     DealManagerInterface {
@@ -26,7 +27,11 @@ class DealManager private constructor(private val validDealHolder: ValidDealHold
     override val queryHolder: QueryHolder
         get() = validDealHolder.queryHolder
 
+    override val scrapers: MutableList<Scraper>
+        get() = validDealHolder.scrapers
+
     override fun reset() = validDealHolder.reset()
+
     override suspend fun updatePosts(triggerUpdate: Boolean): List<Post> {
         return validDealHolder.updatePosts()
     }

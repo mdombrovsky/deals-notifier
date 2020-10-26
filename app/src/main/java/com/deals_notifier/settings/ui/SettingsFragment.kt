@@ -5,13 +5,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.CompoundButton
-import android.widget.Spinner
+import android.widget.*
 import androidx.appcompat.widget.SwitchCompat
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.deals_notifier.R
+import com.deals_notifier.scraper.ui.ScraperInputModal
 import com.deals_notifier.settings.controller.SettingsFragmentController
 import kotlinx.android.synthetic.main.fragment_settings.view.*
 
@@ -50,6 +50,25 @@ class SettingsFragment(val controller: SettingsFragmentController) : Fragment() 
             controller.setFrequency(frequencySpinner.selectedItem.toString())
         }
         frequencySpinner.isEnabled = controller.frequencySpinnerEnabled()
+
+        val scraperAdapter = controller.getScraperAdapter()
+        val recyclerView: RecyclerView = view.scraperRecyclerView
+        recyclerView.apply {
+            adapter = scraperAdapter
+            layoutManager = LinearLayoutManager(this.context)
+        }
+
+        val addScraperButton: Button = view.addScrapperButton
+        addScraperButton.setOnClickListener {
+            ScraperInputModal.launchModal(this.context as Context) {
+                scraperAdapter.controller.add(it)
+            }
+        }
+
+        val resetToDefaultScraperButton: Button = view.resetScraperToDefaultButton
+        resetToDefaultScraperButton.setOnClickListener {
+            scraperAdapter.controller.resetToDefault()
+        }
 
         return view
     }

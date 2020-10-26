@@ -43,14 +43,14 @@ class QueryAdapter(val controller: QueryController) :
             newAdapter.controller.add()
         }
 
-        holder.editQueryTitle.setOnClickListener(
+        holder.editQueryTitle.setOnClickListener {
             textInputModal(
                 context = holder.editQueryTitle.context,
                 title = "Edit Query Title",
                 onSuccess =
                 { text: String -> controller.setQueryTitle(holder.adapterPosition, text) }
             )
-        )
+        }
 
         holder.deleteQueryButton.setOnClickListener {
             controller.remove(holder.adapterPosition)

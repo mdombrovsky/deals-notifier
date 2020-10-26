@@ -3,6 +3,8 @@ package com.deals_notifier.settings.controller
 import android.content.Context
 import android.util.Log
 import com.deals_notifier.deal.model.DealService
+import com.deals_notifier.scraper.controller.ScraperController
+import com.deals_notifier.scraper.ui.ScraperAdapter
 import com.deals_notifier.settings.model.SettingsSingleton
 import com.deals_notifier.settings.ui.SettingsFragment
 
@@ -28,6 +30,7 @@ class SettingsFragmentController(val context: Context) {
 
     val settingsFragment = SettingsFragment(this)
 
+    private val scraperController: ScraperController = ScraperController()
 
     fun setNotifications(enabled: Boolean) {
         SettingsSingleton.instance.notificationsEnabled = enabled
@@ -55,4 +58,7 @@ class SettingsFragmentController(val context: Context) {
         return SettingsSingleton.instance.notificationsEnabled
     }
 
+    fun getScraperAdapter():ScraperAdapter{
+        return scraperController.scraperAdapter
+    }
 }

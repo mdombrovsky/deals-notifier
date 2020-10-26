@@ -36,6 +36,10 @@ class RedditScraper(private val subReddit: String) : Scraper() {
         return posts
     }
 
+    override fun getName(): String {
+        return "Reddit, subreddit = $subReddit"
+    }
+
     /**
      * Converts reddit json into posts
      *
@@ -81,6 +85,21 @@ class RedditScraper(private val subReddit: String) : Scraper() {
         } else {
             throw JSONException("Incorrect Format for Reddit Post")
         }
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as RedditScraper
+
+        if (subReddit != other.subReddit) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        return subReddit.hashCode()
     }
 
 

@@ -42,13 +42,13 @@ class CriteriaAdapter(val controller: CriteriaController) :
         holder.recyclerView.setRecycledViewPool(viewPool)
 
 
-        holder.addKeywordButton.setOnClickListener(
+        holder.addKeywordButton.setOnClickListener {
             textInputModal(
                 context = holder.addKeywordButton.context,
                 title = "Add Keyword",
                 onSuccess = { text: String -> newAdapter.controller.add(text) }
             )
-        )
+        }
 
         holder.deleteCriteriaButton.setOnClickListener {
             controller.remove(holder.adapterPosition)

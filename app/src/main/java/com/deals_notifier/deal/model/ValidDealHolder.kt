@@ -10,7 +10,7 @@ import kotlin.collections.ArrayList
 
 class ValidDealHolder(
     val queryHolder: QueryHolder,
-    private val scrapers: ArrayList<Scraper>,
+    val scrapers: ArrayList<Scraper>,
     private val removeAfterMilliseconds: Long = 24 * 60 * 60 * 1000
 ) :
     Serializable {

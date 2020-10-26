@@ -30,13 +30,13 @@ class QueryFragment(val controller: QueryFragmentController) : Fragment() {
 
         val queryAdapter = controller.createQueryAdapter()
 
-        view.addQueryButton.setOnClickListener(
+        view.addQueryButton.setOnClickListener {
             textInputModal(
                 context = view.context,
                 title = "Create Query",
                 onSuccess = { text: String -> queryAdapter.controller.add(text) }
             )
-        )
+        }
 
         val recyclerView: RecyclerView = view.queryRecyclerView
         recyclerView.apply {

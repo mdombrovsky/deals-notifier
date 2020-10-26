@@ -32,14 +32,14 @@ class KeywordAdapter(val controller: KeywordController) :
             controller.remove(holder.adapterPosition)
         }
 
-        holder.editKeywordButton.setOnClickListener(
+        holder.editKeywordButton.setOnClickListener {
             textInputModal(
                 context = holder.editKeywordButton.context,
                 title = "Edit Keyword",
                 defaultValue = holder.keyWord.text.toString(),
                 onSuccess = { text: String -> controller.edit(holder.adapterPosition, text) }
             )
-        )
+        }
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

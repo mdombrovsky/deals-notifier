@@ -7,8 +7,6 @@ import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 import java.net.URL
 import java.text.SimpleDateFormat
-import java.util.*
-import kotlin.collections.ArrayList
 
 class RFDScraper(private val category: Int) : Scraper() {
     //Category: 0 -> All, 9 -> Computers & Electronics
@@ -23,11 +21,11 @@ class RFDScraper(private val category: Int) : Scraper() {
     private val defaultURL =
         baseURL + dealListURL + searchFilterURL + categoryPrefixURL + category.toString()
 
-    override suspend fun getAllPosts(): SortedPostList{
+    override suspend fun getAllPosts(): SortedPostList {
         return getPosts(URL(defaultURL), 100)
     }
 
-    override suspend fun getNewPosts(): SortedPostList{
+    override suspend fun getNewPosts(): SortedPostList {
         val posts = getPosts(URL(defaultURL), 100).also {
             it.removeAllOlderThan(mostRecentPostDate)
         }
@@ -37,13 +35,18 @@ class RFDScraper(private val category: Int) : Scraper() {
         return posts
     }
 
+    override fun getName(): String {
+        return "RFD, category = $category"
+    }
+
+
     /**
      * Gets at least a certain amount of posts if available
      *
      * @param url The url from which to get posts
      * @param number The number of posts to get at least
      */
-    private suspend fun getPosts(url: URL, number: Int): SortedPostList{
+    private suspend fun getPosts(url: URL, number: Int): SortedPostList {
         val posts = SortedPostList()
 
         if (number > 0) {
@@ -102,5 +105,20 @@ class RFDScraper(private val category: Int) : Scraper() {
             url = URL("https://forums.redflagdeals.com/$id"),
             date = simpleDateFormat.parse(dateString)
         )
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as RFDScraper
+
+        if (category != other.category) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        return category
     }
 }
