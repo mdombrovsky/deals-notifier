@@ -8,8 +8,7 @@ import com.deals_notifier.scraper.ui.ScraperAdapter
 import com.deals_notifier.settings.model.SettingsSingleton
 import com.deals_notifier.settings.ui.SettingsFragment
 
-class SettingsFragmentController(val context: Context) {
-
+class SettingsFragmentController(val context: Context, private val onModified: () -> Unit) {
 
     companion object {
         private fun convertFrequencyStringToSeconds(item: String): Int {
@@ -30,7 +29,7 @@ class SettingsFragmentController(val context: Context) {
 
     val settingsFragment = SettingsFragment(this)
 
-    private val scraperController: ScraperController = ScraperController()
+    private val scraperController: ScraperController = ScraperController(onModified = {onModified()})
 
     fun setNotifications(enabled: Boolean) {
         SettingsSingleton.instance.notificationsEnabled = enabled
@@ -58,7 +57,7 @@ class SettingsFragmentController(val context: Context) {
         return SettingsSingleton.instance.notificationsEnabled
     }
 
-    fun getScraperAdapter():ScraperAdapter{
+    fun getScraperAdapter(): ScraperAdapter {
         return scraperController.scraperAdapter
     }
 }

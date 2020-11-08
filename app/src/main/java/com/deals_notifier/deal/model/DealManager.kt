@@ -32,16 +32,8 @@ class DealManager private constructor(private val validDealHolder: ValidDealHold
 
     override fun reset() = validDealHolder.reset()
 
-    override suspend fun updatePosts(triggerUpdate: Boolean): List<Post> {
+    override suspend fun updatePosts(): List<Post> {
+        //TODO need to rework this function so that it isn't executed more than once at a time
         return validDealHolder.updatePosts()
     }
-
-    override fun addOnUpdateListener() {
-        TODO("Not yet implemented")
-    }
-
-    override fun removeOnUpdateListener() {
-        TODO("Not yet implemented")
-    }
-
 }

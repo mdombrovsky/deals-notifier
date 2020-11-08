@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import com.deals_notifier.deal.controller.DealFragmentController
 import com.deals_notifier.deal.model.DealManager
-import com.deals_notifier.deal.model.DealService
 import com.deals_notifier.deal.ui.DealFragment
 import com.deals_notifier.main.ui.TabAdapter
 import com.deals_notifier.query.controller.QueryFragmentController
@@ -20,7 +19,10 @@ class TabController(
 
     private val dealFragmentController = DealFragmentController(context)
 
-    private val settingsFragmentController = SettingsFragmentController(context)
+    private val settingsFragmentController =
+        SettingsFragmentController(
+            context = context,
+            onModified = { onModified() })
 
     private val queryFragmentController =
         QueryFragmentController(
@@ -39,7 +41,6 @@ class TabController(
     fun getSettingsFragment(): SettingsFragment {
         return settingsFragmentController.settingsFragment
     }
-
 
     private fun onModified() {
         DealManager.instance!!.reset()

@@ -8,7 +8,5 @@ interface DealManagerInterface {
     val queryHolder: QueryHolder
     val scrapers:MutableList<Scraper>
     fun reset()
-    suspend fun updatePosts(triggerUpdate:Boolean = false): List<Post>
-    fun addOnUpdateListener()
-    fun removeOnUpdateListener()
+    suspend fun updatePosts(): List<Post>
 }

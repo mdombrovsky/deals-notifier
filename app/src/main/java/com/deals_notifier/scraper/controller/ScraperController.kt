@@ -7,7 +7,7 @@ import com.deals_notifier.scraper.model.RedditScraper
 import com.deals_notifier.scraper.model.Scraper
 import com.deals_notifier.scraper.ui.ScraperAdapter
 
-class ScraperController {
+class ScraperController(private val onModified: () -> Unit) {
 
     companion object {
         fun createDefaultScrapers(): List<Scraper> {
@@ -32,8 +32,7 @@ class ScraperController {
         if (position != -1) {
             scrapers.removeAt(position)
             scraperAdapter.notifyItemRemoved(position)
-            DealManager.instance!!.reset()
-
+            onModified()
         } else {
             Log.e(
                 this.javaClass.simpleName,
@@ -48,16 +47,19 @@ class ScraperController {
         if (!scrapers.contains(scraper)) {
             scrapers.add(scraper)
             scraperAdapter.notifyItemInserted(scrapers.lastIndex)
-            DealManager.instance!!.reset()
+            onModified()
         }
     }
 
 
     fun resetToDefault() {
-        scrapers.clear()
-        scrapers.addAll(createDefaultScrapers())
-        scraperAdapter.notifyDataSetChanged()
-        DealManager.instance!!.reset()
+        //Only do stuff if different than default
+        if(scrapers != createDefaultScrapers()) {
+            scrapers.clear()
+            scrapers.addAll(createDefaultScrapers())
+            scraperAdapter.notifyDataSetChanged()
+            onModified()
+        }
     }
 
 }
