@@ -12,8 +12,11 @@ import androidx.core.content.ContextCompat
 import com.deals_notifier.R
 import com.deals_notifier.notification_service.model.DealNotificationManager
 import com.deals_notifier.notification_service.model.DealNotificationManager.Companion.dealServiceChannelId
+import com.deals_notifier.post.model.Post
 import com.deals_notifier.settings.model.SettingsSingleton
+import com.deals_notifier.utility.PostRefreshListener
 import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.concurrent.fixedRateTimer
@@ -153,7 +156,14 @@ class DealService : Service(), DealServiceInterface {
 
             if (DealManager.instance != null && this@DealService::notificationManager.isInitialized) {
                 if (!DealManager.instance?.posts?.isEmpty()!!) {
-                    notificationManager.sendDealNotifications(DealManager.instance!!.updatePosts())
+
+                    DealManager.instance!!.updatePosts(object : PostRefreshListener {
+                        override fun onComplete(data: List<Post>) {
+                            CoroutineScope1(IO).launch {
+                                notificationManager.sendDealNotifications(data)
+                            }
+                        }
+                    })
                 }
             }
         }

@@ -1,10 +1,8 @@
 package com.deals_notifier.deal.controller
 
 import android.content.Context
-import com.deals_notifier.notification_service.model.DealNotificationManager
 import com.deals_notifier.deal.ui.DealAdapter
 import com.deals_notifier.deal.ui.DealFragment
-import com.deals_notifier.post.model.Post
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
@@ -22,11 +20,10 @@ class DealFragmentController(
         if (startRefresh) {
             dealFragment.swipeRefreshLayout.isRefreshing = true
         }
-        CoroutineScope(IO).launch {
-            dealController.refresh()
-        }.invokeOnCompletion {
+        dealController.refresh() {
             dealFragment.swipeRefreshLayout.isRefreshing = false
         }
+
     }
 
     fun getDealAdapter(): DealAdapter {

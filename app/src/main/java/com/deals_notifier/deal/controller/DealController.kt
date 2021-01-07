@@ -2,10 +2,8 @@ package com.deals_notifier.deal.controller
 
 import com.deals_notifier.deal.model.DealManager
 import com.deals_notifier.deal.ui.DealAdapter
-import com.deals_notifier.deal.model.DealService
 import com.deals_notifier.post.model.Post
-import kotlinx.coroutines.Dispatchers.Main
-import kotlinx.coroutines.withContext
+import com.deals_notifier.utility.PostRefreshListener
 
 class DealController() {
 
@@ -19,13 +17,12 @@ class DealController() {
         return DealManager.instance!!.posts[index].title
     }
 
-    suspend fun refresh(): List<Post> {
-        val newPosts: List<Post> = DealManager.instance!!.updatePosts()
-
-        withContext(Main) {
-            dealAdapter.notifyDataSetChanged()
-        }
-
-        return newPosts
+    fun refresh(onComplete: () -> Unit) {
+        DealManager.instance!!.updatePosts(object : PostRefreshListener {
+            override fun onComplete(data: List<Post>) {
+                dealAdapter.notifyDataSetChanged()
+                onComplete()
+            }
+        })
     }
 }
