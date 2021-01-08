@@ -4,7 +4,7 @@ import DealManagerInterface
 import android.util.Log
 import com.deals_notifier.post.model.SortedPostList
 import com.deals_notifier.query.model.QueryHolder
-import com.deals_notifier.scraper.model.Scraper
+import com.deals_notifier.scraper.model.ScraperHolder
 import com.deals_notifier.utility.PostRefreshListener
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -42,8 +42,9 @@ class DealManager private constructor(private val validDealHolder: ValidDealHold
     override val queryHolder: QueryHolder
         get() = validDealHolder.queryHolder
 
-    override val scrapers: MutableList<Scraper>
-        get() = validDealHolder.scrapers
+    override val scraperHolder: ScraperHolder
+        get() = validDealHolder.scraperHolder
+
 
     override fun reset() = validDealHolder.reset()
 

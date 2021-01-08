@@ -9,6 +9,7 @@ import com.deals_notifier.deal.model.ValidDealHolder
 import com.deals_notifier.query.model.QueryHolder
 import com.deals_notifier.scraper.model.RFDScraper
 import com.deals_notifier.scraper.model.RedditScraper
+import com.deals_notifier.scraper.model.ScraperHolder
 import com.deals_notifier.settings.model.SettingsSingleton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -26,7 +27,12 @@ class StartReceiver : BroadcastReceiver() {
                             DealManager.initialize(
                                 ValidDealHolder(
                                     QueryHolder.load(context),
-                                    arrayListOf(RedditScraper("bapcsalescanada"), RFDScraper(9))
+                                    ScraperHolder(
+                                        arrayListOf(
+                                            RedditScraper("bapcsalescanada"),
+                                            RFDScraper(9)
+                                        )
+                                    )
                                 )
                             )
                         }
