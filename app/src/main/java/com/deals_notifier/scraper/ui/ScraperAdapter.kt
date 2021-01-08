@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.deals_notifier.R
 import com.deals_notifier.scraper.controller.ScraperController
+import com.deals_notifier.scraper.model.Scraper
 import kotlinx.android.synthetic.main.scraper_card.view.*
 
 class ScraperAdapter(val controller: ScraperController) :
@@ -22,9 +23,10 @@ class ScraperAdapter(val controller: ScraperController) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val scraper: Scraper = controller.getScraper(position)
         holder.scraperName.text = controller.getName(position)
-        holder.deleteScraperButton.setOnClickListener{
-            controller.remove(holder.adapterPosition)
+        holder.deleteScraperButton.setOnClickListener {
+            controller.remove(scraper)
         }
     }
 
@@ -33,7 +35,7 @@ class ScraperAdapter(val controller: ScraperController) :
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val deleteScraperButton: ImageButton = itemView.deleteScraperButton
-        val scraperName:TextView=itemView.scraperName
+        val scraperName: TextView = itemView.scraperName
     }
 
 }

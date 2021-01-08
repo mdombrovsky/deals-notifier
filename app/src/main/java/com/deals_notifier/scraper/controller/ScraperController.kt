@@ -26,21 +26,22 @@ class ScraperController(private val onModified: () -> Unit) {
         return scrapers[position].getName()
     }
 
-    fun remove(position: Int) {
-        if (position != -1) {
-            CoroutineScope(IO).launch {
-                DealManager.instance!!.scraperHolder.removeScraperAt(position)
+    fun remove(scraper: Scraper) {
+        CoroutineScope(IO).launch {
+            val success = DealManager.instance!!.scraperHolder.removeScraper(scraper)
+            if (success) {
                 withContext(Main) {
-                    scraperAdapter.notifyItemRemoved(position)
+                    scraperAdapter.notifyDataSetChanged()
                     onModified()
                 }
+            } else {
+                Log.e(
+                    this.javaClass.simpleName,
+                    "Error removing scraper"
+                )
             }
-        } else {
-            Log.e(
-                this.javaClass.simpleName,
-                "Requesting to remove item that is not present"
-            )
         }
+
     }
 
     fun add(scraper: Scraper) {
@@ -77,6 +78,10 @@ class ScraperController(private val onModified: () -> Unit) {
                 }
             }
         }
+    }
+
+    fun getScraper(position: Int): Scraper {
+        return scrapers[position]
     }
 
 }
