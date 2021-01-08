@@ -4,6 +4,10 @@ import com.deals_notifier.post.model.Post
 import com.deals_notifier.post.model.SortedPostList
 import com.deals_notifier.query.model.QueryHolder
 import com.deals_notifier.scraper.model.Scraper
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import java.io.Serializable
 import java.util.*
 
@@ -41,20 +45,37 @@ class ValidDealHolder(
         return newPosts
     }
 
-    private suspend fun getPosts(): SortedPostList {
-        val posts = SortedPostList()
-        for (scraper: Scraper in scrapers) {
-            posts.addAll(scraper.getAllPosts())
-        }
-        return posts
-    }
-
 
     private suspend fun getNewPosts(): SortedPostList {
-        val posts = SortedPostList()
+
+        val getterMethods: ArrayList<suspend () -> SortedPostList> = arrayListOf()
+
+        //This is spread out to minimize time that is spent iterating over scrapers
         for (scraper: Scraper in scrapers) {
-            posts.addAll(scraper.getNewPosts())
+            getterMethods.add(scraper::getNewPosts)
         }
+
+        val jobList: ArrayList<Job> = arrayListOf()
+        val resultsList: ArrayList<SortedPostList> = arrayListOf()
+
+        for (getterMethod in getterMethods) {
+            val results = SortedPostList()
+            resultsList.add(results)
+            jobList.add(CoroutineScope(IO).launch {
+                results.addAll(getterMethod.invoke())
+            })
+        }
+
+        jobList.forEach {
+            it.join()
+        }
+
+        val posts = SortedPostList()
+
+        resultsList.forEach {
+            posts.addAll(it)
+        }
+
         return posts
     }
 
