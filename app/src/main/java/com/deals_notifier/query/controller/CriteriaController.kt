@@ -5,6 +5,11 @@ import com.deals_notifier.query.model.Criteria
 import com.deals_notifier.query.model.Query
 import com.deals_notifier.query.ui.CriteriaAdapter
 import com.deals_notifier.query.ui.KeywordAdapter
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class CriteriaController(
     private val criteriaHolder: Query,
@@ -19,9 +24,13 @@ class CriteriaController(
     }
 
     fun add() {
-        criteriaHolder.criteria.add(Criteria())
-        criteriaAdapter.notifyItemInserted(criteriaHolder.criteria.size - 1)
-        onModified()
+        CoroutineScope(IO).launch {
+            criteriaHolder.addCriteria(Criteria())
+            withContext(Main) {
+                criteriaAdapter.notifyItemInserted(criteriaHolder.criteria.size - 1)
+                onModified()
+            }
+        }
 
     }
 
@@ -33,10 +42,14 @@ class CriteriaController(
     fun remove(position: Int) {
         //Trying to preemptively avoid issues with getLayoutPosition vs getAdapterPosition
         if (position != -1) {
-            criteriaHolder.criteria.removeAt(position)
-            criteriaAdapter.notifyItemRemoved(position)
-            onModified()
+            CoroutineScope(IO).launch {
+                criteriaHolder.removeCriteriaAt(position)
 
+                withContext(Main) {
+                    criteriaAdapter.notifyItemRemoved(position)
+                    onModified()
+                }
+            }
         } else {
             Log.e(
                 this.javaClass.simpleName,

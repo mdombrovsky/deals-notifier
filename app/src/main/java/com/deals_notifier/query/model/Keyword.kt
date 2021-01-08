@@ -29,7 +29,7 @@ class Keyword(text: String = "") : SearchComponent {
         this.text = text
     }
 
-    override fun matches(post: Post): Boolean {
+    override suspend fun matches(post: Post): Boolean {
         return post.contains(textNoSpacesLowerCase)
     }
 

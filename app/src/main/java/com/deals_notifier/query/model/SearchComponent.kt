@@ -14,5 +14,5 @@ interface SearchComponent : Serializable {
     /**
      * To see if a post matches the desired search
      */
-    fun matches(post: Post): Boolean
+    suspend fun matches(post: Post): Boolean
 }

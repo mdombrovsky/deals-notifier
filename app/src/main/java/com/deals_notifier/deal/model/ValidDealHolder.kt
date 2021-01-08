@@ -6,7 +6,6 @@ import com.deals_notifier.query.model.QueryHolder
 import com.deals_notifier.scraper.model.Scraper
 import java.io.Serializable
 import java.util.*
-import kotlin.collections.ArrayList
 
 class ValidDealHolder(
     val queryHolder: QueryHolder,
@@ -42,7 +41,7 @@ class ValidDealHolder(
         return newPosts
     }
 
-    private suspend fun getPosts(): SortedPostList{
+    private suspend fun getPosts(): SortedPostList {
         val posts = SortedPostList()
         for (scraper: Scraper in scrapers) {
             posts.addAll(scraper.getAllPosts())
@@ -59,7 +58,7 @@ class ValidDealHolder(
         return posts
     }
 
-    private fun getValidPosts(posts: List<Post>): SortedPostList {
+    private suspend fun getValidPosts(posts: List<Post>): SortedPostList {
         val validPosts = SortedPostList()
         for (post: Post in posts) {
             if (queryHolder.matches(post)) {

@@ -1,10 +1,12 @@
 package com.deals_notifier.query.model
 
 import com.deals_notifier.post.model.Post
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import org.json.JSONArray
 import org.json.JSONObject
 
-class Criteria(val keywords: ArrayList<Keyword> = ArrayList<Keyword>()):SearchComponent {
+class Criteria(keywordsInput: ArrayList<Keyword> = ArrayList<Keyword>()) : SearchComponent {
     constructor(json: JSONObject) : this(getKeywordsFromJSON(json))
 
     private companion object {
@@ -23,10 +25,17 @@ class Criteria(val keywords: ArrayList<Keyword> = ArrayList<Keyword>()):SearchCo
         }
     }
 
-    override fun matches(post: Post): Boolean {
-        for (keyword: Keyword in keywords) {
-            if (keyword.matches(post)) {
-                return true
+    private val keywordsArrayList: ArrayList<Keyword> = keywordsInput
+    val keywords: List<Keyword> = keywordsArrayList
+
+    private val mutex: Mutex = Mutex()
+
+    override suspend fun matches(post: Post): Boolean {
+        mutex.withLock {
+            for (keyword: Keyword in keywordsArrayList) {
+                if (keyword.matches(post)) {
+                    return true
+                }
             }
         }
         return false
@@ -36,12 +45,24 @@ class Criteria(val keywords: ArrayList<Keyword> = ArrayList<Keyword>()):SearchCo
         val jsonCriteria = JSONObject()
 
         val jsonKeywordArray = JSONArray()
-        for (keyword: Keyword in keywords) {
+        for (keyword: Keyword in keywordsArrayList) {
             jsonKeywordArray.put(keyword.toJSON())
         }
         jsonCriteria.put(keywordsJSONName, jsonKeywordArray)
 
         return jsonCriteria
+    }
+
+    suspend fun addKeyword(keyword: Keyword): Boolean {
+        mutex.withLock {
+            return keywordsArrayList.add(keyword)
+        }
+    }
+
+    suspend fun removeKeywordAt(index: Int): Keyword {
+        mutex.withLock {
+            return keywordsArrayList.removeAt(index)
+        }
     }
 
 }

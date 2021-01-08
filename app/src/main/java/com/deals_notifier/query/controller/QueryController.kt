@@ -2,10 +2,13 @@ package com.deals_notifier.query.controller
 
 import android.util.Log
 import com.deals_notifier.deal.model.DealManager
-import com.deals_notifier.deal.model.DealService
 import com.deals_notifier.query.model.Query
 import com.deals_notifier.query.ui.CriteriaAdapter
 import com.deals_notifier.query.ui.QueryAdapter
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class QueryController(
     private val onModified: () -> Unit
@@ -22,7 +25,10 @@ class QueryController(
     }
 
     fun createCriteriaAdapter(position: Int): CriteriaAdapter {
-        return CriteriaController(DealManager.instance!!.queryHolder.queries[position], onModified).criteriaAdapter
+        return CriteriaController(
+            DealManager.instance!!.queryHolder.queries[position],
+            onModified
+        ).criteriaAdapter
 
     }
 
@@ -33,19 +39,26 @@ class QueryController(
     }
 
     fun add(title: String) {
-        DealManager.instance!!.queryHolder.queries.add(Query(title = title))
-        queryAdapter.notifyItemInserted(DealManager.instance!!.queryHolder.queries.size - 1)
-        onModified()
+        CoroutineScope(Dispatchers.IO).launch {
+            DealManager.instance!!.queryHolder.addQuery(Query(title = title))
+            withContext(Dispatchers.Main) {
+                queryAdapter.notifyItemInserted(DealManager.instance!!.queryHolder.queries.size - 1)
+                onModified()
+            }
+        }
 
     }
 
     fun remove(position: Int) {
         //Trying to preemptively avoid issues with getLayoutPosition vs getAdapterPosition
         if (position != -1) {
-            DealManager.instance!!.queryHolder.queries.removeAt(position)
-            queryAdapter.notifyItemRemoved(position)
-            onModified()
-
+            CoroutineScope(Dispatchers.IO).launch {
+                DealManager.instance!!.queryHolder.removeQueryAt(position)
+                withContext(Dispatchers.Main) {
+                    queryAdapter.notifyItemRemoved(position)
+                    onModified()
+                }
+            }
         } else {
             Log.e(
                 this.javaClass.simpleName,
