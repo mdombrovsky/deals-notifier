@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.deals_notifier.R
 import com.deals_notifier.input_modal.ui.textInputModal
 import com.deals_notifier.query.controller.KeywordController
+import com.deals_notifier.query.model.Keyword
 import kotlinx.android.synthetic.main.individual_keyword.view.*
 
 
@@ -28,8 +29,9 @@ class KeywordAdapter(val controller: KeywordController) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.keyWord.text = controller.getKeyWord(position)
+        val keyword:Keyword = controller.getKeyword(position)
         holder.deleteKeywordButton.setOnClickListener {
-            controller.remove(holder.adapterPosition)
+            controller.remove(keyword)
         }
 
         holder.editKeywordButton.setOnClickListener {

@@ -36,21 +36,21 @@ class KeywordController(
         }
     }
 
-    fun remove(position: Int) {
-        //Trying to preemptively avoid issues with getLayoutPosition vs getAdapterPosition
-        if (position != -1) {
-            CoroutineScope(Dispatchers.IO).launch {
-                keywordHolder.removeKeywordAt(position)
+    fun remove(keyword: Keyword) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val success: Boolean = keywordHolder.removeKeyword(keyword)
+
+            if (success) {
                 withContext(Main) {
-                    keywordAdapter.notifyItemRemoved(position)
+                    keywordAdapter.notifyDataSetChanged()
                     onModified()
                 }
+            } else {
+                Log.e(
+                    this.javaClass.simpleName,
+                    "Error removing keyword"
+                )
             }
-        } else {
-            Log.e(
-                this.javaClass.simpleName,
-                "Requesting to remove item that is not present"
-            )
         }
     }
 
@@ -66,5 +66,9 @@ class KeywordController(
                 "Requesting to edit item that is not present"
             )
         }
+    }
+
+    fun getKeyword(position: Int): Keyword {
+        return keywordHolder.keywords[position]
     }
 }

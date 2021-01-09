@@ -99,4 +99,10 @@ class QueryHolder(queriesInput: ArrayList<Query> = arrayListOf()) : SearchCompon
         }
     }
 
+    suspend fun removeQuery(query: Query):Boolean{
+        mutex.withLock {
+            return queriesArrayList.remove(query)
+        }
+    }
+
 }

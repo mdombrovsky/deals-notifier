@@ -79,4 +79,10 @@ class Query(
             return criteriaArrayList.removeAt(index)
         }
     }
+
+    suspend fun removeCriteria(criteria: Criteria): Boolean {
+        mutex.withLock {
+            return criteriaArrayList.remove(criteria)
+        }
+    }
 }

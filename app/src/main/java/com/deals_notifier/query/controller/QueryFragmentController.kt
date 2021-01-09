@@ -17,6 +17,7 @@ class QueryFragmentController(
 
     fun createQueryAdapter(): QueryAdapter {
         return QueryController(
+            queryHolder = DealManager.instance!!.queryHolder,
             onModified = { queryModified() }).queryAdapter
     }
 
