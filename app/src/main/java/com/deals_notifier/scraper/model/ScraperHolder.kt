@@ -1,5 +1,8 @@
 package com.deals_notifier.scraper.model
 
+import android.content.Context
+import android.util.Log
+import com.deals_notifier.main.controller.TabController
 import com.deals_notifier.post.model.SortedPostList
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -7,14 +10,41 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import org.json.JSONArray
+import org.json.JSONObject
+import java.io.File
 
 class ScraperHolder(scrapersInput: ArrayList<Scraper> = arrayListOf()) {
+    constructor(json: JSONObject) : this(getScrapersFromJSON(json))
 
     companion object {
+        private const val scrapersJSONName = "scrapers"
+        private const val filename = "scrapers.json"
+
+        fun getScrapersFromJSON(json: JSONObject): ArrayList<Scraper> {
+            val jsonArray = json.getJSONArray(scrapersJSONName)
+            val scrapers = ArrayList<Scraper>()
+            for (i in 0 until jsonArray.length()) {
+                scrapers.add(Scraper.getScraperFromJSON(jsonArray.getJSONObject(i)))
+            }
+            return scrapers
+        }
+
         fun createDefaultScrapers(): List<Scraper> {
             return arrayListOf(RedditScraper("bapcsalescanada"), RFDScraper(0))
         }
 
+        suspend fun load(context: Context): ScraperHolder {
+            val file = File(context.filesDir, filename)
+
+            return try {
+                ScraperHolder(JSONObject(file.readText()))
+            } catch (e: Exception) {
+                Log.e(TabController::class.simpleName, "Error reading scrapers from file: $e")
+                ScraperHolder()
+            }
+
+        }
     }
 
     private val scrapersArrayList: ArrayList<Scraper> = scrapersInput
@@ -84,5 +114,30 @@ class ScraperHolder(scrapersInput: ArrayList<Scraper> = arrayListOf()) {
         mutex.withLock { return scrapersArrayList.removeAt(index) }
     }
 
+    suspend fun save(context: Context) {
+        val file = File(context.filesDir, filename)
+        try {
+            file.writeText(this.toJSON().toString(4))
+            Log.d(
+                this.javaClass.simpleName,
+                "Successfully saved scrapers to file: ${file.toString()}"
+            )
+        } catch (e: java.lang.Exception) {
+            Log.e(this.javaClass.simpleName, "Error writing scrapers to file: $e")
+        }
+    }
+
+    private fun toJSON(): JSONObject {
+        val jsonScraperHolder = JSONObject()
+        val jsonArray = JSONArray()
+
+        for (scraper in scrapers) {
+            jsonArray.put(scraper.toJSON())
+        }
+
+        jsonScraperHolder.put(scrapersJSONName, jsonArray)
+
+        return jsonScraperHolder
+    }
 
 }

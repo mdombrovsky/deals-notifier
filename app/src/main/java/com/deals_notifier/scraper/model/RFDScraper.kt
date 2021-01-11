@@ -2,6 +2,7 @@ package com.deals_notifier.scraper.model
 
 import com.deals_notifier.post.model.Post
 import com.deals_notifier.post.model.SortedPostList
+import org.json.JSONObject
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
@@ -11,7 +12,15 @@ import java.text.SimpleDateFormat
 class RFDScraper(private val category: Int) : Scraper() {
     //Category: 0 -> All, 9 -> Computers & Electronics
 
+    constructor(json: JSONObject) : this(initScraperFromJSON(json))
+
     private companion object {
+        private const val dataTypeJSON = "category"
+
+        private fun initScraperFromJSON(json: JSONObject): Int {
+            return json.getInt(dataTypeJSON)
+        }
+
         const val baseURL: String = "https://forums.redflagdeals.com"
         const val dealListURL: String = "/hot-deals-f9"
         const val searchFilterURL: String = "/?st=1&rfd_sk=tt&sd=d"
@@ -116,6 +125,17 @@ class RFDScraper(private val category: Int) : Scraper() {
         if (category != other.category) return false
 
         return true
+    }
+
+    override fun toJSON(): JSONObject {
+        val jsonObject = JSONObject()
+        jsonObject.put(scraperTypeJSON, rfdScraperName)
+
+        val dataJSONObject= JSONObject()
+        dataJSONObject.put(dataTypeJSON, category)
+
+        jsonObject.put(dataNameJSON, dataJSONObject)
+        return jsonObject
     }
 
     override fun hashCode(): Int {

@@ -29,7 +29,8 @@ class SettingsFragmentController(val context: Context, private val onModified: (
 
     val settingsFragment = SettingsFragment(this)
 
-    private val scraperController: ScraperController = ScraperController(onModified = {onModified()})
+    private val scraperController: ScraperController =
+        ScraperController(context = context, onModified = { onModified() })
 
     fun setNotifications(enabled: Boolean) {
         SettingsSingleton.instance.notificationsEnabled = enabled

@@ -1,5 +1,6 @@
 package com.deals_notifier.scraper.controller
 
+import android.content.Context
 import android.util.Log
 import com.deals_notifier.deal.model.DealManager
 import com.deals_notifier.scraper.model.Scraper
@@ -11,7 +12,7 @@ import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class ScraperController(private val onModified: () -> Unit) {
+class ScraperController(private val context: Context, private val onModified: () -> Unit) {
 
 
     val scraperAdapter: ScraperAdapter = ScraperAdapter(this)
@@ -34,6 +35,7 @@ class ScraperController(private val onModified: () -> Unit) {
                     scraperAdapter.notifyDataSetChanged()
                     onModified()
                 }
+                DealManager.instance!!.scraperHolder.save(context)
             } else {
                 Log.e(
                     this.javaClass.simpleName,
@@ -54,6 +56,7 @@ class ScraperController(private val onModified: () -> Unit) {
                     scraperAdapter.notifyItemInserted(scrapers.lastIndex)
                     onModified()
                 }
+                DealManager.instance!!.scraperHolder.save(context)
             }
         }
     }
@@ -76,6 +79,8 @@ class ScraperController(private val onModified: () -> Unit) {
                     scraperAdapter.notifyDataSetChanged()
                     onModified()
                 }
+
+                DealManager.instance!!.scraperHolder.save(context)
             }
         }
     }

@@ -2,11 +2,32 @@ package com.deals_notifier.scraper.model
 
 import android.util.Log
 import com.deals_notifier.post.model.SortedPostList
+import org.json.JSONException
+import org.json.JSONObject
 import java.io.Serializable
 import java.net.URL
 import java.util.*
 
 abstract class Scraper : Serializable {
+
+    companion object {
+        const val scraperTypeJSON = "type"
+        const val dataNameJSON = "data"
+        const val redditScraperName = "reddit"
+        const val rfdScraperName = "rfd"
+
+        fun getScraperFromJSON(json: JSONObject): Scraper {
+            val type = json.getString(scraperTypeJSON)
+            val data = json.getJSONObject(dataNameJSON)
+            return when (type) {
+                redditScraperName -> RedditScraper(data)
+                rfdScraperName -> RFDScraper(data)
+                else -> throw JSONException("Unknown Scraper Type")
+            }
+
+        }
+    }
+
 
     protected open var mostRecentPostDate: Date? = null
 
@@ -45,4 +66,5 @@ abstract class Scraper : Serializable {
         return response
     }
 
+    abstract fun toJSON(): JSONObject
 }

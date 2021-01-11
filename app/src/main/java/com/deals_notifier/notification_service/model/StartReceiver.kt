@@ -27,12 +27,7 @@ class StartReceiver : BroadcastReceiver() {
                             DealManager.initialize(
                                 ValidDealHolder(
                                     QueryHolder.load(context),
-                                    ScraperHolder(
-                                        arrayListOf(
-                                            RedditScraper("bapcsalescanada"),
-                                            RFDScraper(9)
-                                        )
-                                    )
+                                    ScraperHolder.load(context)
                                 )
                             )
                         }

@@ -10,6 +10,16 @@ import java.util.*
 
 class RedditScraper(private val subReddit: String) : Scraper() {
 
+    constructor(json: JSONObject) : this(initScraperFromJSON(json))
+
+    companion object {
+        private const val dataTypeJSON = "subReddit"
+        
+        private fun initScraperFromJSON(json: JSONObject): String {
+            return json.getString(dataTypeJSON)
+        }
+    }
+
     override suspend fun getAllPosts(): SortedPostList {
         return redditJSONToPosts(
             getData(
@@ -96,6 +106,17 @@ class RedditScraper(private val subReddit: String) : Scraper() {
         if (subReddit != other.subReddit) return false
 
         return true
+    }
+
+    override fun toJSON(): JSONObject {
+        val jsonObject = JSONObject()
+        jsonObject.put(scraperTypeJSON, redditScraperName)
+
+        val dataJSONObject= JSONObject()
+        dataJSONObject.put(dataTypeJSON, subReddit)
+
+        jsonObject.put(Scraper.dataNameJSON, dataJSONObject)
+        return jsonObject
     }
 
     override fun hashCode(): Int {

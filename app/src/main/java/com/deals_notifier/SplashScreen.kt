@@ -27,7 +27,7 @@ class SplashScreen : AppCompatActivity() {
             DealManager.initialize(
                 ValidDealHolder(
                     QueryHolder.load(this@SplashScreen.applicationContext),
-                    ScraperHolder(arrayListOf(RedditScraper("bapcsalescanada"), RFDScraper(0)))
+                    ScraperHolder.load(this@SplashScreen.applicationContext)
                 )
             )
 
