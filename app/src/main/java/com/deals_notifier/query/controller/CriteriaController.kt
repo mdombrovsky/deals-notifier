@@ -36,27 +36,26 @@ class CriteriaController(
 
     fun createKeyWordAdapter(position: Int): KeywordAdapter {
         return KeywordController(criteriaHolder.criteria[position], onModified).keywordAdapter
+
     }
 
-    fun remove(criteria: Criteria) {
-        CoroutineScope(IO).launch {
-            val success: Boolean = criteriaHolder.removeCriteria(criteria)
-            if (success) {
+    fun remove(position: Int) {
+        //Trying to preemptively avoid issues with getLayoutPosition vs getAdapterPosition
+        if (position != -1) {
+            CoroutineScope(IO).launch {
+                criteriaHolder.removeCriteriaAt(position)
+
                 withContext(Main) {
-                    criteriaAdapter.notifyDataSetChanged()
+                    criteriaAdapter.notifyItemRemoved(position)
                     onModified()
                 }
-            } else {
-                Log.e(
-                    this.javaClass.simpleName,
-                    "Error removing criteria"
-                )
             }
+        } else {
+            Log.e(
+                this.javaClass.simpleName,
+                "Requesting to remove item that is not present"
+            )
         }
-    }
-
-    fun getCriteria(position: Int): Criteria {
-        return criteriaHolder.criteria[position]
     }
 
 

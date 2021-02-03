@@ -65,9 +65,4 @@ class Criteria(keywordsInput: ArrayList<Keyword> = ArrayList<Keyword>()) : Searc
         }
     }
 
-    suspend fun removeKeyword(keyword: Keyword): Boolean {
-        mutex.withLock {
-            return keywordsArrayList.remove(keyword)
-        }
-    }
 }

@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.deals_notifier.R
 import com.deals_notifier.input_modal.ui.textInputModal
 import com.deals_notifier.query.controller.QueryController
-import com.deals_notifier.query.model.Query
 import kotlinx.android.synthetic.main.query_card.view.*
 
 class QueryAdapter(val controller: QueryController) :
@@ -53,9 +52,8 @@ class QueryAdapter(val controller: QueryController) :
             )
         }
 
-        val query:Query = controller.getQuery(position)
         holder.deleteQueryButton.setOnClickListener {
-            controller.remove(query)
+            controller.remove(holder.adapterPosition)
         }
     }
 

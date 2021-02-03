@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.deals_notifier.R
 import com.deals_notifier.input_modal.ui.textInputModal
 import com.deals_notifier.query.controller.CriteriaController
-import com.deals_notifier.query.model.Criteria
 import kotlinx.android.synthetic.main.criteria_column.view.*
 
 class CriteriaAdapter(val controller: CriteriaController) :
@@ -51,9 +50,8 @@ class CriteriaAdapter(val controller: CriteriaController) :
             )
         }
 
-        val criteria:Criteria=controller.getCriteria(position)
         holder.deleteCriteriaButton.setOnClickListener {
-            controller.remove(criteria)
+            controller.remove(holder.adapterPosition)
         }
     }
 
