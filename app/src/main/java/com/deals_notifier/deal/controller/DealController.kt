@@ -4,6 +4,7 @@ import com.deals_notifier.deal.model.DealManager
 import com.deals_notifier.deal.ui.DealAdapter
 import com.deals_notifier.post.model.Post
 import com.deals_notifier.utility.PostRefreshListener
+import java.net.URL
 
 class DealController() {
 
@@ -17,6 +18,10 @@ class DealController() {
         return DealManager.instance!!.posts[index].title
     }
 
+    fun getURL(index: Int): URL? {
+        return DealManager.instance!!.posts[index].url
+    }
+
     fun refresh(onComplete: () -> Unit) {
         DealManager.instance!!.updatePosts(object : PostRefreshListener {
             override fun onComplete(data: List<Post>) {
@@ -24,5 +29,13 @@ class DealController() {
                 onComplete()
             }
         })
+    }
+
+    fun getSource(index: Int): String {
+        return DealManager.instance!!.posts[index].source
+    }
+
+    fun getAge(index: Int): String {
+        return DealManager.instance!!.posts[index].getAge()
     }
 }

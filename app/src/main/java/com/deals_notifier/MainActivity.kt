@@ -9,7 +9,14 @@ import com.google.android.material.tabs.TabLayoutMediator
 
 class MainActivity : AppCompatActivity() {
 
+    companion object {
+        var mainActivity: MainActivity? = null
+            private set
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        mainActivity = this
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
@@ -25,4 +32,6 @@ class MainActivity : AppCompatActivity() {
 
         tabLayoutMediator.attach()
     }
+
+
 }
