@@ -22,8 +22,8 @@
             android:id="@+id/queryTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:layout_gravity="center"
+            android:layout_weight="0.5"
             android:background="@drawable/black_border"
             android:text="Title" />
 
@@ -40,6 +40,14 @@
             android:layout_height="wrap_content"
             android:contentDescription="Delete Query"
             android:src="@drawable/delete" />
+
+        <Switch
+            android:id="@+id/queryOnOffSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:text="" />
+
     </LinearLayout>
 
     <LinearLayout
@@ -65,5 +73,5 @@
             android:text="Add" />
 
     </LinearLayout>
-</LinearLayout>
 
+</LinearLayout>
