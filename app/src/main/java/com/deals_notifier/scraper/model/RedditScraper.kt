@@ -92,7 +92,8 @@ class RedditScraper(private val subReddit: String) : Scraper() {
                 description = jsonPostData.getString("selftext"),
                 id = id,
                 url = URL("https://www.reddit.com/$id"),
-                date = Date(jsonPostData.getLong("created_utc") * 1000)
+                date = Date(jsonPostData.getLong("created_utc") * 1000),
+                source = "Reddit: r/$subReddit"
             ))
 
         } else {

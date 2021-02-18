@@ -30,4 +30,8 @@ class DealController() {
             }
         })
     }
+
+    fun getSource(index: Int): String {
+        return DealManager.instance!!.posts[index].source
+    }
 }

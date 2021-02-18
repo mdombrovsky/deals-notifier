@@ -112,7 +112,8 @@ class RFDScraper(private val category: Int) : Scraper() {
             description = "",
             id = id,
             url = URL("https://forums.redflagdeals.com/$id"),
-            date = simpleDateFormat.parse(dateString)
+            date = simpleDateFormat.parse(dateString),
+            source = "RedFlagDeals: Hot Deals"
         )
     }
 

@@ -10,7 +10,8 @@ class Post(
     private val description: String = "",
     val id: String,
     val url: URL? = null,
-    val date: Date
+    val date: Date,
+    val source: String = ""
 ) : Serializable {
 
 
