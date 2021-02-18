@@ -27,6 +27,7 @@ class DealAdapter(val controller: DealController) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.title.text = controller.getTitle(position)
         holder.source.text = controller.getSource(position)
+        holder.age.text = controller.getAge(position)
         holder.title.setOnClickListener {
             val url = controller.getURL(position)
             if (url != null) {
@@ -43,5 +44,6 @@ class DealAdapter(val controller: DealController) :
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val title: TextView = itemView.dealTitle
         val source: TextView = itemView.dealSource
+        val age: TextView = itemView.dealAge
     }
 }
