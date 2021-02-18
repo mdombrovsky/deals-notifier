@@ -14,7 +14,7 @@ class RedditScraper(private val subReddit: String) : Scraper() {
 
     companion object {
         private const val dataTypeJSON = "subReddit"
-        
+
         private fun initScraperFromJSON(json: JSONObject): String {
             return json.getString(dataTypeJSON)
         }
@@ -59,23 +59,26 @@ class RedditScraper(private val subReddit: String) : Scraper() {
     private fun redditJSONToPosts(jsonString: String): SortedPostList {
         val posts = SortedPostList()
 
-        val json = JSONObject(jsonString)
+        if (jsonString != "") {
+            val json = JSONObject(jsonString)
 
-        if (json.getString("kind") != "Listing") {
-            return posts
+            if (json.getString("kind") != "Listing") {
+                return posts
+            }
+
+            val jsonPostArray: JSONArray = json.getJSONObject("data").getJSONArray("children")
+
+            for (i in 0 until jsonPostArray.length()) {
+                val jsonPost: JSONObject = jsonPostArray.getJSONObject(i)
+                val post: Post = createRedditPost(jsonPost)
+
+
+                posts.add(post)
+            }
+
         }
-
-        val jsonPostArray: JSONArray = json.getJSONObject("data").getJSONArray("children")
-
-        for (i in 0 until jsonPostArray.length()) {
-            val jsonPost: JSONObject = jsonPostArray.getJSONObject(i)
-            val post: Post = createRedditPost(jsonPost)
-
-
-            posts.add(post)
-        }
-
         return posts
+
     }
 
 
@@ -112,7 +115,7 @@ class RedditScraper(private val subReddit: String) : Scraper() {
         val jsonObject = JSONObject()
         jsonObject.put(scraperTypeJSON, redditScraperName)
 
-        val dataJSONObject= JSONObject()
+        val dataJSONObject = JSONObject()
         dataJSONObject.put(dataTypeJSON, subReddit)
 
         jsonObject.put(Scraper.dataNameJSON, dataJSONObject)
