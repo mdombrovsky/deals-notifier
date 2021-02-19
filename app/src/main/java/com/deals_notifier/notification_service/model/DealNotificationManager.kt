@@ -3,13 +3,18 @@ package com.deals_notifier.notification_service.model
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Build
+import android.system.Os.link
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.deals_notifier.R
 import com.deals_notifier.post.model.Post
+
 
 class DealNotificationManager(val context: Context) {
 
@@ -27,7 +32,7 @@ class DealNotificationManager(val context: Context) {
             notificationManagerCompat.createNotificationChannel(createDealNotificationChannel())
             notificationManagerCompat.createNotificationChannel(createDealFinderChannel())
         }
-        
+
     }
 
 
@@ -53,7 +58,17 @@ class DealNotificationManager(val context: Context) {
         return channel
     }
 
+    /*
+        sendDealNotification: sends a notification to the OS
+    */
     fun sendDealNotification(post: Post) {
+
+        /* notificationIntent and pending are used to add links to deals */
+        val notificationIntent = Intent(Intent.ACTION_VIEW, Uri.parse(post.url.toString())).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+        val pending = PendingIntent.getActivity(context, 0, notificationIntent, 0)
+
         val notification: Notification =
             NotificationCompat.Builder(
                 context,
@@ -63,6 +78,7 @@ class DealNotificationManager(val context: Context) {
                 .setContentText(post.title)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setCategory(NotificationCompat.CATEGORY_EVENT)
+                .setContentIntent(pending) /* performs an action sent by the pending intent*/
                 .build()
         notificationManagerCompat.notify(post.id.hashCode(), notification)
     }
