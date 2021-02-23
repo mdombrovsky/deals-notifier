@@ -5,7 +5,7 @@ import com.deals_notifier.deal.ui.DealAdapter
 import com.deals_notifier.post.model.Post
 import com.deals_notifier.utility.PostRefreshListener
 
-class DealController() {
+class DealController {
 
     val dealAdapter: DealAdapter = DealAdapter(this)
 

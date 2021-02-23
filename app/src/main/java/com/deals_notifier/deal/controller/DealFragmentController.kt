@@ -3,9 +3,6 @@ package com.deals_notifier.deal.controller
 import android.content.Context
 import com.deals_notifier.deal.ui.DealAdapter
 import com.deals_notifier.deal.ui.DealFragment
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.launch
 
 class DealFragmentController(
     private val context: Context

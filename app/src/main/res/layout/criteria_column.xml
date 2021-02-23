@@ -16,7 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Different spellings" />
+            android:text="@string/different_spellings" />
 
         <ImageButton
             android:id="@+id/deleteColumnButton"
@@ -24,7 +24,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="top|right"
             android:src="@drawable/close_circle"
-            tools:ignore="RtlHardcoded,RtlSymmetry" />
+            tools:ignore="RtlHardcoded,RtlSymmetry"
+            android:contentDescription="@string/delete_column_button" />
     </LinearLayout>
 
     <LinearLayout
@@ -44,7 +45,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLines="1"
-            android:text="Add Keyword" />
+            android:text="@string/add_keyword" />
 
 
     </LinearLayout>

@@ -7,10 +7,11 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_toStartOf="@+id/deleteScraperButton"
         android:layout_centerInParent="true"
         android:layout_centerVertical="true"
 
-        android:text="Scraper"
+        android:text="@string/scraper"
         android:id="@+id/scraperName"/>
 
     <ImageButton
@@ -19,7 +20,8 @@
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:src="@drawable/delete"
-        android:id="@+id/deleteScraperButton"/>
+        android:id="@+id/deleteScraperButton"
+        android:contentDescription="@string/delete_scraper_button" />
 
 
 </RelativeLayout>

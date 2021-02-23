@@ -54,7 +54,6 @@ class RedditScraper(private val subReddit: String) : Scraper() {
      * Converts reddit json into posts
      *
      * @param jsonString The reddit json
-     * @param date The date that all valid posts must be newer than
      */
     private fun redditJSONToPosts(jsonString: String): SortedPostList {
         val posts = SortedPostList()
@@ -115,7 +114,7 @@ class RedditScraper(private val subReddit: String) : Scraper() {
         val dataJSONObject= JSONObject()
         dataJSONObject.put(dataTypeJSON, subReddit)
 
-        jsonObject.put(Scraper.dataNameJSON, dataJSONObject)
+        jsonObject.put(dataNameJSON, dataJSONObject)
         return jsonObject
     }
 
