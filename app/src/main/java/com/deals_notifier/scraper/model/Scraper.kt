@@ -48,6 +48,8 @@ abstract class Scraper : Serializable {
 
     abstract override fun equals(other: Any?): Boolean
 
+    abstract override fun hashCode(): Int
+
     /**
      * Resets the state of the scraper
      */
@@ -55,7 +57,7 @@ abstract class Scraper : Serializable {
         mostRecentPostDate = null
     }
 
-    protected suspend fun getData(url: URL): String {
+    protected fun getData(url: URL): String {
         val response: String
         response = try {
             url.readText()

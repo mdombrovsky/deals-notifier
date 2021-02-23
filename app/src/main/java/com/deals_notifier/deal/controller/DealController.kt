@@ -6,7 +6,7 @@ import com.deals_notifier.post.model.Post
 import com.deals_notifier.utility.PostRefreshListener
 import java.net.URL
 
-class DealController() {
+class DealController {
 
     val dealAdapter: DealAdapter = DealAdapter(this)
 

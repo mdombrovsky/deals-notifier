@@ -7,7 +7,7 @@ import java.util.*
 
 class Post(
     val title: String = "",
-    private val description: String = "",
+    val description: String = "",
     val id: String,
     val url: URL? = null,
     val date: Date,

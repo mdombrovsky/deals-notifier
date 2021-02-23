@@ -25,20 +25,20 @@
             android:layout_gravity="center"
             android:layout_weight="0.5"
             android:background="@drawable/black_border"
-            android:text="Title" />
+            android:text="@string/title" />
 
         <ImageButton
             android:id="@+id/editQueryTitleButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:contentDescription="Edit Query Title"
+            android:contentDescription="@string/edit_query_title"
             android:src="@drawable/pencil" />
 
         <ImageButton
             android:id="@+id/deleteQueryButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:contentDescription="Delete Query"
+            android:contentDescription="@string/delete_query"
             android:src="@drawable/delete" />
 
         <Switch
@@ -70,7 +70,7 @@
             android:id="@+id/addColumnButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Add" />
+            android:text="@string/add" />
 
     </LinearLayout>
 

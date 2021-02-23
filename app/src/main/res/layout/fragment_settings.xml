@@ -9,7 +9,7 @@
         android:id="@+id/notificationSwitch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Notifications" />
+        android:text="@string/notifications" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -20,9 +20,10 @@
             android:id="@+id/frequencyTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_toStartOf="@+id/frequencySpinner"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:text="Notification Check Period" />
+            android:text="@string/notification_check_period" />
 
         <Spinner
             android:id="@+id/frequencySpinner"
@@ -46,10 +47,11 @@
             android:id="@+id/addScrapperButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_toStartOf="@+id/resetScraperToDefaultButton"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:maxLines="1"
-            android:text="Add Scraper" />
+            android:text="@string/add_scraper" />
 
         <Button
             android:id="@+id/resetScraperToDefaultButton"
@@ -58,7 +60,7 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:maxLines="1"
-            android:text="Reset to default" />
+            android:text="@string/reset_to_default" />
     </RelativeLayout>
 
 

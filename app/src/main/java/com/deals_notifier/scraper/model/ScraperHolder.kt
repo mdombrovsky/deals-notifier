@@ -34,7 +34,7 @@ class ScraperHolder(scrapersInput: ArrayList<Scraper> = arrayListOf()) {
             return arrayListOf(RedditScraper("bapcsalescanada"), RFDScraper(0))
         }
 
-        suspend fun load(context: Context): ScraperHolder {
+        fun load(context: Context): ScraperHolder {
             val file = File(context.filesDir, filename)
 
             return try {
@@ -114,7 +114,7 @@ class ScraperHolder(scrapersInput: ArrayList<Scraper> = arrayListOf()) {
         mutex.withLock { return scrapersArrayList.removeAt(index) }
     }
 
-    suspend fun save(context: Context) {
+    fun save(context: Context) {
         val file = File(context.filesDir, filename)
         try {
             file.writeText(this.toJSON().toString(4))

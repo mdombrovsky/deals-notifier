@@ -16,7 +16,6 @@ import com.deals_notifier.post.model.Post
 import com.deals_notifier.settings.model.SettingsSingleton
 import com.deals_notifier.utility.PostRefreshListener
 import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.concurrent.fixedRateTimer

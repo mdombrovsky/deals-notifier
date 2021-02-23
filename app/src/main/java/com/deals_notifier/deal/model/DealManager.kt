@@ -56,7 +56,7 @@ class DealManager private constructor(private val validDealHolder: ValidDealHold
     override fun updatePosts(listener: PostRefreshListener) {
 
         //Uses Coroutine because of mutex
-        CoroutineScope(Dispatchers.IO).launch {
+        CoroutineScope(IO).launch {
 
             //Critical section
             mutex.withLock {

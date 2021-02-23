@@ -32,7 +32,7 @@ class QueryHolder(queriesInput: ArrayList<Query> = arrayListOf()) : SearchCompon
             return queries
         }
 
-        suspend fun load(context: Context): QueryHolder {
+        fun load(context: Context): QueryHolder {
             val file = File(context.filesDir, filename)
 
             return try {
@@ -48,7 +48,7 @@ class QueryHolder(queriesInput: ArrayList<Query> = arrayListOf()) : SearchCompon
 
     private val mutex: Mutex = Mutex()
 
-    suspend fun save(context: Context) {
+    fun save(context: Context) {
         val file = File(context.filesDir, filename)
         try {
             file.writeText(this.toJSON().toString(4))
