@@ -4,7 +4,7 @@
     <string name="different_spellings">Different spellings</string>
     <string name="add_keyword">Add Keyword</string>
     <string name="title">Title</string>
-    <string name="add_query">Add Query</string>
+    <string name="add_query">Create Query</string>
     <string name="notifications">Notifications</string>
     <string name="notification_check_period">Notification Check Period</string>
     <string name="add_scraper">Add Scraper</string>
@@ -18,6 +18,11 @@
     <string name="scraper">Scraper</string>
     <string name="delete_column_button">Delete Column Button</string>
     <string name="delete_scraper_button">Delete Scraper Button</string>
+    <string name="create_keyword">Create new keyword group</string>
+    <string name="search_for_query">Save</string>
+    <string name="enter_new_query">Enter new query</string>
+    <string name="open_selected_query">Open selected query</string>
+    <string name="list_of_queries">SAVED QUERIES</string>
 
 
     <string-array name="notification_frequency_array">

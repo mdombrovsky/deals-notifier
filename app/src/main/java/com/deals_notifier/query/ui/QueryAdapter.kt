@@ -39,9 +39,9 @@ class QueryAdapter(val controller: QueryController) :
 
         holder.recyclerView.setRecycledViewPool(viewPool)
 
-        holder.addCriteriaButton.setOnClickListener {
-            newAdapter.controller.add()
-        }
+//        holder.addCriteriaButton.setOnClickListener {
+//            newAdapter.controller.add()
+//        }
 
         holder.editQueryTitle.setOnClickListener {
             textInputModal(
@@ -61,7 +61,7 @@ class QueryAdapter(val controller: QueryController) :
         val queryTitle: TextView = itemView.queryTitle
         val recyclerView: RecyclerView = itemView.searchColumnRecyclerView
         val editQueryTitle: ImageButton = itemView.editQueryTitleButton
-        val addCriteriaButton: Button = itemView.addColumnButton
+//        val addCriteriaButton: Button = itemView.addColumnButton
         val deleteQueryButton: ImageButton = itemView.deleteQueryButton
     }
 }
