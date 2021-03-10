@@ -99,4 +99,10 @@ class QueryHolder(queriesInput: ArrayList<Query> = arrayListOf()) : SearchCompon
         }
     }
 
+    suspend fun enableQueryAt(position: Int, enabled: Boolean) {
+        mutex.withLock {
+            queries[position].enabled = enabled
+        }
+    }
+
 }
