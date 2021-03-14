@@ -90,20 +90,23 @@ class RFDScraper(private val category: Int) : Scraper() {
     private fun createRfdPost(htmlPost: Element): Post {
         val aTag = htmlPost.getElementsByTag("h3")[0].getElementsByTag("a").last()
 
+        //TODO It seems that RFD switches from EST to EDT and back depending on daylight savings time, need to find out a way to deal with it
         //The regex is there for greatly simplifying date parsing, the EDT is there because afaik RFD uses EDT
         val dateString: String = htmlPost.getElementsByClass("first-post-time").text()
-            .replace("(?<=\\d)(rd|st|nd|th)\\b,".toRegex(), "") + " EDT"
+            .replace("(?<=\\d)(rd|st|nd|th)\\b,".toRegex(), "") + " EST"
+
 
         val id = aTag.attr("href")
 
-        val simpleDateFormat = SimpleDateFormat("MMM d yyyy H:mm a z")
+        val simpleDateFormat = SimpleDateFormat("MMM d yyyy h:mm a z")
 
         return Post(
             title = aTag.text(),
             description = "",
             id = id,
             url = URL("https://forums.redflagdeals.com/$id"),
-            date = simpleDateFormat.parse(dateString)
+            date = simpleDateFormat.parse(dateString),
+            source = "RedFlagDeals: Hot Deals"
         )
     }
 
