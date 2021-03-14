@@ -67,5 +67,22 @@ class QueryController(
         }
     }
 
+    fun setQueryEnabled(position: Int, enabled: Boolean) {
+        if (isQueryEnabled(position) != enabled) {
+            CoroutineScope(Dispatchers.IO).launch {
+                DealManager.instance!!.queryHolder.enableQueryAt(position, enabled)
+                withContext(Dispatchers.Main) {
+                    // For future, if we want to grey the query out
+                    queryAdapter.notifyItemChanged(position)
+                    onModified()
+                }
+            }
+        }
+    }
+
+    fun isQueryEnabled(position: Int): Boolean {
+        return DealManager.instance!!.queryHolder.queries[position].enabled
+    }
+
 
 }

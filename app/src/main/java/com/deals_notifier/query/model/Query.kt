@@ -9,17 +9,27 @@ import org.json.JSONObject
 
 class Query(
     var title: String = "",
-    criteriaInput: ArrayList<Criteria> = ArrayList()
+    criteriaInput: ArrayList<Criteria> = ArrayList(),
+    var enabled: Boolean = true
 ) :
     SearchComponent {
-    constructor(json: JSONObject) : this(getTitleFromJSON(json), getCriteriaFromJSON(json))
+    constructor(json: JSONObject) : this(
+        getTitleFromJSON(json),
+        getCriteriaFromJSON(json),
+        getEnabledFromJSON(json)
+    )
 
     private companion object {
         const val titleJSONName = "title"
         const val criteriaJSONName = "criteria"
+        const val enableJSONName = "enabled"
 
         fun getTitleFromJSON(json: JSONObject): String {
             return json.getString(titleJSONName)
+        }
+
+        fun getEnabledFromJSON(json: JSONObject): Boolean {
+            return json.getBoolean(enableJSONName)
         }
 
         fun getCriteriaFromJSON(json: JSONObject): ArrayList<Criteria> {
@@ -32,15 +42,21 @@ class Query(
 
             return criteria
         }
+
     }
 
     private val mutex: Mutex = Mutex()
-
     private val criteriaArrayList: ArrayList<Criteria> = criteriaInput
     val criteria: List<Criteria> = criteriaArrayList
 
+
+
+
     override suspend fun matches(post: Post): Boolean {
         mutex.withLock {
+            if (!enabled) {
+                return false
+            }
             for (criteria: Criteria in this.criteriaArrayList) {
                 if (!criteria.matches(post)) {
                     return false
@@ -55,6 +71,7 @@ class Query(
         val jsonQuery = JSONObject()
 
         jsonQuery.put(titleJSONName, title)
+        jsonQuery.put(enableJSONName, enabled)
 
         val jsonCriteriaArray = JSONArray()
 
