@@ -57,7 +57,8 @@ abstract class Scraper : Serializable {
         mostRecentPostDate = null
     }
 
-    protected fun getData(url: URL): String {
+    protected fun getData(urlString: String): String {
+        val url = URL(urlString)
         val response: String
         response = try {
             url.readText()

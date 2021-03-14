@@ -13,16 +13,22 @@ class SettingsFragmentController(val context: Context, private val onModified: (
     companion object {
         private fun convertFrequencyStringToSeconds(item: String): Int {
             val frequency: Int = item.takeWhile { it.isDigit() }.toInt()
-            if (item.contains("Second")) {
-                return frequency
-            } else if (item.contains("Minute")) {
-                return frequency * 60
-            } else if (item.contains("Hour")) {
-                return frequency * 60 * 60
-            } else if (item.contains("Day")) {
-                return frequency * 60 * 60 * 24
-            } else {
-                throw UnsupportedOperationException("Unknown Frequency")
+            when {
+                item.contains("Second") -> {
+                    return frequency
+                }
+                item.contains("Minute") -> {
+                    return frequency * 60
+                }
+                item.contains("Hour") -> {
+                    return frequency * 60 * 60
+                }
+                item.contains("Day") -> {
+                    return frequency * 60 * 60 * 24
+                }
+                else -> {
+                    throw UnsupportedOperationException("Unknown Frequency")
+                }
             }
         }
     }

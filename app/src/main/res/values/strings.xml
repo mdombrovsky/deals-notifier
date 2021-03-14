@@ -9,7 +9,6 @@
     <string name="notification_check_period">Notification Check Period</string>
     <string name="add_scraper">Add Scraper</string>
     <string name="reset_to_default">Reset to default</string>
-    <string name="textview">TextView</string>
     <string name="edit_keyword">Edit Keyword</string>
     <string name="delete_keyword">Delete Keyword</string>
     <string name="edit_query_title">Edit Query Title</string>

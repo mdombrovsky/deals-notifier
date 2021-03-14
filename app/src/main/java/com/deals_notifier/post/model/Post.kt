@@ -21,7 +21,7 @@ class Post(
 
 
     init {
-        Log.d(this.javaClass.simpleName, "Post loaded: ${this.toString()}")
+        Log.d(this.javaClass.simpleName, "Post loaded: $this")
     }
 
     fun contains(searchString: String): Boolean {

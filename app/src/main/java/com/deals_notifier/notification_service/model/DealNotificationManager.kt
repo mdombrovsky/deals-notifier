@@ -53,7 +53,7 @@ class DealNotificationManager(val context: Context) {
         return channel
     }
 
-    fun sendDealNotification(post: Post) {
+    private fun sendDealNotification(post: Post) {
         val notification: Notification =
             NotificationCompat.Builder(
                 context,

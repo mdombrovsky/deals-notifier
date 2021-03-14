@@ -1,3 +1,5 @@
+package com.deals_notifier.deal.model
+
 import com.deals_notifier.post.model.Post
 import com.deals_notifier.query.model.QueryHolder
 import com.deals_notifier.scraper.model.ScraperHolder

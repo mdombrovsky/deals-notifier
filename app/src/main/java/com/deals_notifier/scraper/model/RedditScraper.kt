@@ -14,7 +14,7 @@ class RedditScraper(private val subReddit: String) : Scraper() {
 
     companion object {
         private const val dataTypeJSON = "subReddit"
-        
+
         private fun initScraperFromJSON(json: JSONObject): String {
             return json.getString(dataTypeJSON)
         }
@@ -23,7 +23,7 @@ class RedditScraper(private val subReddit: String) : Scraper() {
     override suspend fun getAllPosts(): SortedPostList {
         return redditJSONToPosts(
             getData(
-                URL("https://www.reddit.com/r/${subReddit}/new.json?limit=100")
+                "https://www.reddit.com/r/${subReddit}/new.json?limit=100"
             )
         )
     }
@@ -32,7 +32,7 @@ class RedditScraper(private val subReddit: String) : Scraper() {
         val posts =
             redditJSONToPosts(
                 getData(
-                    URL("https://www.reddit.com/r/${subReddit}/new.json?limit=100")
+                    "https://www.reddit.com/r/${subReddit}/new.json?limit=100"
                 )
             ).also {
                 it.removeAllOlderThan(date = mostRecentPostDate)
@@ -111,7 +111,7 @@ class RedditScraper(private val subReddit: String) : Scraper() {
         val jsonObject = JSONObject()
         jsonObject.put(scraperTypeJSON, redditScraperName)
 
-        val dataJSONObject= JSONObject()
+        val dataJSONObject = JSONObject()
         dataJSONObject.put(dataTypeJSON, subReddit)
 
         jsonObject.put(dataNameJSON, dataJSONObject)

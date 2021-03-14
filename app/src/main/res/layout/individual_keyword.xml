@@ -11,22 +11,21 @@
         android:id="@+id/keyWord"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/textview" />
+        android:layout_gravity="center" />
 
     <ImageButton
         android:id="@+id/editKeywordButton"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:src="@drawable/pencil"
-        android:contentDescription="@string/edit_keyword" />
+        android:contentDescription="@string/edit_keyword"
+        android:src="@drawable/pencil" />
 
     <ImageButton
         android:id="@+id/deleteKeywordButton"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:src="@drawable/delete"
-        android:contentDescription="@string/delete_keyword" />
+        android:contentDescription="@string/delete_keyword"
+        android:src="@drawable/delete" />
 
 
 </LinearLayout>

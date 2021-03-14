@@ -110,17 +110,13 @@ class ScraperHolder(scrapersInput: ArrayList<Scraper> = arrayListOf()) {
         }
     }
 
-    suspend fun removeScraperAt(index: Int): Scraper {
-        mutex.withLock { return scrapersArrayList.removeAt(index) }
-    }
-
     fun save(context: Context) {
         val file = File(context.filesDir, filename)
         try {
             file.writeText(this.toJSON().toString(4))
             Log.d(
                 this.javaClass.simpleName,
-                "Successfully saved scrapers to file: ${file.toString()}"
+                "Successfully saved scrapers to file: $file"
             )
         } catch (e: java.lang.Exception) {
             Log.e(this.javaClass.simpleName, "Error writing scrapers to file: $e")

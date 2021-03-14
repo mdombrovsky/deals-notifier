@@ -54,7 +54,7 @@ class QueryHolder(queriesInput: ArrayList<Query> = arrayListOf()) : SearchCompon
             file.writeText(this.toJSON().toString(4))
             Log.d(
                 this.javaClass.simpleName,
-                "Successfully saved queries to file: ${file.toString()}"
+                "Successfully saved queries to file: $file"
             )
         } catch (e: java.lang.Exception) {
             Log.e(this.javaClass.simpleName, "Error writing queries to file: $e")
