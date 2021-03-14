@@ -17,6 +17,8 @@
     <string name="scraper">Scraper</string>
     <string name="delete_column_button">Delete Column Button</string>
     <string name="delete_scraper_button">Delete Scraper Button</string>
+    <string name="source">Source</string>
+    <string name="age">Age</string>
 
 
     <string-array name="notification_frequency_array">

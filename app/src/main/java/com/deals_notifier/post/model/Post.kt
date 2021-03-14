@@ -52,7 +52,7 @@ class Post(
         val diff = System.currentTimeMillis() - date.time
         val curr = Date(System.currentTimeMillis())
         Log.d("test!", this.toString()+"\n$curr")
-        var seconds: Long = (diff / 1000) as Long
+        var seconds: Long = (diff / 1000)
         var minutes: Long = seconds / 60
         var hours: Long = minutes / 60
         val days: Long = hours / 24
