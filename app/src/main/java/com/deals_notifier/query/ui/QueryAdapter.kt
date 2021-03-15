@@ -3,9 +3,8 @@ package com.deals_notifier.query.ui
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.TextView
+import android.widget.*
+import androidx.appcompat.widget.SwitchCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.deals_notifier.R
@@ -55,6 +54,13 @@ class QueryAdapter(val controller: QueryController) :
         holder.deleteQueryButton.setOnClickListener {
             controller.remove(holder.adapterPosition)
         }
+
+        // sets the onOffSwitch on load
+        holder.onOffSwitchQueryButton.isChecked = controller.isQueryEnabled(holder.adapterPosition)
+
+        holder.onOffSwitchQueryButton.setOnCheckedChangeListener { _: CompoundButton, isChecked: Boolean ->
+            controller.setQueryEnabled(holder.adapterPosition, isChecked);
+        }
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -63,5 +69,6 @@ class QueryAdapter(val controller: QueryController) :
         val editQueryTitle: ImageButton = itemView.editQueryTitleButton
 //        val addCriteriaButton: Button = itemView.addColumnButton
         val deleteQueryButton: ImageButton = itemView.deleteQueryButton
+        val onOffSwitchQueryButton: SwitchCompat = itemView.queryOnOffSwitch
     }
 }
