@@ -60,13 +60,22 @@
         android:layout_margin="20dp"
         android:orientation="vertical">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/searchColumnRecyclerView"
+        <TextView
+            android:id="@+id/saved_query"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:textSize="20sp"
+            android:text="(GTX AND RTX)"
+            android:visibility="gone" />
 
-        </androidx.recyclerview.widget.RecyclerView>
+<!--        <androidx.recyclerview.widget.RecyclerView-->
+<!--            android:id="@+id/searchColumnRecyclerView"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            -->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="vertical">-->
+
+<!--        </androidx.recyclerview.widget.RecyclerView>-->
 
         <ImageButton
             android:id="@+id/dropdown_query"
@@ -74,7 +83,17 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="@drawable/white_background"
-            android:src="@drawable/chevron_up_down"
+            android:src="@drawable/chevron_down"
+            android:contentDescription="@string/open_selected_query" />
+
+        <ImageButton
+            android:id="@+id/close_query"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_gravity="center"
+            android:background="@drawable/white_background"
+            android:src="@drawable/chevron_up"
             android:contentDescription="@string/open_selected_query" />
 
 
