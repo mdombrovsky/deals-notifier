@@ -6,7 +6,7 @@ import kotlinx.coroutines.sync.withLock
 import org.json.JSONArray
 import org.json.JSONObject
 
-class Criteria(keywordsInput: ArrayList<Keyword> = ArrayList<Keyword>()) : SearchComponent {
+class Criteria(keywordsInput: ArrayList<Keyword> = ArrayList()) : SearchComponent {
     constructor(json: JSONObject) : this(getKeywordsFromJSON(json))
 
     private companion object {

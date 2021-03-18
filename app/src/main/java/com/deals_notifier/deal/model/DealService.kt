@@ -1,5 +1,6 @@
 package com.deals_notifier.deal.model
 
+import android.annotation.SuppressLint
 import android.app.Notification
 import android.app.Service
 import android.content.Context
@@ -47,8 +48,6 @@ class DealService : Service(), DealServiceInterface {
     private var wakeLock: PowerManager.WakeLock? = null
 
     private var fixedRateTimer: Timer? = null
-
-    private var notificationRunning: Boolean = false
 
     private lateinit var notificationManager: DealNotificationManager
 
@@ -119,6 +118,7 @@ class DealService : Service(), DealServiceInterface {
 
     }
 
+    @SuppressLint("WakelockTimeout")
     private fun startNotificationService() {
 
         startForeground(notificationId, generateNotification())

@@ -17,7 +17,7 @@ class TabController(
     val tabAdapter: TabAdapter = TabAdapter(this)
     private val context: Context = activity
 
-    private val dealFragmentController = DealFragmentController(context)
+    private val dealFragmentController = DealFragmentController()
 
     private val settingsFragmentController =
         SettingsFragmentController(

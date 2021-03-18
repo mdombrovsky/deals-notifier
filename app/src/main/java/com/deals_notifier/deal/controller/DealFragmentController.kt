@@ -1,12 +1,9 @@
 package com.deals_notifier.deal.controller
 
-import android.content.Context
 import com.deals_notifier.deal.ui.DealAdapter
 import com.deals_notifier.deal.ui.DealFragment
 
-class DealFragmentController(
-    private val context: Context
-) {
+class DealFragmentController {
 
     val dealFragment: DealFragment = DealFragment(this)
 
@@ -17,7 +14,7 @@ class DealFragmentController(
         if (startRefresh) {
             dealFragment.swipeRefreshLayout.isRefreshing = true
         }
-        dealController.refresh() {
+        dealController.refresh {
             dealFragment.swipeRefreshLayout.isRefreshing = false
         }
 
