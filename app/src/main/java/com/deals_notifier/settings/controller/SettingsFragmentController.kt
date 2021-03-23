@@ -40,13 +40,13 @@ class SettingsFragmentController(val context: Context, private val onModified: (
 
     fun setNotifications(enabled: Boolean) {
         SettingsSingleton.instance.notificationsEnabled = enabled
-
-        if (SettingsSingleton.instance.notificationsEnabled && !DealService.isRunning()) {
-            DealService.start(context)
-        } else if (!SettingsSingleton.instance.notificationsEnabled && DealService.isRunning()) {
-            DealService.instance!!.stopDealService()
-        }
     }
+
+    fun setPowerSaver(enabled: Boolean) {
+        SettingsSingleton.instance.powerSavingEnabled = enabled
+        DealService.instance?.setPowerSaving(enabled)
+    }
+    
 
     fun setFrequency(string: String) {
         SettingsSingleton.instance.notificationFrequencySeconds =

@@ -11,6 +11,7 @@ class SettingsSingleton private constructor() {
     }
 
     var notificationsEnabled: Boolean = false
+    var powerSavingEnabled: Boolean = false
     var notificationFrequencySeconds: Int = 0
 
 }
