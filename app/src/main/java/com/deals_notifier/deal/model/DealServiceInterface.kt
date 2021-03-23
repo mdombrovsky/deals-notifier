@@ -5,4 +5,5 @@ interface DealServiceInterface {
     fun stopDealService()
 
     fun setNotificationFrequency(seconds:Int)
+    fun setPowerSaving(enabled: Boolean)
 }

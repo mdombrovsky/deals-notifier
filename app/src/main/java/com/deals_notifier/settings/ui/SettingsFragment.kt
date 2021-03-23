@@ -26,14 +26,21 @@ class SettingsFragment(val controller: SettingsFragmentController) : Fragment() 
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_settings, container, false)
 
+        /* notification switch button from view */
         val notificationSwitch: SwitchCompat = view.notificationSwitch
 
+        /* Power Saver Switch reference from view */
+        val powerSaverSwitch: SwitchCompat = view.powerSaverSwitch
         val frequencySpinner: Spinner = view.frequencySpinner
 
         notificationSwitch.setOnCheckedChangeListener { compoundButton: CompoundButton, isChecked: Boolean ->
             controller.setNotifications(isChecked)
             frequencySpinner.isEnabled = controller.frequencySpinnerEnabled()
+        }
 
+        /*  Power Saver Listener */
+        powerSaverSwitch.setOnCheckedChangeListener { compoundButton: CompoundButton, isChecked: Boolean ->
+            controller.setPowerSaver(isChecked)
         }
 
         ArrayAdapter.createFromResource(
