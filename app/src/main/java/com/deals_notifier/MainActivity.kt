@@ -1,11 +1,17 @@
 package com.deals_notifier
 
+import android.content.Context
 import android.os.Bundle
+import android.provider.Settings
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.viewpager2.widget.ViewPager2
 import com.deals_notifier.main.controller.TabController
+import com.deals_notifier.settings.model.SettingsSingleton
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.deals_notifier.settings.ui.SettingsFragment
+import kotlinx.android.synthetic.main.fragment_settings.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -22,7 +28,9 @@ class MainActivity : AppCompatActivity() {
 
         val viewPager2: ViewPager2 = findViewById(R.id.view_pager)
 
-        val tabAdapter = TabController(this).tabAdapter
+        val tabController: TabController = TabController(this)
+
+        val tabAdapter = tabController.tabAdapter
 
         viewPager2.adapter = tabAdapter
 
@@ -31,7 +39,23 @@ class MainActivity : AppCompatActivity() {
         val tabLayoutMediator = TabLayoutMediator(tabs, viewPager2, tabAdapter)
 
         tabLayoutMediator.attach()
+
+        SettingsSingleton.instance.load(this as Context)
+//        val settingsFragment = tabController.getSettingsFragment()
+//        settingsFragment.darkModeSwitch.isChecked = SettingsSingleton.instance.darkModeEnabled
+
+        if(SettingsSingleton.instance.darkModeEnabled) {
+            AppCompatDelegate
+                .setDefaultNightMode(
+                    AppCompatDelegate
+                        .MODE_NIGHT_YES)
+        } else {
+            AppCompatDelegate
+                .setDefaultNightMode(
+                    AppCompatDelegate
+                        .MODE_NIGHT_NO)
+        }
     }
 
-
 }
+

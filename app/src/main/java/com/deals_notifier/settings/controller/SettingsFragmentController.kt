@@ -2,11 +2,13 @@ package com.deals_notifier.settings.controller
 
 import android.content.Context
 import android.util.Log
+import androidx.appcompat.app.AppCompatDelegate
 import com.deals_notifier.deal.model.DealService
 import com.deals_notifier.scraper.controller.ScraperController
 import com.deals_notifier.scraper.ui.ScraperAdapter
 import com.deals_notifier.settings.model.SettingsSingleton
 import com.deals_notifier.settings.ui.SettingsFragment
+
 
 class SettingsFragmentController(val context: Context, private val onModified: () -> Unit) {
 
@@ -35,6 +37,8 @@ class SettingsFragmentController(val context: Context, private val onModified: (
 
     val settingsFragment = SettingsFragment(this)
 
+    private var mDelegate: AppCompatDelegate? = null
+
     private val scraperController: ScraperController =
         ScraperController(context = context, onModified = { onModified() })
 
@@ -46,14 +50,18 @@ class SettingsFragmentController(val context: Context, private val onModified: (
         SettingsSingleton.instance.powerSavingEnabled = enabled
         DealService.instance?.setPowerSaving(enabled)
     }
-    
+
+    fun setDarkMode(enabled: Boolean) {
+        SettingsSingleton.instance.darkModeEnabled = enabled
+        SettingsSingleton.instance.save(context);
+//        MainActivity.mainActivity?.recreate()
+    }
 
     fun setFrequency(string: String) {
         SettingsSingleton.instance.notificationFrequencySeconds =
             convertFrequencyStringToSeconds(string)
 
         DealService.instance?.setNotificationFrequency(SettingsSingleton.instance.notificationFrequencySeconds)
-
         Log.d(
             this.javaClass.simpleName,
             "Selected: $string (${convertFrequencyStringToSeconds(string)})"

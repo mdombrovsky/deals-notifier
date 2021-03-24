@@ -4,12 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:textColor="@color/textColor"
     tools:context=".query.ui.QueryFragment">
 
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/queryRecyclerView"
         android:layout_width="match_parent"
+        android:textColor="@color/textColor"
         android:layout_height="wrap_content" />
 
     <Button
