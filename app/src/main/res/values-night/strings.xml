@@ -1,0 +1,38 @@
+<resources>
+    <string name="app_name">Deals_Notifier</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="different_spellings">Different spellings</string>
+    <string name="add_keyword">Add Keyword</string>
+    <string name="title">Title</string>
+    <string name="add_query">Add Query</string>
+    <string name="notifications">Notifications</string>
+    <string name="notification_check_period">Notification Check Period</string>
+    <string name="add_scraper">Add Scraper</string>
+    <string name="reset_to_default">Reset to default</string>
+    <string name="edit_keyword">Edit Keyword</string>
+    <string name="delete_keyword">Delete Keyword</string>
+    <string name="edit_query_title">Edit Query Title</string>
+    <string name="delete_query">Delete Query</string>
+    <string name="add">Add</string>
+    <string name="scraper">Scraper</string>
+    <string name="delete_column_button">Delete Column Button</string>
+    <string name="delete_scraper_button">Delete Scraper Button</string>
+    <string name="source">Source</string>
+    <string name="age">Age</string>
+
+
+    <string-array name="notification_frequency_array">
+        <item>1 Minute</item>
+        <item>2 Minutes</item>
+        <item>5 Minutes</item>
+        <item>10 Minutes</item>
+        <item>15 Minutes</item>
+        <item>30 Minutes</item>
+        <item>1 Hour</item>
+        <item>2 Hours</item>
+        <item>3 Hours</item>
+        <item>6 Hours</item>
+        <item>12 Hours</item>
+        <item>1 Day</item>
+    </string-array>
+</resources>

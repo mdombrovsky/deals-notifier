@@ -6,9 +6,8 @@
 
     <color name="gray">#444440</color>
 
-    <!-- for Day/Light Mode -->
-    <color name="backgroundColor">#DADADA</color>
-    <color name="cardBackgroundColor">#FCFCFC</color>
-    <color name="textColor">#000000</color>
-
+    <!-- for Night/Dark Mode -->
+    <color name="backgroundColor">#212121</color>
+    <color name="cardBackgroundColor">#aba9a6</color>
+    <color name="textColor">#FFFFFF</color>
 </resources>
