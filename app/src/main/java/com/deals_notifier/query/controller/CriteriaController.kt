@@ -16,7 +16,7 @@ class CriteriaController(
     private val onModified: () -> Unit
 ) {
 
-    val criteriaAdapter: CriteriaAdapter = CriteriaAdapter(this)
+    private val criteriaAdapter: CriteriaAdapter = CriteriaAdapter(this)
 
 
     fun getSize(): Int {

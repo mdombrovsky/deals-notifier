@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.deals_notifier.R
 import com.deals_notifier.scraper.ui.ScraperInputModal
 import com.deals_notifier.settings.controller.SettingsFragmentController
-import com.deals_notifier.settings.model.SettingsSingleton
 import kotlinx.android.synthetic.main.fragment_settings.view.*
 
 class SettingsFragment(val controller: SettingsFragmentController) : Fragment() {
