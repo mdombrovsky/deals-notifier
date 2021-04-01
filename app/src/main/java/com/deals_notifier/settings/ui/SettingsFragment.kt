@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.deals_notifier.R
 import com.deals_notifier.scraper.ui.ScraperInputModal
 import com.deals_notifier.settings.controller.SettingsFragmentController
+import com.deals_notifier.settings.model.SettingsSingleton
 import kotlinx.android.synthetic.main.fragment_settings.view.*
 
 class SettingsFragment(val controller: SettingsFragmentController) : Fragment() {
@@ -26,14 +27,29 @@ class SettingsFragment(val controller: SettingsFragmentController) : Fragment() 
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_settings, container, false)
 
+        /* notification switch button from view */
         val notificationSwitch: SwitchCompat = view.notificationSwitch
+
+        /* Power Saver Switch reference from view */
+        val powerSaverSwitch: SwitchCompat = view.powerSaverSwitch
+
+        /* Dark Mode switch reference from view */
+        val darkModeSwitch: SwitchCompat = view.darkModeSwitch
 
         val frequencySpinner: Spinner = view.frequencySpinner
 
         notificationSwitch.setOnCheckedChangeListener { compoundButton: CompoundButton, isChecked: Boolean ->
             controller.setNotifications(isChecked)
             frequencySpinner.isEnabled = controller.frequencySpinnerEnabled()
+        }
 
+        /*  Power Saver Listener */
+        powerSaverSwitch.setOnCheckedChangeListener { compoundButton: CompoundButton, isChecked: Boolean ->
+            controller.setPowerSaver(isChecked)
+        }
+
+        darkModeSwitch.setOnCheckedChangeListener { compoundButton: CompoundButton, isChecked: Boolean ->
+            controller.setDarkMode(isChecked)
         }
 
         ArrayAdapter.createFromResource(

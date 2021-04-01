@@ -79,7 +79,7 @@ class QueryAdapter(val controller: QueryController) :
         holder.onOffSwitchQueryButton.isChecked = controller.isQueryEnabled(holder.adapterPosition)
 
         holder.onOffSwitchQueryButton.setOnCheckedChangeListener { _: CompoundButton, isChecked: Boolean ->
-            controller.setQueryEnabled(holder.adapterPosition, isChecked);
+            controller.setQueryEnabled(holder.adapterPosition, isChecked)
         }
     }
 

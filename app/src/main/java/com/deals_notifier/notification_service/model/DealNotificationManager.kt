@@ -8,7 +8,6 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
-import android.system.Os.link
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -61,7 +60,7 @@ class DealNotificationManager(val context: Context) {
     /*
         sendDealNotification: sends a notification to the OS
     */
-    fun sendDealNotification(post: Post) {
+    private fun sendDealNotification(post: Post) {
 
         /* notificationIntent and pending are used to add links to deals */
         val notificationIntent = Intent(Intent.ACTION_VIEW, Uri.parse(post.url.toString())).apply {

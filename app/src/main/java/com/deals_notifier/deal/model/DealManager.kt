@@ -1,13 +1,11 @@
 package com.deals_notifier.deal.model
 
-import DealManagerInterface
 import android.util.Log
 import com.deals_notifier.post.model.SortedPostList
 import com.deals_notifier.query.model.QueryHolder
 import com.deals_notifier.scraper.model.ScraperHolder
 import com.deals_notifier.utility.PostRefreshListener
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch

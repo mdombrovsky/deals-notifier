@@ -3,13 +3,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:textColor="@color/textColor"
     android:padding="10dp">
 
+    <!-- Light/DarkMode Switch ui element -->
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/darkModeSwitch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/textColor"
+        android:text="Dark Mode" />
+
+    <!-- Power Saver Switch ui element -->
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/powerSaverSwitch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/textColor"
+        android:text="Power Saver" />
+
+    <!-- Notifications Switch ui element -->
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/notificationSwitch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="@color/textColor"
         android:text="@string/notifications" />
+
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -23,6 +43,7 @@
             android:layout_toStartOf="@+id/frequencySpinner"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
+            android:textColor="@color/textColor"
             android:text="@string/notification_check_period" />
 
         <Spinner

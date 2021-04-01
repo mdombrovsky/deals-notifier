@@ -22,12 +22,14 @@ class SplashScreen : AppCompatActivity() {
         CoroutineScope(IO).launch {
             val intent = Intent(this@SplashScreen, MainActivity::class.java)
 
-            DealManager.initialize(
-                ValidDealHolder(
-                    QueryHolder.load(this@SplashScreen.applicationContext),
-                    ScraperHolder.load(this@SplashScreen.applicationContext)
+            if(DealManager.instance == null) {
+                DealManager.initialize(
+                    ValidDealHolder(
+                        QueryHolder.load(this@SplashScreen.applicationContext),
+                        ScraperHolder.load(this@SplashScreen.applicationContext)
+                    )
                 )
-            )
+            }
 
 
             if (!DealService.isRunning() && SettingsSingleton.instance.notificationsEnabled) {

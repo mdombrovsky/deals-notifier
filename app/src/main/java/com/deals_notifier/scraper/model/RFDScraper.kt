@@ -1,5 +1,6 @@
 package com.deals_notifier.scraper.model
 
+import android.annotation.SuppressLint
 import com.deals_notifier.post.model.Post
 import com.deals_notifier.post.model.SortedPostList
 import org.json.JSONObject
@@ -31,11 +32,11 @@ class RFDScraper(private val category: Int) : Scraper() {
         baseURL + dealListURL + searchFilterURL + categoryPrefixURL + category.toString()
 
     override suspend fun getAllPosts(): SortedPostList {
-        return getPosts(URL(defaultURL), 100)
+        return getPosts(defaultURL, 100)
     }
 
     override suspend fun getNewPosts(): SortedPostList {
-        val posts = getPosts(URL(defaultURL), 100).also {
+        val posts = getPosts(defaultURL, 100).also {
             it.removeAllOlderThan(mostRecentPostDate)
         }
         if (posts.isNotEmpty()) {
@@ -52,15 +53,15 @@ class RFDScraper(private val category: Int) : Scraper() {
     /**
      * Gets at least a certain amount of posts if available
      *
-     * @param url The url from which to get posts
+     * @param urlString The url in String format from which to get posts
      * @param number The number of posts to get at least
      */
-    private suspend fun getPosts(url: URL, number: Int): SortedPostList {
+    private suspend fun getPosts(urlString: String, number: Int): SortedPostList {
         val posts = SortedPostList()
 
         if (number > 0) {
 
-            val doc: Document = Jsoup.parse(getData(url))
+            val doc: Document = Jsoup.parse(getData(urlString))
             val htmlPosts = doc.getElementsByClass("thread_info_title")
 
 
@@ -75,7 +76,7 @@ class RFDScraper(private val category: Int) : Scraper() {
                 //Does recursive calls to go through all the pages
                 posts.addAll(
                     getPosts(
-                        URL(baseURL + nextTag.attr("href")),
+                        baseURL + nextTag.attr("href"),
                         number - posts.size
                     )
                 )
@@ -85,17 +86,7 @@ class RFDScraper(private val category: Int) : Scraper() {
         return posts
     }
 
-    private fun rfdHtmlToPosts(html: String): ArrayList<Post> {
-        val doc: Document = Jsoup.parse(html)
-        val htmlPosts = doc.getElementsByClass("thread_info_title")
-
-        val posts = ArrayList<Post>()
-        for (htmlPost: Element in htmlPosts) {
-            posts.add(createRfdPost(htmlPost))
-        }
-        return posts
-    }
-
+    @SuppressLint("SimpleDateFormat")
     private fun createRfdPost(htmlPost: Element): Post {
         val aTag = htmlPost.getElementsByTag("h3")[0].getElementsByTag("a").last()
 
