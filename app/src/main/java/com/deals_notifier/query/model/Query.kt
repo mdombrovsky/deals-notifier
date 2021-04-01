@@ -52,7 +52,8 @@ class Query(
             var tempStr: String
             val criteriaList = ArrayList<Criteria>()
             var keywordList = ArrayList<Keyword>()
-            var numBrackets = 0
+            var numOpenBrackets: Int
+            var numClosedBrackets: Int
             val ands = contents.split("&")
             for (s in ands) {
 
@@ -60,15 +61,18 @@ class Query(
                     return null
                 }
 
+                numOpenBrackets = 0
+                numClosedBrackets = 0
+
                 for (c in s) {
                     if (c == '(') {
-                        numBrackets++
+                        numOpenBrackets++
                     } else if (c == ')') {
-                        numBrackets--
+                        numClosedBrackets++
                     }
                 }
 
-                if (numBrackets != 0) {
+                if (numOpenBrackets != numClosedBrackets || numClosedBrackets > 1 || numOpenBrackets > 1) {
                     return null
                 }
 
@@ -82,12 +86,15 @@ class Query(
                     tempStr = subStr.trim().replace("(", "")
                     tempStr = tempStr.replace(")", "")
 
+                    if (tempStr.trim().isEmpty()) {
+                        return null
+                    }
+
                     keywordList.add(Keyword(tempStr.trim()))
                 }
 
                 criteriaList.add(Criteria(keywordList))
                 keywordList = ArrayList()
-
             }
 
             query = Query("", criteriaList)
