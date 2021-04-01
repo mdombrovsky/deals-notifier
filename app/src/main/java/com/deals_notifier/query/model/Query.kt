@@ -70,6 +70,9 @@ class Query(
                     } else if (c == ')') {
                         numClosedBrackets++
                     }
+                    if (numClosedBrackets > numOpenBrackets) {
+                        return null
+                    }
                 }
 
                 if (numOpenBrackets != numClosedBrackets || numClosedBrackets > 1 || numOpenBrackets > 1) {
