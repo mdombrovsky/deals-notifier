@@ -19,20 +19,21 @@ class Query(
         getEnabledFromJSON(json)
     )
 
-    private companion object {
-        const val titleJSONName = "title"
-        const val criteriaJSONName = "criteria"
-        const val enableJSONName = "enabled"
+    companion object {
 
-        fun getTitleFromJSON(json: JSONObject): String {
+        private const val titleJSONName = "title"
+        private const val criteriaJSONName = "criteria"
+        private const val enableJSONName = "enabled"
+
+        private fun getTitleFromJSON(json: JSONObject): String {
             return json.getString(titleJSONName)
         }
 
-        fun getEnabledFromJSON(json: JSONObject): Boolean {
+        private fun getEnabledFromJSON(json: JSONObject): Boolean {
             return json.getBoolean(enableJSONName)
         }
 
-        fun getCriteriaFromJSON(json: JSONObject): ArrayList<Criteria> {
+        private fun getCriteriaFromJSON(json: JSONObject): ArrayList<Criteria> {
             val jsonCriteriaArray = json.getJSONArray(criteriaJSONName)
             val criteria = ArrayList<Criteria>()
 
@@ -43,14 +44,86 @@ class Query(
             return criteria
         }
 
+        // Parses string into query object
+        fun getQueryFrom(contents: String): Query? {
+
+            val query: Query
+            var subStrings: List<String>
+            var tempStr: String
+            val criteriaList = ArrayList<Criteria>()
+            var keywordList = ArrayList<Keyword>()
+            var numOpenBrackets: Int
+            var numClosedBrackets: Int
+            val ands = contents.split("&")
+            for (s in ands) {
+
+                if (s.contains("&")) {
+                    return null
+                }
+
+                numOpenBrackets = 0
+                numClosedBrackets = 0
+
+                for (c in s) {
+                    if (c == '(') {
+                        numOpenBrackets++
+                    } else if (c == ')') {
+                        numClosedBrackets++
+                    }
+                    if (numClosedBrackets > numOpenBrackets) {
+                        return null
+                    }
+                }
+
+                if (numOpenBrackets != numClosedBrackets || numClosedBrackets > 1 || numOpenBrackets > 1) {
+                    return null
+                }
+
+                subStrings = s.split("|")
+
+                for (subStr in subStrings) {
+                    if (subStr.trim().contains("|") || subStr.trim().isEmpty()) {
+                        return null
+                    }
+
+                    tempStr = subStr.trim().replace("(", "")
+                    tempStr = tempStr.replace(")", "")
+
+                    if (tempStr.trim().isEmpty()) {
+                        return null
+                    }
+
+                    keywordList.add(Keyword(tempStr.trim()))
+                }
+
+                criteriaList.add(Criteria(keywordList))
+                keywordList = ArrayList()
+            }
+
+            query = Query("", criteriaList)
+            return query
+        }
     }
 
     private val mutex: Mutex = Mutex()
     private val criteriaArrayList: ArrayList<Criteria> = criteriaInput
     val criteria: List<Criteria> = criteriaArrayList
+    var queryDescription: String = regenDescription()
+        private set
 
 
+    private fun regenDescription(): String {
 
+        val str = StringBuilder()
+
+        for (c in criteria) {
+            str.append(c.getCriteriaDescription())
+            str.append(" & ")
+        }
+
+        return str.removeRange(str.length - 3, str.length - 1).toString()
+
+    }
 
     override suspend fun matches(post: Post): Boolean {
         mutex.withLock {

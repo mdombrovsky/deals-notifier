@@ -37,8 +37,6 @@ class SettingsFragmentController(val context: Context, private val onModified: (
 
     val settingsFragment = SettingsFragment(this)
 
-    private var mDelegate: AppCompatDelegate? = null
-
     private val scraperController: ScraperController =
         ScraperController(context = context, onModified = { onModified() })
 
@@ -53,7 +51,7 @@ class SettingsFragmentController(val context: Context, private val onModified: (
 
     fun setDarkMode(enabled: Boolean) {
         SettingsSingleton.instance.darkModeEnabled = enabled
-        SettingsSingleton.instance.save(context);
+        SettingsSingleton.instance.save(context)
 //        MainActivity.mainActivity?.recreate()
     }
 

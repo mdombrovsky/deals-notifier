@@ -2,18 +2,14 @@ package com.deals_notifier.settings.model
 
 import android.content.Context
 import android.util.Log
-import com.deals_notifier.MainActivity
 import com.deals_notifier.main.controller.TabController
-import com.deals_notifier.query.model.Query
-import com.deals_notifier.query.model.QueryHolder
-import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
 
 class SettingsSingleton private constructor() {
     companion object {
         val instance: SettingsSingleton by lazy { HOLDER.INSTANCE }
-        val filename: String = "settings.json"
+        const val filename: String = "settings.json"
     }
 
     private object HOLDER {
@@ -26,7 +22,7 @@ class SettingsSingleton private constructor() {
     var darkModeEnabled: Boolean = false
 
     fun load(context: Context) {
-        val file = File(context.filesDir, SettingsSingleton.filename)
+        val file = File(context.filesDir, filename)
         try {
             parseSettingsJSON(JSONObject(file.readText()))
         } catch (e: Exception) {
@@ -34,15 +30,15 @@ class SettingsSingleton private constructor() {
         }
     }
 
-    fun parseSettingsJSON(settingsJSON:JSONObject) {
-        powerSavingEnabled =  settingsJSON.get("powerSaving").toString().toBoolean();
-        notificationsEnabled = settingsJSON.get("notifications").toString().toBoolean();
-        notificationFrequencySeconds = settingsJSON.get("notificationFrequency").toString().toInt();
-        darkModeEnabled = settingsJSON.get("darkMode").toString().toBoolean();
+    private fun parseSettingsJSON(settingsJSON:JSONObject) {
+        powerSavingEnabled =  settingsJSON.get("powerSaving").toString().toBoolean()
+        notificationsEnabled = settingsJSON.get("notifications").toString().toBoolean()
+        notificationFrequencySeconds = settingsJSON.get("notificationFrequency").toString().toInt()
+        darkModeEnabled = settingsJSON.get("darkMode").toString().toBoolean()
     }
 
      fun save(context: Context) {
-        val file = File(context.filesDir, SettingsSingleton.filename)
+        val file = File(context.filesDir, filename)
         try {
             file.writeText(this.toJSON().toString(4))
             Log.d(
@@ -57,10 +53,10 @@ class SettingsSingleton private constructor() {
 
     fun toJSON(): JSONObject {
         val settingsJSON = JSONObject()
-        settingsJSON.put("powerSaving", powerSavingEnabled.toString());
-        settingsJSON.put("notifications", notificationsEnabled.toString());
-        settingsJSON.put("notificationFrequency", notificationFrequencySeconds.toString());
-        settingsJSON.put("darkMode", darkModeEnabled.toString());
+        settingsJSON.put("powerSaving", powerSavingEnabled.toString())
+        settingsJSON.put("notifications", notificationsEnabled.toString())
+        settingsJSON.put("notificationFrequency", notificationFrequencySeconds.toString())
+        settingsJSON.put("darkMode", darkModeEnabled.toString())
         return settingsJSON
     }
 

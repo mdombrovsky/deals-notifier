@@ -3,7 +3,6 @@ package com.deals_notifier.query.controller
 import android.util.Log
 import com.deals_notifier.deal.model.DealManager
 import com.deals_notifier.query.model.Query
-import com.deals_notifier.query.ui.CriteriaAdapter
 import com.deals_notifier.query.ui.QueryAdapter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -24,14 +23,6 @@ class QueryController(
         return DealManager.instance!!.queryHolder.queries[position].title
     }
 
-    fun createCriteriaAdapter(position: Int): CriteriaAdapter {
-        return CriteriaController(
-            DealManager.instance!!.queryHolder.queries[position],
-            onModified
-        ).criteriaAdapter
-
-    }
-
     fun setQueryTitle(position: Int, title: String) {
         DealManager.instance!!.queryHolder.queries[position].title = title
         queryAdapter.notifyItemChanged(position)
@@ -41,6 +32,20 @@ class QueryController(
     fun add(title: String) {
         CoroutineScope(Dispatchers.IO).launch {
             DealManager.instance!!.queryHolder.addQuery(Query(title = title))
+            withContext(Dispatchers.Main) {
+                queryAdapter.notifyItemInserted(DealManager.instance!!.queryHolder.queries.size - 1)
+                onModified()
+            }
+        }
+
+    }
+
+    // Adds new query to query list, assigns title to query
+    fun add(title: String, query: Query) {
+
+        CoroutineScope(Dispatchers.IO).launch {
+            query.title = title
+            DealManager.instance!!.queryHolder.addQuery(query)
             withContext(Dispatchers.Main) {
                 queryAdapter.notifyItemInserted(DealManager.instance!!.queryHolder.queries.size - 1)
                 onModified()
@@ -82,6 +87,10 @@ class QueryController(
 
     fun isQueryEnabled(position: Int): Boolean {
         return DealManager.instance!!.queryHolder.queries[position].enabled
+    }
+
+    fun getQueryDescription(position: Int): String {
+        return DealManager.instance!!.queryHolder.queries[position].queryDescription
     }
 
 
