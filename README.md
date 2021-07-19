@@ -3,19 +3,11 @@ This is meant to aggregate Canadian deals posted to [RedFlagDeals](https://forum
 
 
 ## Installation
-I'd recommend using Android Studio for running this application, as it is still in beta.
+I'd recommend using Android Studio for running this application.
 
 
 ## State of development
-This is in a working beta state, however it is missing many quality of life features, such as user-friendly UI.
-
-### Future Steps 
-* Add a more battery efficient option to run the background notification service, that utilizes Androids' wake periods (currently it keeps the device awake, which is bad for battery life).
-* Enhance the UI, it has not been worked on at all and looks a bit clunky.
-* Make deals clickable, both inside the app and from notifications.
-* Add option to control how many posts are loaded (and ensure the scrapers are able to load more posts).
-* Fix Android Studio Code warnings (its mostly minor stuff remaining).
-* Add support for other countries.
+This is in a working beta state.
 
 
 ## Contributing
