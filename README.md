@@ -6,8 +6,8 @@ This is meant to aggregate Canadian deals posted to [RedFlagDeals](https://forum
 I'd recommend using Android Studio for running this application.
 
 
-## State of development
-This is in a working beta state.
+## Usage demo
+<img src="https://github.com/mdombrovsky/deals-notifier/blob/master/demo/query_input_demo.gif" width="270" height="auto">
 
 
 ## Contributing
