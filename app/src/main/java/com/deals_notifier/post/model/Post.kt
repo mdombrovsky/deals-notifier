@@ -57,7 +57,7 @@ class Post(
         var hours: Long = minutes / 60
         val days: Long = hours / 24
         val zero: Long = 0
-        val one: Long = 0
+        val one: Long = 1
         seconds %= 60
         minutes %= 60
         hours %= 24
